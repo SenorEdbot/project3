@@ -2,6 +2,12 @@
   "name": "project3",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "8.11.3"
+  },
+  "resolutions": {
+    "**/event-stream": "^4.0.1"
+  },
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && yarn start:prod || yarn start:dev",
