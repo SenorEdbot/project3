@@ -4,7 +4,11 @@
   "description": "project 3",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start:dev": "concurrently \"npm run watch\" \"npm run client\"",
+    "watch": "nodemon ./bin/www",
+    "server": "node ./bin/www",
+    "client": "cd client && yarn start"
   },
   "repository": {
     "type": "git",
@@ -15,5 +19,13 @@
   "bugs": {
     "url": "https://github.com/SenorEdbot/project3/issues"
   },
-  "homepage": "https://github.com/SenorEdbot/project3#readme"
+  "homepage": "https://github.com/SenorEdbot/project3#readme",
+  "dependencies": {
+    "concurrently": "^1.0.0",
+    "cookie-parser": "^1.4.3",
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "http-errors": "^1.7.1",
+    "morgan": "^1.9.1"
+  }
 }

@@ -8,3 +8,17 @@
 That's it!
 
 ## Use Yarn Start to launch the app in a browser
+
+#
+
+```
+# Install server dependencies
+npm i
+
+# Install client dependencies
+cd client
+yarn add
+
+# Dev server (from root)
+npm run start:dev
+```
