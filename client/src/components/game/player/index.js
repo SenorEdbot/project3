@@ -5,8 +5,7 @@ export default class Player {
     this.scene = scene;
 
     this.sprite = scene.physics.add
-      .sprite(770, 430, 'player')
-      .setScale(0.5, 0.5)
+      .sprite(100, 100, 'player')
       .setCollideWorldBounds(true)
       .setPipeline('Light2D')
 
@@ -22,10 +21,14 @@ export default class Player {
     this.movementScaleX = 0;
     this.movementScaleY = 0;
 
-    this.walkSpeed = 100;
-    this.sprintSpeed = 200;
+    this.walkSpeed = 150;
+    this.sprintSpeed = 300;
 
-    this.flashlight = this.scene.lights.addLight(this.sprite.x, this.sprite.y, 200);
+    this.flashlight = {
+     nearBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 150).setIntensity(1),
+     midBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 200).setIntensity(.75),
+     farBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 250).setIntensity(.5)
+    }
   }
 
   update() {
@@ -83,7 +86,11 @@ export default class Player {
 
     let clamp = (num, min, max) => Math.max(min, Math.min(num, max));
 
-    this.flashlight.x = clamp(locX, this.sprite.x - beamLength, this.sprite.x + beamLength)
-    this.flashlight.y = clamp(locY, this.sprite.y - beamLength, this.sprite.y + beamLength)
+    this.flashlight.nearBeam.x = clamp(locX, this.sprite.x - beamLength, this.sprite.x + beamLength)
+    this.flashlight.nearBeam.y = clamp(locY, this.sprite.y - beamLength, this.sprite.y + beamLength)
+    this.flashlight.midBeam.x = clamp(locX, this.sprite.x - (beamLength + 50), this.sprite.x + (beamLength + 50))
+    this.flashlight.midBeam.y = clamp(locY, this.sprite.y - (beamLength + 50), this.sprite.y + (beamLength + 50))
+    this.flashlight.farBeam.x = clamp(locX, this.sprite.x - (beamLength + 100), this.sprite.x + (beamLength + 100))
+    this.flashlight.farBeam.y = clamp(locY, this.sprite.y - (beamLength + 100), this.sprite.y + (beamLength + 100))
   }
 }
