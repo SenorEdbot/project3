@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Phaser from 'phaser';
 import Player from './player';
+import Purge from './modes/purge';
+import obstacles from './obstacles/obstacles.json';
 
 export default class Game extends Component {
   componentDidMount() {
@@ -18,7 +20,7 @@ export default class Game extends Component {
       scene: {
         preload: this.preload,
         create: this.create,
-        update: this.update
+        update: this.update,
       }
     });
   }
@@ -32,6 +34,8 @@ export default class Game extends Component {
   preload() {
     this.load.image('map', ['/assets/backgrounds/map02.jpg', '/assets/backgrounds/map02_n.png']);
     this.load.image('player', ['/assets/sprites/playerPistol.gif', '/assets/sprites/playerPistol_n.png']);
+    this.load.image('zombie', ['/assets/sprites/zombie.gif', '/assets/sprites/playerPistol_n.png']);
+    this.load.image('bullet', ['/assets/sprites/bullet.png', '/assets/sprites/playerPistol_n.png']);
   }
 
   create() {
@@ -40,25 +44,36 @@ export default class Game extends Component {
       .setDepth(-2)
       .setScale(2, 2)
       .setPipeline('Light2D');
+
     this.physics.world.setBounds(0, 0, 1336 * 2, 1210 * 2);
-    this.lights.enable();
+    this.lights.enable().setAmbientColor(0x010808);
+
     this.obstacles = this.physics.add.staticGroup();
+    this.zombies = this.physics.add.group();
+
     this.player = new Player(this);
+    this.gameMode = new Purge(this);
 
-    //------------------------------------
+    // Obstacles
     const obs = this.obstacles;
-    obs.create(600, 650, 'test').refreshBody();
-    //------------------------------------
+    obstacles.forEach(ob => {
+      let obstacle = obs.create(ob.x, ob.y).setVisible(false);
+      obstacle.body.setSize(ob.w, ob.h);
+    });
 
-    const camera = this.cameras.main;
-    const player = this.player.sprite;
+    this.physics.add.collider(this.obstacles, this.player.sprite);
+    this.physics.add.collider(this.zombies, this.player.sprite, () => {
+      this.player.damage();
+    });
 
-    camera
-      .startFollow(player)
+    this.cameras.main
+      .startFollow(this.player.sprite)
       .setLerp(0.08, 0.08)
       .setBounds(0, 0, 1336 * 2, 1210 * 2);
 
-    // Debug text (dev)
+    this.lights.addLight(1638, 1582, 200, 0xFFA233);
+
+    // ON-SCREEN TEXT
     let captionStyle = {
       fill: '#fff',
       fontFamily: 'monospace',
@@ -66,20 +81,26 @@ export default class Game extends Component {
     };
 
     this.captionFormat = (
-      'Mouse: { x: %1, y: %2 }'
+      'Health:    %1\n' +
+      'Kills:     %2\n' +
+      'Shots:     %3\n'
     );
     this.caption = this.add.text(16, 16, '', captionStyle);
     this.caption.setScrollFactor(0, 0);
-    this.caption.setDepth(4);
+    this.caption.setDepth(999);
   }
 
   update() {
     this.player.update();
+    if (this.gameMode.started && this.gameMode.canUpdate) this.gameMode.update();
 
-    // Update debug text (dev)
+    // UPDATE CAPTION TEXT
     this.caption.setText(Phaser.Utils.String.Format(this.captionFormat, [
-      this.input.activePointer.x,
-      this.input.activePointer.y
+      Math.floor(this.player.health / 10),
+      this.player.kills,
+      this.player.shots
     ]));
+
+    // console.log(this.input.activePointer.worldX, this.input.activePointer.worldY)
   }
 }

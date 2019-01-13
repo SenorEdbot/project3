@@ -1,13 +1,17 @@
 import Phaser from 'phaser';
+import Pistol from '../weapons/Pistol';
 
 export default class Player {
   constructor(scene) {
     this.scene = scene;
 
     this.sprite = scene.physics.add
-      .sprite(100, 100, 'player')
-      .setCollideWorldBounds(true)
-      .setPipeline('Light2D')
+    .sprite(1492, 1150, 'player')
+    .setCollideWorldBounds(true)
+    .setPipeline('Light2D');
+
+    this.sprite.body
+    .setSize(44, 44, 0.5);
 
     const inputBindings = this.scene.input.keyboard;
     const keyCodes = Phaser.Input.Keyboard.KeyCodes;
@@ -20,21 +24,36 @@ export default class Player {
 
     this.movementScaleX = 0;
     this.movementScaleY = 0;
+    this.walkSpeed = 120;
+    this.sprintSpeed = 240;
 
-    this.walkSpeed = 150;
-    this.sprintSpeed = 300;
+    this.health = 1000;
+    this.isAlive = true;
 
     this.flashlight = {
      nearBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 150).setIntensity(1),
      midBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 200).setIntensity(.75),
      farBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 250).setIntensity(.5)
     }
+
+    this.weapon = new Pistol(this.scene, this);
+
+    this.kills = 0;
+    this.shots = 0;
   }
 
   update() {
+    if (!this.isAlive) return;
+
     this.addMovementInput();
     this.addRotationInput();
     this.updateFlashlight();
+
+    if (this.scene.input.activePointer.isDown) {
+      this.weapon.fire();
+    } else {
+      this.weapon.resetNextFire();
+    }
   }
 
   addMovementInput() {
@@ -92,5 +111,28 @@ export default class Player {
     this.flashlight.midBeam.y = clamp(locY, this.sprite.y - (beamLength + 50), this.sprite.y + (beamLength + 50))
     this.flashlight.farBeam.x = clamp(locX, this.sprite.x - (beamLength + 100), this.sprite.x + (beamLength + 100))
     this.flashlight.farBeam.y = clamp(locY, this.sprite.y - (beamLength + 100), this.sprite.y + (beamLength + 100))
+  }
+
+  shoot() {
+    this.weapon.fire();
+  }
+
+  damage() {
+    if (this.health > 0) {
+      this.scene.cameras.main.flash(1000, 100, 0, 0, 0)
+      this.health--;
+    } else {
+      this.kill();
+    }
+  }
+
+  kill() {
+    if (this.isAlive) {
+      this.isAlive = false;
+      this.sprite.setVelocity(0);
+      this.flashlight.nearBeam.setColor(0xff0000);
+      this.flashlight.midBeam.setColor(0xff0000);
+      this.flashlight.farBeam.setColor(0xff0000);
+    }
   }
 }
