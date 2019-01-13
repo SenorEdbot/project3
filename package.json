@@ -27,7 +27,7 @@
     "easystarjs": "^0.4.3",
     "express": "^4.16.4",
     "http-errors": "^1.7.1",
-    "morgan": "^1.9.1",
-    "phaser-navmesh": "^2.0.4"
+    "mongoose": "^5.4.3",
+    "morgan": "^1.9.1"
   }
 }
