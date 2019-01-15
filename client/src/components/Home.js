@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import Game from './game'
+import React, { Component } from 'react';
+import Game from './game';
 
 export class Home extends Component {
   login() {
@@ -11,7 +11,9 @@ export class Home extends Component {
       <div>
         {
           isAuthenticated() && (
-            <Game />
+            <div>
+              <Game />
+            </div>
           )
         }
         {
