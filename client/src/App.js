@@ -51,6 +51,13 @@ class App extends Component {
                   </button>
                 )
             }
+            {
+              isAuthenticated() && (
+                <button onClick={this.goTo.bind(this, 'stats')}>
+                  Stats
+                </button>
+              )
+            }
       </div>
     );
   }
