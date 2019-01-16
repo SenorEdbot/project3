@@ -1,23 +1,64 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import Home from './components/Home'
-import Stats from './components/Stats'
-import Header from './components/layout/Header'
-
 import './App.css';
 
 class App extends Component {
+  goTo(route) {
+    this.props.history.replace(`/${route}`)
+  }
+
+  login() {
+    this.props.auth.login();
+  }
+
+  logout() {
+    this.props.auth.logout();
+  }
+
+  componentDidMount() {
+    const { renewSession } = this.props.auth;
+
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      renewSession();
+    }
+  }
+
   render() {
+    const { isAuthenticated } = this.props.auth;
+
     return (
-      <Router>
-        <div className="App">
-          <div className="container">
-            <Header />
-            <Route exact path="/" component={Home} />
-            <Route exact path="/stats" component={Stats} />
-          </div>
-        </div>
-      </Router>
+      <div>
+            <button onClick={this.goTo.bind(this, 'home')}>
+              Home
+            </button>
+            {
+              !isAuthenticated() && (
+                  <button onClick={this.login.bind(this)}>
+                    Log In
+                  </button>
+                )
+            }
+            {
+              isAuthenticated() && (
+                <button onClick={this.goTo.bind(this, 'profile')}>
+                  Profile
+                </button>
+              )
+            }
+            {
+              isAuthenticated() && (
+                  <button onClick={this.logout.bind(this)}>
+                    Log Out
+                  </button>
+                )
+            }
+            {
+              isAuthenticated() && (
+                <button onClick={this.goTo.bind(this, 'stats')}>
+                  Stats
+                </button>
+              )
+            }
+      </div>
     );
   }
 }
