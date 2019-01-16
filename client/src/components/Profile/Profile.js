@@ -13,10 +13,6 @@ class Profile extends Component {
     }
   }
 
-  componentDidMount() {
-    this.getUsers();
-  }
-
   render() {
     const { profile } = this.state;
     return (
