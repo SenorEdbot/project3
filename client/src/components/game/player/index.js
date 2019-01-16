@@ -2,8 +2,9 @@ import Phaser from 'phaser';
 import Pistol from '../weapons/Pistol';
 
 export default class Player {
-  constructor(scene) {
+  constructor(scene, username) {
     this.scene = scene;
+    this.username = username;
 
     this.sprite = scene.physics.add
     .sprite(1492, 1150, 'player')

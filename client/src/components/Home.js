@@ -5,6 +5,7 @@ export class Home extends Component {
   login() {
     this.props.auth.login();
   }
+
   render() {
     const { isAuthenticated } = this.props.auth;
     return (
@@ -12,7 +13,7 @@ export class Home extends Component {
         {
           isAuthenticated() && (
             <div>
-              <Game />
+              <Game auth={this.props.auth}/>
             </div>
           )
         }

@@ -5,7 +5,24 @@ import Purge from './modes/purge';
 import obstacles from './obstacles/obstacles.json';
 
 export default class Game extends Component {
+  state = {
+    username: '',
+    kills: 0
+  }
+
   componentDidMount() {
+    // Get user nickname from Auth0
+    const { userProfile, getProfile } = this.props.auth;
+
+    this.setState({ profile: {} });
+
+    if (!userProfile) {
+      getProfile((err, profile) => this.setState({ profile,  username: profile.nickname}));
+    } else {
+      this.setState({ profile: userProfile });
+    }
+
+    // Initialize the game
     this.game = new Phaser.Game({
       type: Phaser.AUTO,
       width: 1400,
@@ -21,6 +38,7 @@ export default class Game extends Component {
         preload: this.preload,
         create: this.create,
         update: this.update,
+        component: this
       }
     });
   }
@@ -39,20 +57,30 @@ export default class Game extends Component {
   }
 
   create() {
+    // React component (parent)
+    this.component = this.game.config.sceneConfig.component;
+
+
+    // Game vars
+    this.gameMode = new Purge(this);
+    this.player = new Player(this, this.component.state.username);
+    this.obstacles = this.physics.add.staticGroup();
+    this.zombies = this.physics.add.group();
+
+
+    // Map
     this.map = this.add
       .image(1336, 1210, 'map')
       .setDepth(-2)
       .setScale(2, 2)
       .setPipeline('Light2D');
 
+
+    // Phsyics
     this.physics.world.setBounds(0, 0, 1336 * 2, 1210 * 2);
-    this.lights.enable().setAmbientColor(0x010808);
+    this.physics.add.collider(this.obstacles, this.player.sprite);
+    this.physics.add.collider(this.zombies, this.player.sprite, () => this.player.damage());
 
-    this.obstacles = this.physics.add.staticGroup();
-    this.zombies = this.physics.add.group();
-
-    this.player = new Player(this);
-    this.gameMode = new Purge(this);
 
     // Obstacles
     const obs = this.obstacles;
@@ -61,46 +89,74 @@ export default class Game extends Component {
       obstacle.body.setSize(ob.w, ob.h);
     });
 
-    this.physics.add.collider(this.obstacles, this.player.sprite);
-    this.physics.add.collider(this.zombies, this.player.sprite, () => {
-      this.player.damage();
-    });
 
+    // Camera
     this.cameras.main
       .startFollow(this.player.sprite)
       .setLerp(0.08, 0.08)
       .setBounds(0, 0, 1336 * 2, 1210 * 2);
 
-    this.lights.addLight(1638, 1582, 200, 0xFFA233);
 
-    // ON-SCREEN TEXT
+    // Lighting
+    this.lights.addLight(1638, 1582, 200, 0xFFA233);
+    this.lights
+      .enable()
+      .setAmbientColor(0x010808);
+
+
+    // In-game text style
     let captionStyle = {
-      fill: '#fff',
+      fill: '#777',
       fontFamily: 'monospace',
-      lineSpacing: 4
+      lineSpacing: 4,
+      alignText: 'center'
     };
 
+    // In-game text format
     this.captionFormat = (
       'Health:    %1\n' +
       'Kills:     %2\n' +
       'Shots:     %3\n'
     );
-    this.caption = this.add.text(16, 16, '', captionStyle);
-    this.caption.setScrollFactor(0, 0);
-    this.caption.setDepth(999);
+
+    this.usernameTextFormat = (
+      '%1'
+    );
+
+    // In-game text: Stats
+    this.statsText = this.add
+      .text(16, 16, '', captionStyle)
+      .setScrollFactor(0, 0)
+      .setDepth(999);
+
+    // In-game text: Username
+    this.usernameText = this.add
+      .text(this.cameras.main.centerX + 50, this.cameras.main.centerY - 50, '', captionStyle)
+      .setScrollFactor(0, 0)
+      .setDepth(999)
+      .setText(Phaser.Utils.String.Format(this.usernameTextFormat, [
+        this.component.state.username
+      ]));
   }
 
   update() {
-    this.player.update();
+
     if (this.gameMode.started && this.gameMode.canUpdate) this.gameMode.update();
 
-    // UPDATE CAPTION TEXT
-    this.caption.setText(Phaser.Utils.String.Format(this.captionFormat, [
+    this.player.update();
+
+    // Update the stats text.
+    this.statsText.setText(Phaser.Utils.String.Format(this.captionFormat, [
       Math.floor(this.player.health / 10),
       this.player.kills,
       this.player.shots
     ]));
 
-    // console.log(this.input.activePointer.worldX, this.input.activePointer.worldY)
+    // Update username text if not set on create.
+    if (!this.usernameText.text) {
+      this.usernameText.setText(Phaser.Utils.String.Format(this.usernameTextFormat, [
+        this.component.state.username
+      ]));
+    }
   }
 }
