@@ -14,13 +14,13 @@ server.use(express.urlencoded({ extended: false }));
 
 // Mongoose Connection
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/midWaste";
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Routes
 const indexRouter = require('./routes/index');
-const tempRouter = require('./routes/temp');
+const apiRouter = require('./routes/api');
 server.use('/', indexRouter);
-server.use('/temp', tempRouter);
+server.use('/api', apiRouter);
 
 // Catch 404 and forward to error handler
 server.use((req, res, next) => next(createError(404)));
@@ -36,9 +36,6 @@ server.use(function(err, req, res) {
   // TODO: render an error page (server-side) if desired
 });
 
-// TODO: move this to a routes/api file
-// Testing the database creation
-// const db = require('./models')
 // let testObj = {
 //   name: "eddie",
 //   maxTimeSurvived: 7,
@@ -55,6 +52,5 @@ server.use(function(err, req, res) {
 //   historyAccuracy: [45, 21],
 //   friends: ['_10389382','_1038342'],
 // }
-// db.User.create(testObj)
 
 module.exports = server;
