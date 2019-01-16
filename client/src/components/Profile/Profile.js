@@ -12,13 +12,18 @@ class Profile extends Component {
       this.setState({ profile: userProfile });
     }
   }
+
+  componentDidMount() {
+    this.getUsers();
+  }
+
   render() {
     const { profile } = this.state;
     return (
       <div>
-        <h1>{profile.name} x</h1>
+        <h3>{profile.name}</h3>
         <img src={profile.picture} alt="profile"/>
-        <h3>{profile.nickname}</h3>
+        <h4>{profile.nickname}</h4>
       </div>
     );
   }
