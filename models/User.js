@@ -18,10 +18,6 @@ const UserSchema = new Schema({
     type: Number,
     required: false
   },
-  maxHealth: {
-    type: Number,
-    required: false
-  },
   maxShotsFired: {
     type: Number,
     required: false
@@ -39,10 +35,6 @@ const UserSchema = new Schema({
     required: false
   },
   historyEnemiesKilled: {
-    type: Array,
-    required: false
-  },
-  historyHealth: {
     type: Array,
     required: false
   },
