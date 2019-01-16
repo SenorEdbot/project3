@@ -4,10 +4,12 @@
   "description": "project 3",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "if-env NODE_ENV=production && yarn start:prod || yarn start:dev",
+    "start:prod": "npm run server",
     "start:dev": "concurrently \"npm run watch\" \"npm run client\"",
     "watch": "nodemon ./bin/www",
     "server": "node ./bin/www",
+    "heroku-postbuild": "cd client && yarn build",
     "client": "cd client && yarn start"
   },
   "repository": {
