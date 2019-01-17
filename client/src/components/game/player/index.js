@@ -2,11 +2,12 @@ import Phaser from 'phaser';
 import Pistol from '../weapons/Pistol';
 
 export default class Player {
-  constructor(scene) {
+  constructor(scene, username) {
     this.scene = scene;
+    this.username = username;
 
     this.sprite = scene.physics.add
-    .sprite(1492, 1150, 'player')
+    .sprite(1312, 412, 'player')
     .setCollideWorldBounds(true)
     .setPipeline('Light2D');
 
@@ -39,7 +40,7 @@ export default class Player {
     this.weapon = new Pistol(this.scene, this);
 
     this.kills = 0;
-    this.shots = 0;
+    this.shotsFired = 0;
   }
 
   update() {
@@ -133,6 +134,9 @@ export default class Player {
       this.flashlight.nearBeam.setColor(0xff0000);
       this.flashlight.midBeam.setColor(0xff0000);
       this.flashlight.farBeam.setColor(0xff0000);
+
+      // Save the player's stats
+      this.scene.component.save();
     }
   }
 }

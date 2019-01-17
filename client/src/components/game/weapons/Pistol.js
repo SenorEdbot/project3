@@ -47,7 +47,8 @@ export default class Pistol {
       // Limit spawned bullets for performance
       if (this.bullets.getChildren().length > 20) this.bullets.clear();
 
-      this.player.shots++;
+      this.player.shotsFired++;
+      this.scene.component.setState({ shotsFired: this.player.shotsFired });
 
       // Limit fire rate
       this.nextFire = this.scene.time.now + this.fireRate;
