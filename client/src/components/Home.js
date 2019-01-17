@@ -13,7 +13,7 @@ export class Home extends Component {
         {
           isAuthenticated() && (
             <div>
-              <Game auth={this.props.auth}/>
+              <Game auth={this.props.auth} getUser={this.props.getUser}/>
             </div>
           )
         }

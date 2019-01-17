@@ -31,7 +31,14 @@ const styles = theme => ({
 })
 class Stats extends Component {
   render() {
-    const { classes } = this.props
+    const { classes, user } = this.props
+
+    //----------------------------------------------------------------------------
+    // Note (remove later):
+    // User stats retrieved from db is available inside 'user' or 'this.props.user'
+    console.log('User stats', user)
+    //----------------------------------------------------------------------------
+
     return (
     <div className={classes.root}>
       <div className={classes.container}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Phaser from 'phaser';
+import API from '../utils/API';
 import Player from './player';
 import Purge from './modes/purge';
 import obstacles from './obstacles/obstacles.json';
@@ -7,21 +8,32 @@ import obstacles from './obstacles/obstacles.json';
 export default class Game extends Component {
   state = {
     username: '',
-    kills: 0
+    kills: 0,
+    shotsFired: 0,
+    playerData: [] // TODO: remove?
   }
 
-  componentDidMount() {
+  getUser = (user) => {
+    // TODO: refactor
+    this.props.getUser(user);
+  }
+
+  componentWillMount() {
     // Get user nickname from Auth0
     const { userProfile, getProfile } = this.props.auth;
 
     this.setState({ profile: {} });
 
     if (!userProfile) {
-      getProfile((err, profile) => this.setState({ profile,  username: profile.nickname}));
+      getProfile((err, profile) => this.setState({ profile, username: profile.nickname }));
     } else {
       this.setState({ profile: userProfile });
-    }
+      console.log('2', this.state)
 
+    }
+  }
+
+  componentDidMount() {
     // Initialize the game
     this.game = new Phaser.Game({
       type: Phaser.AUTO,
@@ -60,14 +72,6 @@ export default class Game extends Component {
     // React component (parent)
     this.component = this.game.config.sceneConfig.component;
 
-
-    // Game vars
-    this.gameMode = new Purge(this);
-    this.player = new Player(this, this.component.state.username);
-    this.obstacles = this.physics.add.staticGroup();
-    this.zombies = this.physics.add.group();
-
-
     // Map
     this.map = this.add
       .image(1336, 1210, 'map')
@@ -76,10 +80,12 @@ export default class Game extends Component {
       .setPipeline('Light2D');
 
 
-    // Phsyics
-    this.physics.world.setBounds(0, 0, 1336 * 2, 1210 * 2);
-    this.physics.add.collider(this.obstacles, this.player.sprite);
-    this.physics.add.collider(this.zombies, this.player.sprite, () => this.player.damage());
+    // Game variables
+    this.obstacles = this.physics.add.staticGroup();
+    this.zombies = this.physics.add.group();
+    this.player = new Player(this, this.component.state.username);
+    this.gameMode = new Purge(this);
+    this.userLoaded = false;
 
 
     // Obstacles
@@ -88,6 +94,12 @@ export default class Game extends Component {
       let obstacle = obs.create(ob.x, ob.y).setVisible(false);
       obstacle.body.setSize(ob.w, ob.h);
     });
+
+
+    // Phsyics
+    this.physics.world.setBounds(0, 0, 1336 * 2, 1210 * 2);
+    this.physics.add.collider(this.obstacles, this.player.sprite);
+    this.physics.add.collider(this.zombies, this.player.sprite, () => this.player.damage());
 
 
     // Camera
@@ -114,9 +126,10 @@ export default class Game extends Component {
 
     // In-game text format
     this.captionFormat = (
-      'Health:    %1\n' +
-      'Kills:     %2\n' +
-      'Shots:     %3\n'
+      'Health:      %1\n' +
+      'Kills:       %2\n' +
+      'Shots:       %3\n' +
+      'Difficulty:  %4\n'
     );
 
     this.usernameTextFormat = (
@@ -140,7 +153,6 @@ export default class Game extends Component {
   }
 
   update() {
-
     if (this.gameMode.started && this.gameMode.canUpdate) this.gameMode.update();
 
     this.player.update();
@@ -149,14 +161,38 @@ export default class Game extends Component {
     this.statsText.setText(Phaser.Utils.String.Format(this.captionFormat, [
       Math.floor(this.player.health / 10),
       this.player.kills,
-      this.player.shots
+      this.player.shotsFired,
+      this.gameMode.difficulty
     ]));
 
-    // Update username text if not set on create.
+    // Update username if not set on create.
     if (!this.usernameText.text) {
       this.usernameText.setText(Phaser.Utils.String.Format(this.usernameTextFormat, [
         this.component.state.username
       ]));
     }
+
+    if (this.component.state.username && !this.userLoaded) {
+      this.userLoaded = true;
+
+      API.getUserByUsername(this.component.state.username)
+      .then(res => {
+        this.component.setState({ playerData: res.data });
+        this.component.getUser(res.data); // TODO: refactor
+      })
+      .catch(err => console.log(err));
+    }
+  }
+
+  save() {
+    const { username, kills, shotsFired } = this.state;
+    API.saveUserStats(username, {
+      name: username,
+      historyShotsFired: shotsFired,
+      historyEnemiesKilled: kills
+      // TODO: save more stats
+    })
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
   }
 }
