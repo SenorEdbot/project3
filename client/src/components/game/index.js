@@ -28,8 +28,9 @@ export default class Game extends Component {
       getProfile((err, profile) => this.setState({ profile, username: profile.nickname }));
     } else {
       this.setState({ profile: userProfile });
-      console.log('2', this.state)
 
+      // FIXME: issue here when mounting again, player cannot move.
+      console.log('/game/index.js/componentWillMount()');
     }
   }
 
@@ -100,6 +101,7 @@ export default class Game extends Component {
     this.physics.world.setBounds(0, 0, 1336 * 2, 1210 * 2);
     this.physics.add.collider(this.obstacles, this.player.sprite);
     this.physics.add.collider(this.zombies, this.player.sprite, () => this.player.damage());
+    this.physics.add.collider(this.zombies);
 
 
     // Camera

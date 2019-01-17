@@ -8,7 +8,7 @@ export default class Purge {
     this.scene = scene;
     this.started = false;
     this.canUpdate = false;
-    this.difficulty = Math.floor(Math.random() * 5) + 1;
+    this.difficulty = Math.floor(Math.random() * (8 - 4) + 4);
     this.enemies = [];
     this.trigger = { x: 1443, y: 496 };
     this.triggerRange = 150;
@@ -91,7 +91,7 @@ export default class Purge {
     this.canTrigger = (distX < range && distY < range) ? true : false;
 
     // Trigger text
-    let text = (this.canTrigger) ? 'Press \'E\' to search' : '';
+    let text = (this.canTrigger && !this.started) ? 'Press \'E\' to search' : '';
     this.triggerText.setText(text);
   }
 
