@@ -7,7 +7,7 @@ export default class Player {
     this.username = username;
 
     this.sprite = scene.physics.add
-    .sprite(1312, 412, 'player')
+    .sprite(1138, 493, 'player')
     .setCollideWorldBounds(true)
     .setPipeline('Light2D');
 

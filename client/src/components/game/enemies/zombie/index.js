@@ -19,7 +19,7 @@ export default class Zombie {
     // Store the onHit function on the sprite for ease of access.
     this.sprite.onHit = player => this.onHit(player);
 
-    this.target = this.scene.gameMode.startTrigger;
+    this.target = this.scene.gameMode.trigger;
   }
 
   update() {

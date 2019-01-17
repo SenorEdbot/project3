@@ -153,7 +153,7 @@ export default class Game extends Component {
   }
 
   update() {
-    if (this.gameMode.started && this.gameMode.canUpdate) this.gameMode.update();
+    this.gameMode.update();
 
     this.player.update();
 

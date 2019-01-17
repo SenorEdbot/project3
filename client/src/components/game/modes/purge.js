@@ -1,3 +1,6 @@
+// TODO: refactor
+
+import Phaser from 'phaser';
 import Zombie from '../enemies/zombie';
 
 export default class Purge {
@@ -5,28 +8,31 @@ export default class Purge {
     this.scene = scene;
     this.started = false;
     this.canUpdate = false;
-    this.difficulty = Math.floor(Math.random() + 1) * 5;
+    this.difficulty = Math.floor(Math.random() * 5) + 1;
     this.enemies = [];
-    this.startTrigger = {
-      x: 1412,
-      y: 412,
-    }
+    this.trigger = { x: 1443, y: 496 };
+    this.triggerRange = 150;
+    this.canTrigger = false;
     this.lightsOn = false;
+
+    this.graphics = this.scene.add.graphics();
+    this.graphics
+      .lineStyle(4, 0x00b220, 1)
+      .beginPath()
+      .arc(this.trigger.x, this.trigger.y, this.triggerRange, Phaser.Math.DegToRad(0), Phaser.Math.DegToRad(360), true)
+      .strokePath()
+      .setDepth(-1);
+
+    this.triggerText = this.scene.add
+      .text(this.scene.cameras.main.centerX - 50, 16, '', {fill: '#00b220', fontFamily: 'monospace',})
+      .setScrollFactor(0, 0)
+      .setDepth(999);
 
     this.player = this.scene.player;
 
+    // Trigger game start
     this.scene.input.keyboard.on('keydown', event => {
-      if (event.code === 'KeyE' && this.started === false) {
-
-        let distX = Math.abs(this.player.sprite.x - this.startTrigger.x);
-        let distY = Math.abs(this.player.sprite.y - this.startTrigger.y);
-        let range = 60;
-
-        // Check if player is in range of trigger
-        if (distX < range && distY < range) {
-          this.start();
-        }
-      }
+      if (event.code === 'KeyE' && !this.started && this.canTrigger) this.start();
 
       this.flashLights = null;
     });
@@ -36,6 +42,7 @@ export default class Purge {
     console.log('Starting game mode [Purge]');
 
     this.started = true;
+    this.graphics.clear();
 
     setTimeout(() => {
       for (let i = 0; i < this.difficulty * 100; i++) {
@@ -71,9 +78,21 @@ export default class Purge {
   }
 
   update() {
-    this.enemies.forEach(e => e.update());
+    if (this.started && this.canUpdate) {
+      this.enemies.forEach(e => e.update());
 
-    if (this.scene.zombies.getChildren().length < this.difficulty * 100) this.addZombie();
+      if (this.scene.zombies.getChildren().length < this.difficulty * 100) this.addZombie();
+    }
+
+    // Check if player is in range of trigger
+    let distX = Math.abs(this.player.sprite.x - this.trigger.x);
+    let distY = Math.abs(this.player.sprite.y - this.trigger.y);
+    let range = this.triggerRange;
+    this.canTrigger = (distX < range && distY < range) ? true : false;
+
+    // Trigger text
+    let text = (this.canTrigger) ? 'Press \'E\' to search' : '';
+    this.triggerText.setText(text);
   }
 
   addZombie() {
