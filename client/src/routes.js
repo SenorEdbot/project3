@@ -2,13 +2,14 @@ import React from 'react';
 import { Redirect, Route, Router } from 'react-router-dom';
 import App from './App';
 import Home from './components/Home';
-import Stats from './components/Stats';
+import Stats from './components/Stats/Stats';
 import Profile from './components/Profile/Profile';
 import Callback from './Callback/Callback';
 import Auth from './Auth/Auth';
 import history from './history';
 
 const auth = new Auth();
+let currentUser = null;
 
 const handleAuthentication = ({location}) => {
   if (/access_token|id_token|error/.test(location.hash)) {
@@ -16,13 +17,19 @@ const handleAuthentication = ({location}) => {
   }
 }
 
+const getUser = (user) => {
+  // TODO: refactor
+  console.log(`Data retrieved for: ${user.name}`, user);
+  currentUser = user;
+}
+
 export const makeMainRoutes = () => {
   return (
       <Router history={history}>
         <div>
           <Route path="/" render={(props) => <App auth={auth} {...props} />} />
-          <Route path="/home" render={(props) => <Home auth={auth} {...props} />} />
-          <Route path="/stats" render={(props) => <Stats auth={auth} {...props} />} />
+          <Route path="/home" render={(props) => <Home auth={auth} getUser={getUser} {...props} />} />
+          <Route path="/stats" render={(props) => <Stats auth={auth} user={currentUser} {...props} />} />
           <Route path="/profile" render={(props) => (
             !auth.isAuthenticated() ? (
               <Redirect to="/home"/>
