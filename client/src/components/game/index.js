@@ -8,9 +8,13 @@ import obstacles from './obstacles/obstacles.json';
 export default class Game extends Component {
   state = {
     username: '',
-    kills: 0,
+    timeSurvived: 0,
+    difficulty: 0,
+    enemiesKilled: 0,
+    health: 0,
     shotsFired: 0,
-    playerData: [] // TODO: remove?
+    accuracy: 0,
+    previousStats: {}
   }
 
   getUser = (user) => {
@@ -187,12 +191,16 @@ export default class Game extends Component {
   }
 
   save() {
-    const { username, kills, shotsFired } = this.state;
+    const { username, timeSurvived, difficulty, enemiesKilled, health, shotsFired, accuracy } = this.state;
+
     API.saveUserStats(username, {
       name: username,
-      historyShotsFired: shotsFired,
-      historyEnemiesKilled: kills
-      // TODO: save more stats
+      timeSurvived,
+      difficulty,
+      enemiesKilled,
+      health,
+      shotsFired,
+      accuracy
     })
     .then(res => console.log(res))
     .catch(err => console.log(err));

@@ -49,7 +49,7 @@ export default class Zombie {
       this.isAlive = false;
       this.sprite.destroy(true);
       player.kills++;
-      this.scene.component.setState({ kills: player.kills });
+      this.scene.component.setState({ enemiesKilled: player.kills });
     }
   }
 
