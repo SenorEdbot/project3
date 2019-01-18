@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route, Router } from 'react-router-dom';
 import App from './App';
 import Home from './components/Home';
-import Stats from './components/Stats';
+import Stats from './components/Stats/Stats';
 import Profile from './components/Profile/Profile';
 import Callback from './Callback/Callback';
 import Auth from './Auth/Auth';

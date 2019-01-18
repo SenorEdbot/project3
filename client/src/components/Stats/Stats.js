@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
+import UserStats from './UserStats'
+import StatsBreakdown from './StatsBreakdown'
+import AddFriends from './AddFriends'
+import FriendOneComp from './FriendOneComp'
+import FriendTwoComp from './FriendTwoComp'
 
 const styles = theme => ({
   root: {
@@ -13,20 +18,6 @@ const styles = theme => ({
     background: "#424242",
     margin: "0 auto",
     width: "80%"
-  },
-  title: {
-    color: "#383722",
-    textAlign: 'center',
-    padding: theme.spacing.unit * 2,
-  },
-  stats: {
-    color: "#440202",
-    textAlign: "center",
-    padding: theme.spacing.unit * 2,
-  },
-  friends: {
-    color: "#222281",
-    padding: theme.spacing.unit * 2
   }
 })
 class Stats extends Component {
@@ -50,21 +41,11 @@ class Stats extends Component {
           justify="center"
           alignItems="center"
         >
-          <Grid item xs={12}>
-            <Paper className={classes.title}>Hello World</Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper className={classes.stats}>Stats Breakdown</Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper className={classes.friends}>Add Friends</Paper>
-          </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.friends}>Add Friends</Paper>
-          </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.friends}>Add Friends</Paper>
-          </Grid>
+          <UserStats />
+          <StatsBreakdown />
+          <AddFriends />
+          <FriendOneComp />
+          <FriendTwoComp />
         </Grid>
       </div>
     </div>
