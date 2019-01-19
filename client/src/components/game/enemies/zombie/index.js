@@ -19,7 +19,7 @@ export default class Zombie {
     // Store the onHit function on the sprite for ease of access.
     this.sprite.onHit = player => this.onHit(player);
 
-    this.target = this.scene.gameMode.startTrigger;
+    this.target = this.scene.gameMode.trigger;
   }
 
   update() {
@@ -49,17 +49,33 @@ export default class Zombie {
       this.isAlive = false;
       this.sprite.destroy(true);
       player.kills++;
-      this.scene.component.setState({ kills: player.kills });
+      this.scene.component.setState({ enemiesKilled: player.kills });
     }
   }
 
   getRandomSpawnPoint = () => {
+    const player = this.scene.player.sprite;
+
+    // Limits
     const min = 0
     const maxW = Math.floor(this.scene.physics.world.bounds.width);
-    const maxH = Math.floor(this.scene.physics.world.bounds.width);
-    return {
-      x: Math.floor(Math.random() * (maxW - min + 1)) + min,
-      y: Math.floor(Math.random() * (maxH - min + 1)) + min
+    const maxH = Math.floor(this.scene.physics.world.bounds.height);
+
+    // Get random x, y
+    let x = Math.floor(Math.random() * (maxW - min + 1)) + min;
+    let y = Math.floor(Math.random() * (maxH - min + 1)) + min;
+
+
+    let redo = () => {
+      x = Math.floor(Math.random() * (maxW - min + 1)) + min;
+      y = Math.floor(Math.random() * (maxW - min + 1)) + min;
+      check();
     }
+
+    let check = () => {
+      if (Math.abs(x - player.x < 250 || y - player.y < 250)) redo();
+    }
+
+    return { x, y };
   }
 }

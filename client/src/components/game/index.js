@@ -8,9 +8,13 @@ import obstacles from './obstacles/obstacles.json';
 export default class Game extends Component {
   state = {
     username: '',
-    kills: 0,
+    timeSurvived: 0,
+    difficulty: 0,
+    enemiesKilled: 0,
+    health: 0,
     shotsFired: 0,
-    playerData: [] // TODO: remove?
+    accuracy: 0,
+    previousStats: {}
   }
 
   getUser = (user) => {
@@ -28,8 +32,9 @@ export default class Game extends Component {
       getProfile((err, profile) => this.setState({ profile, username: profile.nickname }));
     } else {
       this.setState({ profile: userProfile });
-      console.log('2', this.state)
 
+      // FIXME: issue here when mounting again, player cannot move.
+      console.log('/game/index.js/componentWillMount()');
     }
   }
 
@@ -100,6 +105,7 @@ export default class Game extends Component {
     this.physics.world.setBounds(0, 0, 1336 * 2, 1210 * 2);
     this.physics.add.collider(this.obstacles, this.player.sprite);
     this.physics.add.collider(this.zombies, this.player.sprite, () => this.player.damage());
+    this.physics.add.collider(this.zombies);
 
 
     // Camera
@@ -153,7 +159,7 @@ export default class Game extends Component {
   }
 
   update() {
-    if (this.gameMode.started && this.gameMode.canUpdate) this.gameMode.update();
+    this.gameMode.update();
 
     this.player.update();
 
@@ -185,12 +191,14 @@ export default class Game extends Component {
   }
 
   save() {
-    const { username, kills, shotsFired } = this.state;
+    const { username, timeSurvived, difficulty, enemiesKilled, health, shotsFired, accuracy } = this.state;
+
     API.saveUserStats(username, {
-      name: username,
-      historyShotsFired: shotsFired,
-      historyEnemiesKilled: kills
-      // TODO: save more stats
+    maxTimeSurvived: timeSurvived,
+     maxDifficulty: difficulty,
+     maxEnemiesKilled: enemiesKilled,
+     maxShotsFired: shotsFired,
+     maxAccuracy: accuracy
     })
     .then(res => console.log(res))
     .catch(err => console.log(err));
