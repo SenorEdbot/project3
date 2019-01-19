@@ -20,7 +20,9 @@ const styles = theme => ({
 })
 
 function StatsBreakdown(props) {
-  const { classes, user } = props
+  const { classes, profile, user } = props
+  console.log({ user },{ profile })
+  
   return (
     <Grid item xs={12}>
       <Paper className={classes.stats}>

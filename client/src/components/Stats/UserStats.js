@@ -1,8 +1,8 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import Avatar from '@material-ui/core/Avatar'
 import Paper from '@material-ui/core/Paper'
+import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
 import ButtonBase from '@material-ui/core/ButtonBase'
 
@@ -16,9 +16,9 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2,
   },
   bigAvatar: {
-    margin: 10,
-    width: 60,
-    height: 60,
+    width: 128,
+    height: 128,
+    borderRadius: 0
   },
   paper: {
     padding: theme.spacing.unit * 2,
@@ -44,7 +44,7 @@ function UserStats(props) {
       <Grid container spacing={16}>
         <Grid item>
           <ButtonBase className={classes.image}>
-            <Avatar alt={profile.name} src={profile.picture} className={classes.bigAvatar} />
+          <Avatar alt="profile picture" src={profile.picture} className={classes.bigAvatar} />
           </ButtonBase>
         </Grid>
         <Grid item xs={12} sm container>
