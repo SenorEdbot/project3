@@ -16,7 +16,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 
 // Mongoose Connection
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/midWaste";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1/midWaste";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Routes

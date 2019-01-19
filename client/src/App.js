@@ -26,7 +26,8 @@ class App extends Component {
     const { isAuthenticated } = this.props.auth;
 
     return (
-      <div>
+      <div id="appPage">
+        <div id="container">
             <button onClick={this.goTo.bind(this, 'home')}>
               Home
             </button>
@@ -58,6 +59,7 @@ class App extends Component {
                 </button>
               )
             }
+            </div>
       </div>
     );
   }

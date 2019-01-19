@@ -1,3 +1,9 @@
 body {
   background-color: #131313;
 }
+#appPage {
+  margin-top: 50px;
+}
+text {
+  color: whitesmoke;
+}
