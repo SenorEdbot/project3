@@ -1,5 +1,5 @@
 export const AUTH_CONFIG = {
-  domain: 'midwaste.auth0.com',
-  clientId: '2o5Whwo8daNgkGgpGT17ZOxUOOIMNgS6',
-  callbackUrl: 'http://localhost:3000/callback'
+  domain: process.env.REACT_APP_AUTH_DOMAIN,
+  clientId: process.env.REACT_APP_AUTH_CLIENT_ID,
+  callbackUrl: (process.env.NODE_ENV === 'production') ? process.env.REACT_APP_AUTH_CALLBACKURL : 'http://localhost:3000/callback'
 }
