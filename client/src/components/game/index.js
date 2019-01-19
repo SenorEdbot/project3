@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Phaser from 'phaser';
-import API from '../utils/API';
+import API from '../../utils/API';
 import Player from './player';
 import Purge from './modes/purge';
 import obstacles from './obstacles/obstacles.json';
@@ -192,16 +192,16 @@ export default class Game extends Component {
 
   save() {
     const { username, timeSurvived, difficulty, enemiesKilled, health, shotsFired, accuracy } = this.state;
-
-    API.saveUserStats(username, {
+    const statsObject = {
       name: username,
-      timeSurvived,
-      difficulty,
-      enemiesKilled,
-      health,
-      shotsFired,
-      accuracy
-    })
+      maxTimeSurvived: timeSurvived,
+      maxDifficulty: difficulty,
+      maxEnemiesKilled: enemiesKilled,
+      maxShotsFired: shotsFired,
+      maxAccuracy: accuracy
+    }
+
+    API.saveUserStats(username, statsObject)
     .then(res => console.log(res))
     .catch(err => console.log(err));
   }
