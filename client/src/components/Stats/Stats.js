@@ -49,6 +49,7 @@ class Stats extends Component {
 
   render() {
     const { classes, user } = this.props
+    const { profile } = this.state
     //----------------------------------------------------------------------------
     // TODO: (remove later):
     // User stats retrieved from db is available inside 'user' or 'this.props.user'
@@ -69,9 +70,10 @@ class Stats extends Component {
             <Paper className={classes.stats}>{this.state.profile.name}</Paper>
           </Grid> */}
           <UserStats
-            profile={this.state.profile}
+            profile={profile}
             user={user} />
           <StatsBreakdown
+            profile={profile}
             user={user} />
           <AddFriends />
           <FriendOneComp />
