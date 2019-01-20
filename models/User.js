@@ -26,6 +26,26 @@ const UserSchema = new Schema({
     type: Number,
     required: false
   },
+  recentTimeSurvived: {
+    type: Number,
+    required: false
+  },
+  recentDifficulty: {
+    type: Number,
+    required: false
+  },
+  recentEnemiesKilled: {
+    type: Number,
+    required: false
+  },
+  recentShotsFired: {
+    type: Number,
+    required: false
+  },
+  recentAccuracy: {
+    type: Number,
+    required: false
+  },
   historyTimeSurvived: {
     type: Array,
     required: false
