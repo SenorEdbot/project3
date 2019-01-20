@@ -4,13 +4,12 @@
   "description": "project 3",
   "main": "server.js",
   "scripts": {
-    "start": "if-env NODE_ENV=production && yarn start:prod || yarn start:dev",
-    "start:prod": "npm run server",
-    "start:dev": "concurrently \"npm run watch\" \"npm run client\"",
-    "watch": "nodemon ./bin/www",
-    "server": "node ./bin/www",
-    "heroku-postbuild": "cd client && yarn install && yarn build",
-    "client": "cd client && yarn start"
+    "client-install": "npm install --prefix client",
+    "start": "node ./bin/www",
+    "server": "nodemon ./bin/www",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
