@@ -133,4 +133,8 @@ export default class Gun {
   update() {
     this.drawAmmoDisplay();
   }
+
+  kill() {
+    this.ammoDisplay.clear();
+  }
 }
