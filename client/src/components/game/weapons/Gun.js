@@ -17,8 +17,9 @@ export default class Gun {
     this.velocity = 2500;
 
     // Reload
-    this.clip = 30;
-    this.reloadTime = 2000;
+    this.magSize = 30;
+    this.clip = this.magSize;
+    this.reloadTime = 1000;
     this.isReloading = false;
     this.reloadInterval = null;
 
@@ -32,10 +33,11 @@ export default class Gun {
 
     // Graphics
     this.graphics = this.scene.add.graphics();
+    this.ammoDisplay = this.scene.add.graphics();
   }
 
   fire(callback) {
-    if (this.scene.time.now > this.nextFire && this.clip > 0) {
+    if (this.scene.time.now > this.nextFire && this.clip > 0 && !this.isReloading) {
 
       let camera = this.scene.cameras.main;
       let pointer = this.scene.input.activePointer;
@@ -66,16 +68,21 @@ export default class Gun {
 
     } else if (this.clip === 0 && !this.isReloading) {
 
-      // Start reloading
-      this.isReloading = true;
+      // Auto reload if holding fire button down
       this.reload();
-
-      // Start reload timeout
-      setTimeout(() => this.stopReloading(), this.reloadTime)
     }
   }
 
   reload() {
+    if (!this.isReloading) {
+      this.startReloading();
+      setTimeout(() => this.stopReloading(), this.reloadTime);
+    }
+  }
+
+  startReloading() {
+    this.isReloading = true;
+
     let tick = 0;
     let intervalLen = 10; // lower = smoother anim
     let deg = 360 / (this.reloadTime / intervalLen); // determine segments
@@ -86,7 +93,7 @@ export default class Gun {
       this.graphics
         .lineStyle(4, 0x00b220, 1)
         .beginPath()
-        .arc(this.owner.sprite.x, this.owner.sprite.y, 33, Phaser.Math.DegToRad(0), Phaser.Math.DegToRad(tick * deg), true)
+        .arc(this.owner.sprite.x, this.owner.sprite.y, 25, Phaser.Math.DegToRad(0), Phaser.Math.DegToRad(tick * deg), true)
         .strokePath()
         .setDepth(-1);
 
@@ -95,7 +102,7 @@ export default class Gun {
   }
 
   stopReloading() {
-    this.clip = 30;
+    this.clip = this.magSize;
     this.isReloading = false;
     clearInterval(this.reloadInterval);
     this.graphics.clear();
@@ -104,5 +111,26 @@ export default class Gun {
   resetNextFire() {
     // This lets players ignore fire-rate and spam the fire button.
     this.nextFire = this.scene.time.now;
+  }
+
+  drawAmmoDisplay() {
+    let startAngle = 210;
+    let endAngle = 150;
+    let cell = (startAngle - endAngle) / this.magSize;  // The "size" of one bullet in the bar
+    let difference = this.magSize - this.clip;          // Number of cells to remove
+
+    let color = (this.clip / this.magSize >= 0.33) ? 0x00b220 : 0xf23c13;
+
+    this.ammoDisplay.clear();
+    this.ammoDisplay
+    .lineStyle(4, color, 1)
+    .beginPath()
+    .arc(this.owner.sprite.x, this.owner.sprite.y, 60, Phaser.Math.DegToRad(startAngle - (cell * difference)), Phaser.Math.DegToRad(endAngle), true)
+    .strokePath()
+    .setDepth(-1);
+  }
+
+  update() {
+    this.drawAmmoDisplay();
   }
 }
