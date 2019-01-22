@@ -49,12 +49,17 @@ export default class Player {
     this.addMovementInput();
     this.addRotationInput();
     this.updateFlashlight();
+    this.weapon.update();
 
+    // Active pointer down
     if (this.scene.input.activePointer.isDown) {
       this.weapon.fire(() => this.onShoot());
     } else {
       this.weapon.resetNextFire();
     }
+
+    // Reload
+    if (this.R.isDown) this.weapon.reload();
   }
 
   onShoot() {
