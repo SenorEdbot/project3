@@ -28,7 +28,8 @@ export default class Player {
     this.walkSpeed = 120;
     this.sprintSpeed = 240;
 
-    this.health = 1000;
+    this.maxHealth = 1000;
+    this.health = this.maxHealth;
     this.isAlive = true;
 
     this.flashlight = {
@@ -41,6 +42,8 @@ export default class Player {
 
     this.kills = 0;
     this.shotsFired = 0;
+
+    this.healthDisplay = this.scene.add.graphics();
   }
 
   update() {
@@ -49,6 +52,7 @@ export default class Player {
     this.addMovementInput();
     this.addRotationInput();
     this.updateFlashlight();
+    this.drawHealthDisplay();
     this.weapon.update();
 
     // Active pointer down
@@ -60,6 +64,25 @@ export default class Player {
 
     // Reload
     if (this.R.isDown) this.weapon.reload();
+  }
+
+  drawHealthDisplay() {
+    this.healthDisplay.clear();
+
+    let startAngle = 30;
+    let endAngle = -30;
+    let cell = (startAngle - endAngle) / this.maxHealth;  // The "size" of one bullet in the bar
+    let difference = this.maxHealth - this.health;          // Number of cells to remove
+
+    let color = (this.health / this.maxHealth >= 0.33) ? 0x00b220 : 0xf23c13;
+
+    this.healthDisplay.clear();
+    this.healthDisplay
+    .lineStyle(4, color, 1)
+    .beginPath()
+    .arc(this.sprite.x, this.sprite.y, 60, Phaser.Math.DegToRad(startAngle), Phaser.Math.DegToRad(endAngle + (cell * difference)), true)
+    .strokePath()
+    .setDepth(-1);
   }
 
   onShoot() {
@@ -147,6 +170,10 @@ export default class Player {
 
       // Save the player's stats
       this.scene.component.save();
+
+      // Remove graphics
+      this.healthDisplay.clear();
+      this.weapon.kill(); // Clears ammo display
     }
   }
 }
