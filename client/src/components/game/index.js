@@ -192,7 +192,7 @@ export default class Game extends Component {
   }
 
   save() {
-    const { username, timeSurvived, difficulty, enemiesKilled, health, shotsFired, accuracy } = this.state;
+    const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy } = this.state;
     const statsObject = {
       name: username,
       maxTimeSurvived: timeSurvived,

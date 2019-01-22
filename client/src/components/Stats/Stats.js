@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
+import userServices from '../../services/userServices'
 import { withStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
-import Avatar from '@material-ui/core/Avatar';
 import UserStats from './UserStats'
 import StatsBreakdown from './StatsBreakdown'
 import AddFriends from './AddFriends'
@@ -34,7 +33,8 @@ const styles = theme => ({
 })
 class Stats extends Component {
   state = {
-    profile: {}
+    profile: {},
+    allUsers: []
   }
   componentWillMount() {
     const { userProfile, getProfile } = this.props.auth
@@ -47,13 +47,20 @@ class Stats extends Component {
     }
   }
 
+  componentDidMount() {
+    userServices.getAllUsers()
+      .then(allUsers => this.setState({ allUsers: allUsers.data }))
+      .catch(err => console.log(err))
+  }
+
   render() {
     const { classes, user } = this.props
-    const { profile } = this.state
+    const { profile, allUsers } = this.state
     //----------------------------------------------------------------------------
     // TODO: (remove later):
     // User stats retrieved from db is available inside 'user' or 'this.props.user'
     console.log({ user })
+    console.log(this.state.allUsers)
     //----------------------------------------------------------------------------
 
     return (
@@ -75,7 +82,8 @@ class Stats extends Component {
           <StatsBreakdown
             profile={profile}
             user={user} />
-          <AddFriends />
+          <AddFriends
+            allUsers={allUsers} />
           <FriendOneComp />
           <FriendTwoComp />
         </Grid>
