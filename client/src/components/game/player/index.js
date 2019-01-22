@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import Pistol from '../weapons/Pistol';
+import Gun from '../weapons/Gun';
 
 export default class Player {
   constructor(scene, username) {
@@ -37,7 +37,7 @@ export default class Player {
      farBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 250).setIntensity(.5)
     }
 
-    this.weapon = new Pistol(this.scene, this);
+    this.weapon = new Gun(this.scene, this);
 
     this.kills = 0;
     this.shotsFired = 0;
@@ -51,10 +51,15 @@ export default class Player {
     this.updateFlashlight();
 
     if (this.scene.input.activePointer.isDown) {
-      this.weapon.fire();
+      this.weapon.fire(() => this.onShoot());
     } else {
       this.weapon.resetNextFire();
     }
+  }
+
+  onShoot() {
+    this.shotsFired++;
+    this.scene.component.setState({ shotsFired: this.shotsFired });
   }
 
   addMovementInput() {

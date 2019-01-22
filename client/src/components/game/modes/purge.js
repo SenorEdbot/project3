@@ -8,7 +8,7 @@ export default class Purge {
     this.scene = scene;
     this.started = false;
     this.canUpdate = false;
-    this.difficulty = Math.floor(Math.random() * (8 - 4) + 4);
+    this.difficulty = Math.floor(Math.random() * (5 - 2) + 2);
     this.enemies = [];
     this.trigger = { x: 1443, y: 496 };
     this.triggerRange = 150;
