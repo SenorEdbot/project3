@@ -34,6 +34,9 @@ export default class Gun {
     // Graphics
     this.graphics = this.scene.add.graphics();
     this.ammoDisplay = this.scene.add.graphics();
+
+    //Effects
+    this.cameraShakeIntensity = 0.002;
   }
 
   fire(callback) {
@@ -62,7 +65,7 @@ export default class Gun {
       this.graphics.clear();
 
       // Effects
-      camera.shake(100, 0.002);
+      camera.shake(100, this.cameraShakeIntensity);
 
       if (callback) callback();
 
