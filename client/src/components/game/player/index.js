@@ -42,6 +42,7 @@ export default class Player {
 
     this.kills = 0;
     this.shotsFired = 0;
+    this.accuracy = 0;    // #kills/#shotsFired
 
     this.healthDisplay = this.scene.add.graphics();
   }
@@ -71,7 +72,7 @@ export default class Player {
 
     let startAngle = 30;
     let endAngle = -30;
-    let cell = (startAngle - endAngle) / this.maxHealth;  // The "size" of one bullet in the bar
+    let cell = (startAngle - endAngle) / this.maxHealth;    // The "size" of one bullet in the bar
     let difference = this.maxHealth - this.health;          // Number of cells to remove
 
     let color = (this.health / this.maxHealth >= 0.33) ? 0x00b220 : 0xf23c13;
@@ -86,8 +87,10 @@ export default class Player {
   }
 
   onShoot() {
+    const accuracy = Math.floor((this.kills / this.shotsFired) * 100) || 0;
+
     this.shotsFired++;
-    this.scene.component.setState({ shotsFired: this.shotsFired });
+    this.scene.component.setState({ shotsFired: this.shotsFired, accuracy });
   }
 
   addMovementInput() {

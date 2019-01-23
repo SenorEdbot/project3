@@ -14,6 +14,8 @@ export default class Purge {
     this.triggerRange = 150;
     this.canTrigger = false;
     this.lightsOn = false;
+    this.timeSurvived = 0;
+    this.nextUpdate = 0;
 
     this.graphics = this.scene.add.graphics();
     this.graphics
@@ -36,6 +38,8 @@ export default class Purge {
 
       this.flashLights = null;
     });
+
+    this.scene.component.setState({ difficulty: this.difficulty });
   }
 
   start() {
@@ -82,6 +86,12 @@ export default class Purge {
       this.enemies.forEach(e => e.update());
 
       if (this.scene.zombies.getChildren().length < this.difficulty * 100) this.addZombie();
+
+      if(this.player.isAlive && this.scene.time.now > this.nextUpdate) {
+        this.nextUpdate = this.scene.time.now + 1000; // 1 second
+        this.timeSurvived++;
+        this.scene.component.setState({ timeSurvived: this.timeSurvived });
+      }
     }
 
     // Check if player is in range of trigger
