@@ -1,0 +1,122 @@
+import Phaser from 'phaser';
+import Zombie from '../enemies/zombie';
+
+export default class GameMode {
+  constructor(scene) {
+    // Phaser scene
+    this.scene = scene;
+
+    // Player
+    this.player = this.scene.player;
+
+    // GameMode
+    this.name = 'Default';
+    this.started = false;
+    this.canUpdate = false;
+    this.nextUpdate = 0;
+    this.timeSurvived = 0;
+
+    // Difficulty
+    this.difficulty = this.randomIntInRange(2, 5);
+
+    // Enemies
+    this.enemies = [];
+
+    // Game start trigger
+    this.trigger = { x: 0, y: 0 };
+    this.triggerKey = 'KeyE';
+    this.triggerColor = '#00b220';
+    this.triggerRange = 150;
+    this.triggerText = 'Press \'E\' to start';
+    this.startDelay = 7000;
+    this.canTrigger = false;
+
+    // On-screen trigger text
+    const triggerCaptionStyle = {
+      fill: this.triggerColor,
+      fontFamily: 'monospace'
+    }
+    this.triggerCaption = this.scene.add
+      .text(this.scene.cameras.main.centerX - 50, 16, '', triggerCaptionStyle)
+      .setScrollFactor(0, 0)      // Fix the text to the screen
+      .setDepth(999);             // Keep text on top-most layer
+
+    // Graphics
+    this.graphics = this.scene.add.graphics();
+
+    // Trigger game start
+    this.scene.input.keyboard.on('keydown', event => {
+      if (event.code === this.triggerKey && !this.started && this.canTrigger) {
+        this.start();
+      }
+    });
+
+    // Update game component state
+    this.scene.component.setState({ difficulty: this.difficulty });
+  }
+
+  createGraphics() {
+    this.graphics
+      .lineStyle(4, 0x00b220, 1)  // thickness, color, alpha
+      .beginPath()
+      .arc(this.trigger.x, this.trigger.y, this.triggerRange, Phaser.Math.DegToRad(0), Phaser.Math.DegToRad(360), true)
+      .strokePath()
+      .setDepth(-1);
+  }
+
+  start() {
+    this.started = true;
+    this.graphics.clear();
+
+    setTimeout(() => {
+      for (let i = 0; i < this.difficulty * 100; i++) {
+        let enemy = new Zombie(this.scene);
+        this.enemies.push(enemy)
+        this.scene.zombies.add(enemy.sprite);
+      }
+
+      // Collision: Zombies & Obstacles
+      this.scene.physics.add.collider(this.scene.zombies, this.scene.obstacles);
+
+      // Let the gamemode start updating
+      this.canUpdate = true;
+    }, this.startDelay);
+  }
+
+  update() {
+    if (this.started && this.canUpdate) {
+      this.enemies.forEach(enemy => enemy.update());
+
+      // If total enemies alive is less than { condition } spawn another enemy.
+      if (this.scene.zombies.getChildren().length < this.difficulty * 100) this.addEnemy();
+
+      if(this.player.isAlive && this.scene.time.now > this.nextUpdate) {
+        this.nextUpdate = this.scene.time.now + 1000; // 1 second
+        this.timeSurvived++;
+
+        // Update the game component state
+        this.scene.component.setState({ timeSurvived: this.timeSurvived });
+      }
+    }
+
+    // Check if player is in range of trigger
+    let distX = Math.abs(this.player.sprite.x - this.trigger.x);
+    let distY = Math.abs(this.player.sprite.y - this.trigger.y);
+    let range = this.triggerRange;
+    this.canTrigger = (distX < range && distY < range) ? true : false;
+
+    // Trigger text (show or hide based on player distance)
+    let text = (this.canTrigger && !this.started) ? this.triggerText : '';
+    this.triggerCaption.setText(text);
+  }
+
+  randomIntInRange(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  addEnemy() {
+    let enemy = new Zombie(this.scene);
+    this.enemies.push(enemy)
+    this.scene.zombies.add(enemy.sprite);
+  }
+}
