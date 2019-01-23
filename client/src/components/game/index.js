@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Phaser from 'phaser';
-import API from '../../utils/API';
+import userServices from '../../services/userServices'
 import Player from './player';
 import Purge from './modes/purge';
 import obstacles from './obstacles/obstacles.json';
@@ -181,8 +181,9 @@ export default class Game extends Component {
     if (this.component.state.username && !this.userLoaded) {
       this.userLoaded = true;
 
-      API.getUserByUsername(this.component.state.username)
+      userServices.getUserByUsername(this.component.state.username)
       .then(res => {
+        console.log(res.data)
         this.component.setState({ playerData: res.data });
         this.component.getUser(res.data); // TODO: refactor
       })
@@ -191,7 +192,7 @@ export default class Game extends Component {
   }
 
   save() {
-    const { username, timeSurvived, difficulty, enemiesKilled, health, shotsFired, accuracy } = this.state;
+    const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy } = this.state;
     const statsObject = {
       name: username,
       maxTimeSurvived: timeSurvived,
@@ -201,7 +202,7 @@ export default class Game extends Component {
       maxAccuracy: accuracy
     }
 
-    API.saveUserStats(username, statsObject)
+    userServices.saveUserStats(username, statsObject)
     .then(res => console.log(res))
     .catch(err => console.log(err));
   }
