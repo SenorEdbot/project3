@@ -38,6 +38,17 @@ export default class Game extends Component {
     }
   }
 
+  componentWillUnmount() {
+    /*
+      Note: there's still a delay when a new Phaser Game
+      is created but this temporarily fixes issues with
+      players being unable to move when this remounts.
+    */
+
+    // Destroy the existing Phaser Game.
+    if (this.game) this.game.destroy(true, false);
+  }
+
   componentDidMount() {
     // Initialize the game
     this.game = new Phaser.Game({
