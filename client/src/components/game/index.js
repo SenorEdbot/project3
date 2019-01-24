@@ -192,14 +192,16 @@ export default class Game extends Component {
 
   save() {
     const { username, timeSurvived, difficulty, enemiesKilled, health, shotsFired, accuracy } = this.state;
+    const statsObject = {
+      name: username,
+      maxTimeSurvived: timeSurvived,
+      maxDifficulty: difficulty,
+      maxEnemiesKilled: enemiesKilled,
+      maxShotsFired: shotsFired,
+      maxAccuracy: accuracy
+    }
 
-    API.saveUserStats(username, {
-    maxTimeSurvived: timeSurvived,
-     maxDifficulty: difficulty,
-     maxEnemiesKilled: enemiesKilled,
-     maxShotsFired: shotsFired,
-     maxAccuracy: accuracy
-    })
+    API.saveUserStats(username, statsObject)
     .then(res => console.log(res))
     .catch(err => console.log(err));
   }
