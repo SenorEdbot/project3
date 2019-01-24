@@ -23,7 +23,6 @@ export default class Game extends Component {
   }
 
   componentWillMount() {
-    if (this.props.auth) {
           // Get user nickname from Auth0
     const { userProfile, getProfile } = this.props.auth;
 
@@ -38,8 +37,6 @@ export default class Game extends Component {
       console.log('/game/index.js/componentWillMount()');
     }
     }
-
-  }
 
   componentWillUnmount() {
     /*
