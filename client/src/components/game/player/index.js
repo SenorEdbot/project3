@@ -93,6 +93,10 @@ export default class Player {
     this.scene.component.setState({ shotsFired: this.shotsFired, accuracy });
   }
 
+  onReload(isReloading) {
+    this.sprite.setMaxVelocity((isReloading) ? 50 : 999);
+  }
+
   addMovementInput() {
     // Y-axis
     if (this.W.isDown) {
