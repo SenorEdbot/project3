@@ -104,6 +104,8 @@ export default class Gun {
 
       tick++;
     }, intervalLen);
+
+    this.owner.onReload(true);
   }
 
   stopReloading() {
@@ -111,6 +113,8 @@ export default class Gun {
     this.isReloading = false;
     clearInterval(this.reloadInterval);
     this.graphics.clear();
+
+    this.owner.onReload(false);
   }
 
   resetNextFire() {
