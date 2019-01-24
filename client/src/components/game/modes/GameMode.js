@@ -53,6 +53,27 @@ export default class GameMode {
 
     // Update game component state
     this.scene.component.setState({ difficulty: this.difficulty });
+
+    // In-game text style
+    let captionStyle = {
+      fill: '#777',
+      fontFamily: 'monospace',
+      lineSpacing: 4,
+    };
+
+    // In-game text format
+    this.captionFormat = (
+      'Mode:        %1\n' +
+      'Time:        %2s\n' +
+      'Kills:       %4\n' +
+      'Difficulty:  %3\n'
+    );
+
+    // In-game text: Stats
+    this.statsText = this.scene.add
+    .text(16, 16, '', captionStyle)
+    .setScrollFactor(0, 0)
+    .setDepth(999);
   }
 
   createGraphics() {
@@ -108,6 +129,20 @@ export default class GameMode {
     // Trigger text (show or hide based on player distance)
     let text = (this.canTrigger && !this.started) ? this.triggerText : '';
     this.triggerCaption.setText(text);
+
+    // Update the in-game text
+    const stats = [
+      this.name,
+      this.timeSurvived,
+      this.difficulty,
+      this.player.kills
+    ];
+
+    this.setInGameText(stats);
+  }
+
+  setInGameText(statsArray) {
+    this.statsText.setText(Phaser.Utils.String.Format(this.captionFormat, statsArray));
   }
 
   randomIntInRange(min, max) {
