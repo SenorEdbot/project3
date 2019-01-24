@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import Gun from '../weapons/Gun';
+import Weapon from '../weapons';
 
 export default class Player {
   constructor(scene, username) {
@@ -38,10 +38,13 @@ export default class Player {
      farBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 250).setIntensity(.5)
     }
 
-    this.weapon = new Gun(this.scene, this);
+    // ! DEMO: Pick a random weapon
+    const weapons = [new Weapon.Gun(this.scene, this), new Weapon.Shotgun(this.scene, this)];
+    this.weapon = weapons[Math.floor(Math.random() * weapons.length)];
 
     this.kills = 0;
     this.shotsFired = 0;
+    this.accuracy = 0;    // #kills/#shotsFired
 
     this.healthDisplay = this.scene.add.graphics();
   }
@@ -71,7 +74,7 @@ export default class Player {
 
     let startAngle = 30;
     let endAngle = -30;
-    let cell = (startAngle - endAngle) / this.maxHealth;  // The "size" of one bullet in the bar
+    let cell = (startAngle - endAngle) / this.maxHealth;    // The "size" of one bullet in the bar
     let difference = this.maxHealth - this.health;          // Number of cells to remove
 
     let color = (this.health / this.maxHealth >= 0.33) ? 0x00b220 : 0xf23c13;
@@ -86,8 +89,14 @@ export default class Player {
   }
 
   onShoot() {
+    const accuracy = Math.floor((this.kills / this.shotsFired) * 100) || 0;
+
     this.shotsFired++;
-    this.scene.component.setState({ shotsFired: this.shotsFired });
+    this.scene.component.setState({ shotsFired: this.shotsFired, accuracy });
+  }
+
+  onReload(isReloading) {
+    this.sprite.setMaxVelocity((isReloading) ? 50 : 999);
   }
 
   addMovementInput() {

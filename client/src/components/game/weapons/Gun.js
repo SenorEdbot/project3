@@ -11,6 +11,8 @@ export default class Gun {
     this.owner = owner;
     this.ownerSprite = owner.sprite;
 
+    this.weaponName = 'master';
+
     // Fire rate
     this.fireRate = 100; // lower = faster firing
     this.nextFire = 0;
@@ -34,6 +36,9 @@ export default class Gun {
     // Graphics
     this.graphics = this.scene.add.graphics();
     this.ammoDisplay = this.scene.add.graphics();
+
+    //Effects
+    this.cameraShakeIntensity = 0.002;
   }
 
   fire(callback) {
@@ -62,7 +67,7 @@ export default class Gun {
       this.graphics.clear();
 
       // Effects
-      camera.shake(100, 0.002);
+      camera.shake(100, this.cameraShakeIntensity);
 
       if (callback) callback();
 
@@ -99,6 +104,8 @@ export default class Gun {
 
       tick++;
     }, intervalLen);
+
+    this.owner.onReload(true);
   }
 
   stopReloading() {
@@ -106,6 +113,8 @@ export default class Gun {
     this.isReloading = false;
     clearInterval(this.reloadInterval);
     this.graphics.clear();
+
+    this.owner.onReload(false);
   }
 
   resetNextFire() {
