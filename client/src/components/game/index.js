@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Phaser from 'phaser';
-import API from '../utils/API';
+import userServices from '../../services/userServices'
 import Player from './player';
 import Purge from './modes/purge';
 import obstacles from './obstacles/obstacles.json';
@@ -36,6 +36,17 @@ export default class Game extends Component {
       // FIXME: issue here when mounting again, player cannot move.
       console.log('/game/index.js/componentWillMount()');
     }
+  }
+
+  componentWillUnmount() {
+    /*
+      Note: there's still a delay when a new Phaser Game
+      is created but this temporarily fixes issues with
+      players being unable to move when this remounts.
+    */
+
+    // Destroy the existing Phaser Game.
+    if (this.game) this.game.destroy(true, false);
   }
 
   componentDidMount() {
@@ -181,8 +192,9 @@ export default class Game extends Component {
     if (this.component.state.username && !this.userLoaded) {
       this.userLoaded = true;
 
-      API.getUserByUsername(this.component.state.username)
+      userServices.getUserByUsername(this.component.state.username)
       .then(res => {
+        console.log(res.data)
         this.component.setState({ playerData: res.data });
         this.component.getUser(res.data); // TODO: refactor
       })
@@ -191,7 +203,11 @@ export default class Game extends Component {
   }
 
   save() {
+<<<<<<< HEAD
     const { username, timeSurvived, difficulty, enemiesKilled, health, shotsFired, accuracy } = this.state;
+=======
+    const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy } = this.state;
+>>>>>>> 97c96d7cf5a8b0183ae8e5971fd693b9c99fcb96
     const statsObject = {
       name: username,
       maxTimeSurvived: timeSurvived,
@@ -201,7 +217,11 @@ export default class Game extends Component {
       maxAccuracy: accuracy
     }
 
+<<<<<<< HEAD
     API.saveUserStats(username, statsObject)
+=======
+    userServices.saveUserStats(username, statsObject)
+>>>>>>> 97c96d7cf5a8b0183ae8e5971fd693b9c99fcb96
     .then(res => console.log(res))
     .catch(err => console.log(err));
   }

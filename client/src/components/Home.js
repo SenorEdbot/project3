@@ -21,10 +21,10 @@ export class Home extends Component {
           !isAuthenticated() && (
             <h4>
               You are not logged in! Please{' '}
-              <a
+              <div
                 style={{ cursor: 'pointer' }}
                 onClick={this.login.bind(this)}
-              >Log in</a>
+              >Log in</div>
               {' '}to continue.
             </h4>
           )

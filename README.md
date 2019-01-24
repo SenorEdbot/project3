@@ -1,4 +1,4 @@
-# express-vue-boilerplate
+# Midwaste
 
 ## Steps to Install
 - Clone the project
