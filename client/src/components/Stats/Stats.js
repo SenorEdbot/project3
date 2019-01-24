@@ -84,8 +84,13 @@ class Stats extends Component {
             user={user} />
           <AddFriends
             allUsers={allUsers} />
-          <FriendOneComp />
-          <FriendTwoComp />
+          <FriendOneComp
+          profile={profile}
+          user={user} />
+          <FriendTwoComp 
+          profile={profile}
+          user={user}
+          />
         </Grid>
       </div>
     </div>
@@ -93,4 +98,8 @@ class Stats extends Component {
   }
 }
 
+
+//UserStats: the player profile with their most recent game data as well
+//StatsBreakdown: History AND max for the player/user
+//AddFriends: dropdown for selecting a user to compare stats against. Dyanmically load the comparision components that showcase user1 vs selectedUser
 export default withStyles(styles)(Stats)

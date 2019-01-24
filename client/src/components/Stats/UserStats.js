@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
 import ButtonBase from '@material-ui/core/ButtonBase'
+import RecentStatsTable from './RecentStatsTable'
 
 const styles = theme => ({
   root: {
@@ -56,7 +57,9 @@ function UserStats(props) {
               <Typography gutterBottom>{user.name}</Typography>
             </Grid>
             <Grid item>
-              <Typography style={{ cursor: 'pointer' }}>Add Friend</Typography>
+              <RecentStatsTable 
+              user={user}
+              profile={profile} />
             </Grid>
           </Grid>
         </Grid>
@@ -66,3 +69,7 @@ function UserStats(props) {
 }
 
 export default withStyles(styles)(UserStats)
+
+// <Grid item>
+//   <Typography style={{ cursor: 'pointer' }}>Add Friend</Typography>
+// </Grid>
