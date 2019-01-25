@@ -22,27 +22,21 @@ const styles = theme => ({
 function AddFriends(props) {
   const { classes, allUsers } = props
   return (
-    <Paper>
-      <Grid
-        container
-      >
-        <Grid item>
-          <FormControl className={classes.formControl}>
-            <Select
-              name="userToCompare"
-              displayEmpty
-              className={classes.selectEmpty}
-            >
-              {allUsers.map(user => (
-                <MenuItem value={user.name}>
-                  {user.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-    </Paper>
+    <Grid item>
+      <FormControl className={classes.formControl}>
+        <Select
+          name="userToCompare"
+          displayEmpty
+          className={classes.selectEmpty}
+        >
+          {allUsers.map(user => (
+            <MenuItem value={user.name}>
+              {user.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Grid>
   )
 }
 

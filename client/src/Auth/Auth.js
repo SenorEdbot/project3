@@ -1,6 +1,7 @@
 import auth0 from 'auth0-js';
 import { AUTH_CONFIG } from './auth0-variables';
 import history from '../history';
+import userServices from '../services/userServices'
 
 export default class Auth {
   accessToken;
@@ -34,6 +35,7 @@ export default class Auth {
   handleAuthentication() {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
+        console.log(authResult)
         this.setSession(authResult);
       } else if (err) {
         history.replace('/home');
@@ -61,8 +63,12 @@ export default class Auth {
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
 
+    // Save new user
+    userServices.saveUserStats(authResult.idTokenPayload.nickname)
+      .then(history.replace('/home'))
+
     // navigate to the home route
-    history.replace('/home');
+    // history.replace('/home');
   }
 
   renewSession() {

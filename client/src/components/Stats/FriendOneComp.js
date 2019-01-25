@@ -17,12 +17,10 @@ const styles = theme => ({
 function FriendOneComp(props) {
   const { classes, user } = props
   return (
-    <Grid item xs={6} sm container>
-      <Grid item>
-        <FriendOneStatsTable
-          user={user}
-        />
-      </Grid>
+    <Grid item>
+      <FriendOneStatsTable
+        user={user}
+      />
     </Grid>
   )
 }

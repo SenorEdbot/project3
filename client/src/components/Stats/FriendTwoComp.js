@@ -18,11 +18,9 @@ function FriendTwoComp(props) {
   const { classes, user } = props
   return (
     <Grid item xs={6}>
-      <Grid item>
-        <FriendTwoStatsTable
-          user={user}
-        />
-      </Grid>
+      <FriendTwoStatsTable
+        user={user}
+      />
     </Grid>
   )
 }

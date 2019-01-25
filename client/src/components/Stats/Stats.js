@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import userServices from '../../services/userServices'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 import UserStats from './UserStats'
 import StatsBreakdown from './StatsBreakdown'
 import AddFriends from './AddFriends'
@@ -34,16 +36,18 @@ const styles = theme => ({
 class Stats extends Component {
   state = {
     profile: {},
-    allUsers: []
+    allUsers: [],
+    user: {}
   }
   componentWillMount() {
     const { userProfile, getProfile } = this.props.auth
+    const { user } = this.props
     if (!userProfile) {
       getProfile((err, profile) => {
-        this.setState({ profile: userProfile })
+        this.setState({ profile: profile, user: user })
       })
     } else {
-      this.setState({ profile: userProfile })
+      this.setState({ profile: userProfile, user: user })
     }
   }
 
@@ -51,21 +55,34 @@ class Stats extends Component {
     userServices.getAllUsers()
       .then(allUsers => this.setState({ allUsers: allUsers.data }))
       .catch(err => console.log(err))
+
+    userServices.getUserByUsername(this.props.user.name) 
+      .then(dbUser => this.setState({ user: dbUser.data }))
+      .catch(err => console.log(err))
   }
 
   render() {
-    const { classes, user } = this.props
-    const { profile, allUsers } = this.state
+    const { classes } = this.props
+    const { profile, allUsers, user } = this.state
     //----------------------------------------------------------------------------
     // TODO: (remove later):
     // User stats retrieved from db is available inside 'user' or 'this.props.user'
     console.log({ user })
-    console.log(this.state.allUsers)
     //----------------------------------------------------------------------------
 
     return (
     <div className={classes.root}>
       <div className={classes.container}>
+      {!user.maxShotsFired ? (
+        <Paper className={classes.root} elevation={1}>
+          <Typography variant="h5" component="h3">
+            You do not have any stats.
+          </Typography>
+          <Typography component="p">
+            Please play the game first
+          </Typography>
+      </Paper>
+      ) : (
         <Grid
           container
           spacing={16}
@@ -73,9 +90,6 @@ class Stats extends Component {
           justify="center"
           alignItems="center"
         >
-          {/* <Grid item xs={12}>
-            <Paper className={classes.stats}>{this.state.profile.name}</Paper>
-          </Grid> */}
           <UserStats
             profile={profile}
             user={user} />
@@ -92,6 +106,7 @@ class Stats extends Component {
           user={user}
           />
         </Grid>
+        )}
       </div>
     </div>
     )
