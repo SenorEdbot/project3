@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import Gun from '../weapons/Gun';
+import Weapon from '../weapons';
 
 export default class Player {
   constructor(scene, username) {
@@ -38,7 +38,9 @@ export default class Player {
      farBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 250).setIntensity(.5)
     }
 
-    this.weapon = new Gun(this.scene, this);
+    // ! DEMO: Pick a random weapon
+    const weapons = [new Weapon.Gun(this.scene, this), new Weapon.Shotgun(this.scene, this)];
+    this.weapon = weapons[Math.floor(Math.random() * weapons.length)];
 
     this.kills = 0;
     this.shotsFired = 0;
@@ -91,6 +93,10 @@ export default class Player {
 
     this.shotsFired++;
     this.scene.component.setState({ shotsFired: this.shotsFired, accuracy });
+  }
+
+  onReload(isReloading) {
+    this.sprite.setMaxVelocity((isReloading) ? 50 : 999);
   }
 
   addMovementInput() {

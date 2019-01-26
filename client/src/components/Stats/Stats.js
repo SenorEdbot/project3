@@ -84,8 +84,13 @@ class Stats extends Component {
             user={user} />
           <AddFriends
             allUsers={allUsers} />
-          <FriendOneComp />
-          <FriendTwoComp />
+          <FriendOneComp
+          profile={profile}
+          user={user} />
+          <FriendTwoComp 
+          profile={profile}
+          user={user}
+          />
         </Grid>
       </div>
     </div>

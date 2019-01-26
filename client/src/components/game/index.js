@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Phaser from 'phaser';
 import userServices from '../../services/userServices'
 import Player from './player';
-import Purge from './modes/purge';
+import GameModes from './modes';
 import obstacles from './obstacles/obstacles.json';
 
 export default class Game extends Component {
@@ -23,7 +23,7 @@ export default class Game extends Component {
   }
 
   componentWillMount() {
-    // Get user nickname from Auth0
+          // Get user nickname from Auth0
     const { userProfile, getProfile } = this.props.auth;
 
     this.setState({ profile: {} });
@@ -36,7 +36,7 @@ export default class Game extends Component {
       // FIXME: issue here when mounting again, player cannot move.
       console.log('/game/index.js/componentWillMount()');
     }
-  }
+    }
 
   componentWillUnmount() {
     /*
@@ -100,8 +100,12 @@ export default class Game extends Component {
     this.obstacles = this.physics.add.staticGroup();
     this.zombies = this.physics.add.group();
     this.player = new Player(this, this.component.state.username);
-    this.gameMode = new Purge(this);
     this.userLoaded = false;
+
+
+    // ! DEMO: Pick a random game mode
+    const modes = [new GameModes.Survival(this), new GameModes.Purge(this)];
+    this.gameMode = modes[Math.floor(Math.random() * modes.length)];
 
 
     // Obstacles
@@ -141,23 +145,9 @@ export default class Game extends Component {
       alignText: 'center'
     };
 
-    // In-game text format
-    this.captionFormat = (
-      'Health:      %1\n' +
-      'Kills:       %2\n' +
-      'Shots:       %3\n' +
-      'Difficulty:  %4\n'
-    );
-
     this.usernameTextFormat = (
       '%1'
     );
-
-    // In-game text: Stats
-    this.statsText = this.add
-      .text(16, 16, '', captionStyle)
-      .setScrollFactor(0, 0)
-      .setDepth(999);
 
     // In-game text: Username
     this.usernameText = this.add
@@ -173,14 +163,6 @@ export default class Game extends Component {
     this.gameMode.update();
 
     this.player.update();
-
-    // Update the stats text.
-    this.statsText.setText(Phaser.Utils.String.Format(this.captionFormat, [
-      Math.floor(this.player.health / 10),
-      this.player.kills,
-      this.player.shotsFired,
-      this.gameMode.difficulty
-    ]));
 
     // Update username if not set on create.
     if (!this.usernameText.text) {
