@@ -1,5 +1,4 @@
 import GameMode from './GameMode';
-import Zombie from '../enemies/zombie';
 
 export default class Survival extends GameMode {
   constructor(scene) {
@@ -13,28 +12,9 @@ export default class Survival extends GameMode {
 
     // Custom props
     this.lightsOn = false;
-
-    super.createGraphics();
   }
 
-  start() {
-    this.started = true;
-    this.graphics.clear();
-
-    setTimeout(() => {
-      for (let i = 0; i < this.difficulty * 100; i++) {
-        let enemy = new Zombie(this.scene);
-        this.enemies.push(enemy)
-        this.scene.zombies.add(enemy.sprite);
-      }
-
-      // Collision: Zombies & Obstacles
-      this.scene.physics.add.collider(this.scene.zombies, this.scene.obstacles);
-
-      // Let the gamemode start updating
-      this.canUpdate = true;
-    }, this.startDelay);
-
+  customStart() {
     // Car lights
     this.rightTail = this.scene.lights.addLight(1392, 352, 150, 0xff0000, 1);
     this.leftTail = this.scene.lights.addLight(1482, 352, 150, 0xff0000, 1);
