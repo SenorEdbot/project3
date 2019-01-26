@@ -14,16 +14,13 @@ export default class Game extends Component {
     health: 0,
     shotsFired: 0,
     accuracy: 0,
-    previousStats: {}
+    gameSaved: false
   }
 
-  getUser = (user) => {
-    // TODO: refactor
-    this.props.getUser(user);
-  }
+  getUser = (user) => this.props.getUser(user);
 
   componentWillMount() {
-          // Get user nickname from Auth0
+    // Get user nickname from Auth0
     const { userProfile, getProfile } = this.props.auth;
 
     this.setState({ profile: {} });
@@ -32,11 +29,8 @@ export default class Game extends Component {
       getProfile((err, profile) => this.setState({ profile, username: profile.nickname }));
     } else {
       this.setState({ profile: userProfile });
-
-      // FIXME: issue here when mounting again, player cannot move.
-      console.log('/game/index.js/componentWillMount()');
     }
-    }
+  }
 
   componentWillUnmount() {
     /*
@@ -53,7 +47,7 @@ export default class Game extends Component {
     // Initialize the game
     this.game = new Phaser.Game({
       type: Phaser.AUTO,
-      width: 1400,
+      width: window.innerWidth,
       height: 800,
       parent: 'game-container',
       physics: {
@@ -185,18 +179,23 @@ export default class Game extends Component {
   }
 
   save() {
-    const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy } = this.state;
-    const statsObject = {
-      name: username,
-      maxTimeSurvived: timeSurvived,
-      maxDifficulty: difficulty,
-      maxEnemiesKilled: enemiesKilled,
-      maxShotsFired: shotsFired,
-      maxAccuracy: accuracy
-    }
+    if (!this.state.gameSaved) {
 
-    userServices.saveUserStats(username, statsObject)
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
+      this.state.gameSaved = true;
+
+      const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy } = this.state;
+      const statsObject = {
+        name: username,
+        maxTimeSurvived: timeSurvived,
+        maxDifficulty: difficulty,
+        maxEnemiesKilled: enemiesKilled,
+        maxShotsFired: shotsFired,
+        maxAccuracy: accuracy
+      }
+
+      userServices.saveUserStats(username, statsObject)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+    }
   }
 }
