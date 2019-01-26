@@ -5,8 +5,6 @@ import Player from './player';
 import GameModes from './modes';
 import obstacles from './obstacles/obstacles.json';
 
-const isDev = true;
-
 export default class Game extends Component {
   state = {
     username: '',
@@ -22,18 +20,17 @@ export default class Game extends Component {
   getUser = (user) => this.props.getUser(user);
 
   componentWillMount() {
-    if (!isDev) {
-      // Get user nickname from Auth0
-      const { userProfile, getProfile } = this.props.auth;
+    // Get user nickname from Auth0
+    const { userProfile, getProfile } = this.props.auth;
 
-      this.setState({ profile: {} });
-
-      if (!userProfile) {
-        getProfile((err, profile) => this.setState({ profile, username: profile.nickname }));
-      } else {
-        this.setState({ profile: userProfile });
-      }
+    if (!userProfile) {
+      getProfile((err, profile) => {
+        this.setState({ username: profile.nickname })
+      });
+    } else {
+      this.setState({ username: userProfile.nickname });
     }
+
   }
 
   componentWillUnmount() {
