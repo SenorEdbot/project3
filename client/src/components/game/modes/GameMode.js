@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Zombie from '../enemies/zombie';
+import Tutorial from '../tutorial';
 
 export default class GameMode {
   constructor(scene) {
@@ -44,12 +45,30 @@ export default class GameMode {
     // Graphics
     this.graphics = this.scene.add.graphics();
 
-    // Trigger game start
-    this.scene.input.keyboard.on('keydown', event => {
-      if (event.code === this.triggerKey && !this.started && this.canTrigger) {
+    // Tutorial
+    this.tutorial = new Tutorial(this.scene);
+
+    // Keyboard events
+    this.scene.input.keyboard.on('keydown', e => {
+      // Trigger game start
+      if (e.code === this.triggerKey && !this.started && this.canTrigger && this.tutorial.hasBeenCompleted) {
         this.start();
       }
+
+      // Tutorial steps
+      if (e.code === 'KeyW' && this.tutorial.activeTutorial === 'move') this.tutorial.goToNext();
+      if (e.code === 'ShiftLeft' && this.tutorial.activeTutorial === 'sprint') setTimeout(() => this.tutorial.goToNext(), 2000);
+      if (e.code === 'KeyR' && this.tutorial.activeTutorial === 'reload') this.tutorial.goToNext();
+      if (e.code === 'KeyE' && this.tutorial.activeTutorial === 'hud') this.tutorial.goToNext();
+      if (e.code === 'KeyE' && this.tutorial.activeTutorial === 'interact') {
+        this.tutorial.goToNext();
+        this.createGraphics();
+      }
     });
+
+    this.scene.input.on('pointerdown', e => {
+      if (this.tutorial.activeTutorial === 'shoot') this.tutorial.goToNext();
+    })
 
     // Update game component state
     this.scene.component.setState({ difficulty: this.difficulty });
@@ -81,13 +100,13 @@ export default class GameMode {
       .lineStyle(4, 0x00b220, 1)  // thickness, color, alpha
       .beginPath()
       .arc(this.trigger.x, this.trigger.y, this.triggerRange, Phaser.Math.DegToRad(0), Phaser.Math.DegToRad(360), true)
+      .closePath()
       .strokePath()
       .setDepth(-1);
   }
 
   start() {
     this.started = true;
-    this.graphics.clear();
 
     setTimeout(() => {
       for (let i = 0; i < this.difficulty * 100; i++) {
@@ -127,7 +146,7 @@ export default class GameMode {
     this.canTrigger = (distX < range && distY < range) ? true : false;
 
     // Trigger text (show or hide based on player distance)
-    let text = (this.canTrigger && !this.started) ? this.triggerText : '';
+    let text = (this.canTrigger && !this.started && this.tutorial.hasBeenCompleted) ? this.triggerText : '';
     this.triggerCaption.setText(text);
 
     // Update the in-game text
