@@ -60,4 +60,6 @@ SimpleTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SimpleTable)
+
+export default withStyles(styles)(SimpleTable);
+

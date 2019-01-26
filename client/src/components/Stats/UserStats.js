@@ -69,3 +69,7 @@ function UserStats(props) {
 }
 
 export default withStyles(styles)(UserStats)
+
+// <Grid item>
+//   <Typography style={{ cursor: 'pointer' }}>Add Friend</Typography>
+// </Grid>
