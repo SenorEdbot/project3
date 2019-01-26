@@ -5,6 +5,8 @@ import Player from './player';
 import GameModes from './modes';
 import obstacles from './obstacles/obstacles.json';
 
+const isDev = true;
+
 export default class Game extends Component {
   state = {
     username: '',
@@ -20,15 +22,17 @@ export default class Game extends Component {
   getUser = (user) => this.props.getUser(user);
 
   componentWillMount() {
-    // Get user nickname from Auth0
-    const { userProfile, getProfile } = this.props.auth;
+    if (!isDev) {
+      // Get user nickname from Auth0
+      const { userProfile, getProfile } = this.props.auth;
 
-    this.setState({ profile: {} });
+      this.setState({ profile: {} });
 
-    if (!userProfile) {
-      getProfile((err, profile) => this.setState({ profile, username: profile.nickname }));
-    } else {
-      this.setState({ profile: userProfile });
+      if (!userProfile) {
+        getProfile((err, profile) => this.setState({ profile, username: profile.nickname }));
+      } else {
+        this.setState({ profile: userProfile });
+      }
     }
   }
 
@@ -128,7 +132,7 @@ export default class Game extends Component {
     this.lights.addLight(1638, 1582, 200, 0xFFA233);
     this.lights
       .enable()
-      .setAmbientColor(0x010808);
+      .setAmbientColor(0x010909);
 
 
     // In-game text style
