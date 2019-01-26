@@ -62,6 +62,4 @@ FriendTwoTable.propTypes = {
 
 export default withStyles(styles)(FriendTwoTable);
 
-
 //
-
