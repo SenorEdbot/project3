@@ -11,7 +11,7 @@ export default class Gun {
     this.owner = owner;
     this.ownerSprite = owner.sprite;
 
-    this.weaponName = 'master';
+    this.name = 'MG';
 
     // Fire rate
     this.fireRate = 100; // lower = faster firing
