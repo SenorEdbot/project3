@@ -38,9 +38,9 @@ export default class Auth {
         console.log(authResult)
         this.setSession(authResult);
       } else if (err) {
-        history.replace('/home');
+        history.replace('/');
         console.log(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
+        // alert(`Error: ${err.error}. Check the console for further details.`);
       }
     });
   }
@@ -64,11 +64,10 @@ export default class Auth {
     this.expiresAt = expiresAt;
 
     // Save new user
-    userServices.saveUserStats(authResult.idTokenPayload.nickname)
-      .then(history.replace('/home'))
+    history.replace('/')
 
     // navigate to the home route
-    // history.replace('/home');
+    // history.replace('/game');
   }
 
   renewSession() {
@@ -107,7 +106,7 @@ export default class Auth {
     localStorage.removeItem('isLoggedIn');
 
     // navigate to the home route
-    history.replace('/home');
+    history.replace('/');
   }
 
   isAuthenticated() {

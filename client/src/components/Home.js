@@ -1,9 +1,28 @@
 import React, { Component } from 'react';
-import Game from './game';
+import userServices from '../services/userServices'
+import Game from './Home'
 
-export class Home extends Component {
+class Home extends Component {
   login() {
     this.props.auth.login();
+  }
+
+  componentWillMount() {
+    const { userProfile, getProfile } = this.props.auth
+    console.log(this.props.auth)
+    if (!userProfile) {
+      getProfile((err, profile) => {
+        this.props.setProfile(profile)
+      })
+    } else {
+      this.props.setProfile(userProfile)
+    }
+  }
+
+  componentDidMount() {
+    userServices.getUserByUsername(this.props.profile.nickname) 
+      .then(dbUser => this.props.setUser(dbUser))
+      .catch(err => console.log(err))
   }
 
   render() {

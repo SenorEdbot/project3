@@ -34,46 +34,40 @@ const styles = theme => ({
   }
 })
 class Stats extends Component {
-  state = {
-    profile: {},
-    allUsers: [],
-    user: {}
-  }
-  componentWillMount() {
-    const { userProfile, getProfile } = this.props.auth
-    const { user } = this.props
-    if (!userProfile) {
-      getProfile((err, profile) => {
-        this.setState({ profile: profile, user: user })
-      })
-    } else {
-      this.setState({ profile: userProfile, user: user })
-    }
-  }
+  // componentWillMount() {
+  //   const { userProfile, getProfile } = this.props.auth
+  //   console.log(this.props.auth)
+  //   if (!userProfile) {
+  //     getProfile((err, profile) => {
+  //       this.setState({ profile: profile })
+  //     })
+  //   } else {
+  //     this.setState({ profile: userProfile })
+  //   }
+  // }
+  // componentDidMount() {
+  //   userServices.getAllUsers()
+  //     .then(allUsers => this.setState({ allUsers: allUsers.data }))
+  //     .catch(err => console.log(err))
 
-  componentDidMount() {
-    userServices.getAllUsers()
-      .then(allUsers => this.setState({ allUsers: allUsers.data }))
-      .catch(err => console.log(err))
-
-    userServices.getUserByUsername(this.props.user.name) 
-      .then(dbUser => this.setState({ user: dbUser.data }))
-      .catch(err => console.log(err))
-  }
+  //   userServices.getUserByUsername(this.props.user.name) 
+  //     .then(dbUser => this.setState({ user: dbUser.data }))
+  //     .catch(err => console.log(err))
+  // }
 
   render() {
-    const { classes } = this.props
-    const { profile, allUsers, user } = this.state
+    const { classes, allUsers, profile } = this.props
+    // const { profile } = this.state
     //----------------------------------------------------------------------------
     // TODO: (remove later):
     // User stats retrieved from db is available inside 'user' or 'this.props.user'
-    console.log({ user })
+    // console.log({ user })
     //----------------------------------------------------------------------------
 
     return (
     <div className={classes.root}>
       <div className={classes.container}>
-      {!user.maxShotsFired ? (
+      {/* {!allUsers[0].maxShotsFired ? (
         <Paper className={classes.root} elevation={1}>
           <Typography variant="h5" component="h3">
             You do not have any stats.
@@ -92,21 +86,44 @@ class Stats extends Component {
         >
           <UserStats
             profile={profile}
-            user={user} />
+             />
           <StatsBreakdown
             profile={profile}
-            user={user} />
+             />
           <AddFriends
             allUsers={allUsers} />
           <FriendOneComp
           profile={profile}
-          user={user} />
+           />
           <FriendTwoComp 
           profile={profile}
-          user={user}
+          
           />
         </Grid>
-        )}
+        )} */}
+        <Grid
+          container
+          spacing={16}
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
+          <UserStats
+            profile={profile}
+             />
+          <StatsBreakdown
+            profile={profile}
+             />
+          <AddFriends
+            allUsers={allUsers} />
+          <FriendOneComp
+          profile={profile}
+           />
+          <FriendTwoComp 
+          profile={profile}
+          
+          />
+        </Grid>
       </div>
     </div>
     )
