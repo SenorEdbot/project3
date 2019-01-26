@@ -2,6 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
+import HistoricalStatsTable from './HistoricalStatsTable'
 
 const styles = theme => ({
   root: {
@@ -20,16 +21,29 @@ const styles = theme => ({
 })
 
 function StatsBreakdown(props) {
-  const { classes, profile, user } = props
-  console.log({ user },{ profile })
-  
+  const { classes, profile, user, totalAcc, totalDif, totalKia, totalShots, totalSurv } = props
+  console.log({ user }, { profile })
+
   return (
-    <Grid item xs={12}>
-      <Paper className={classes.stats}>
-        Stats Breakdown
-        {user.name}
-      </Paper>
+    <Grid container spacing={16}>
+      <Grid item xs={12}>
+        <Paper className={classes.stats}>
+          Stats Breakdown
+          {user.name}
+        </Paper>
+      </Grid>
+      <Grid item>
+        <HistoricalStatsTable
+          user={user}
+          profile={profile}
+          totalAcc={totalAcc}
+          totalDif={totalDif}
+          totalKia={totalKia}
+          totalShots={totalShots}
+          totalSurv={totalSurv} />
+      </Grid>
     </Grid>
+
   )
 }
 

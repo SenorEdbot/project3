@@ -39,16 +39,16 @@ const styles = theme => ({
 
 function UserStats(props) {
   const { classes, profile, user } = props
-  console.log({ user },{ profile })
+  console.log({ user }, { profile })
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={16}>
-        <Grid item>
-          <ButtonBase className={classes.image}>
-          <Avatar alt="profile picture" src={profile.picture} className={classes.bigAvatar} />
-          </ButtonBase>
-        </Grid>
         <Grid item xs={12} sm container>
+          <Grid item>
+            <ButtonBase className={classes.image}>
+              <Avatar alt="profile picture" src={profile.picture} className={classes.bigAvatar} />
+            </ButtonBase>
+          </Grid>
           <Grid item xs container direction="column" spacing={16}>
             <Grid item xs>
               <Typography gutterBottom variant="subtitle1">
@@ -56,13 +56,13 @@ function UserStats(props) {
               </Typography>
               <Typography gutterBottom>{user.name}</Typography>
             </Grid>
-            <Grid item>
-              <RecentStatsTable 
-              user={user}
-              profile={profile} />
-            </Grid>
           </Grid>
         </Grid>
+      </Grid>
+      <Grid item>
+        <RecentStatsTable
+          user={user}
+          profile={profile} />
       </Grid>
     </Paper>
   )
