@@ -185,11 +185,7 @@ export default class Game extends Component {
   }
 
   save() {
-<<<<<<< HEAD
-    const { username, timeSurvived, difficulty, enemiesKilled, health, shotsFired, accuracy } = this.state;
-=======
     const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy } = this.state;
->>>>>>> 97c96d7cf5a8b0183ae8e5971fd693b9c99fcb96
     const statsObject = {
       name: username,
       maxTimeSurvived: timeSurvived,
@@ -199,11 +195,7 @@ export default class Game extends Component {
       maxAccuracy: accuracy
     }
 
-<<<<<<< HEAD
-    API.saveUserStats(username, statsObject)
-=======
     userServices.saveUserStats(username, statsObject)
->>>>>>> 97c96d7cf5a8b0183ae8e5971fd693b9c99fcb96
     .then(res => console.log(res))
     .catch(err => console.log(err));
   }
