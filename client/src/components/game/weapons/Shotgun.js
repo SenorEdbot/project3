@@ -4,7 +4,7 @@ export default class Shotgun extends Gun {
   constructor(scene, owner) {
     super(scene, owner);
 
-    this.weaponName = 'shotgun';
+    this.name = 'Shotgun';
     this.fireRate = 1000;
     this.magSize = 8;
     this.clip = 8;

@@ -6,6 +6,7 @@ export default class GameMode {
   constructor(scene) {
     // Phaser scene
     this.scene = scene;
+    this.canvas = this.scene.sys.game.canvas;
 
     // Player
     this.player = this.scene.player;
@@ -57,12 +58,15 @@ export default class GameMode {
 
       // Tutorial steps
       if (e.code === 'KeyW' && this.tutorial.activeTutorial === 'move') this.tutorial.goToNext();
-      if (e.code === 'ShiftLeft' && this.tutorial.activeTutorial === 'sprint') setTimeout(() => this.tutorial.goToNext(), 2000);
+      if (e.code === 'ShiftLeft' && this.tutorial.activeTutorial === 'sprint') setTimeout(() => this.tutorial.goToNext(), 1000);
       if (e.code === 'KeyR' && this.tutorial.activeTutorial === 'reload') this.tutorial.goToNext();
-      if (e.code === 'KeyE' && this.tutorial.activeTutorial === 'hud') this.tutorial.goToNext();
+      if (e.code === 'KeyE' && this.tutorial.activeTutorial === 'hud') {
+        this.tutorial.goToNext();
+        this.player.toggleFlashlight(true);
+      };
       if (e.code === 'KeyE' && this.tutorial.activeTutorial === 'interact') {
         this.tutorial.goToNext();
-        this.createGraphics();
+        this.tutorial.hasBeenCompleted = true;
       }
     });
 
@@ -120,7 +124,11 @@ export default class GameMode {
 
       // Let the gamemode start updating
       this.canUpdate = true;
+
     }, this.startDelay);
+
+    // Custom gameMode start functions
+    if (this.customStart) this.customStart();
   }
 
   update() {

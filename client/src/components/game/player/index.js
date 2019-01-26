@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Weapon from '../weapons';
+import WeaponHud from '../hud/WeaponHud';
 
 export default class Player {
   constructor(scene, username) {
@@ -38,6 +39,8 @@ export default class Player {
      farBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 250).setIntensity(.5)
     }
 
+    this.light = this.scene.lights.addLight(this.sprite.x, this.sprite.y, 100).setIntensity(.5);
+
     // ! DEMO: Pick a random weapon
     const weapons = [new Weapon.Gun(this.scene, this), new Weapon.Shotgun(this.scene, this)];
     this.weapon = weapons[Math.floor(Math.random() * weapons.length)];
@@ -47,6 +50,18 @@ export default class Player {
     this.accuracy = 0;    // #kills/#shotsFired
 
     this.healthDisplay = this.scene.add.graphics();
+
+    this.hudFormat = (
+      '%1: %2/%3'
+    );
+    this.weaponHud = new WeaponHud(this.scene);
+    this.weaponHud.render(this.hudFormat, [
+      this.weapon.name,
+      this.weapon.clip,
+      this.weapon.magSize
+    ]);
+
+    this.toggleFlashlight(0);
   }
 
   update() {
@@ -58,6 +73,9 @@ export default class Player {
     this.drawHealthDisplay();
     this.weapon.update();
 
+    this.light.x = this.sprite.x;
+    this.light.y = this.sprite.y;
+
     // Active pointer down
     if (this.scene.input.activePointer.isDown) {
       this.weapon.fire(() => this.onShoot());
@@ -67,6 +85,14 @@ export default class Player {
 
     // Reload
     if (this.R.isDown) this.weapon.reload();
+  }
+
+  updateHud() {
+    this.weaponHud.update(this.hudFormat, [
+      this.weapon.name,
+      this.weapon.clip,
+      this.weapon.magSize
+    ]);
   }
 
   drawHealthDisplay() {
@@ -93,10 +119,14 @@ export default class Player {
 
     this.shotsFired++;
     this.scene.component.setState({ shotsFired: this.shotsFired, accuracy });
+
+    this.updateHud();
   }
 
   onReload(isReloading) {
     this.sprite.setMaxVelocity((isReloading) ? 50 : 999);
+
+    this.updateHud();
   }
 
   addMovementInput() {
@@ -183,6 +213,18 @@ export default class Player {
       // Remove graphics
       this.healthDisplay.clear();
       this.weapon.kill(); // Clears ammo display
+    }
+  }
+
+  toggleFlashlight(on) {
+    if (on) {
+      this.flashlight.nearBeam.setIntensity(1);
+      this.flashlight.midBeam.setIntensity(.75);
+      this.flashlight.farBeam.setIntensity(.5);
+    } else {
+      this.flashlight.nearBeam.setIntensity(0);
+      this.flashlight.midBeam.setIntensity(0);
+      this.flashlight.farBeam.setIntensity(0);
     }
   }
 }
