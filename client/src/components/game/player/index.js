@@ -38,6 +38,8 @@ export default class Player {
      farBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 250).setIntensity(.5)
     }
 
+    this.light = this.scene.lights.addLight(this.sprite.x, this.sprite.y, 100).setIntensity(.5);
+
     // ! DEMO: Pick a random weapon
     const weapons = [new Weapon.Gun(this.scene, this), new Weapon.Shotgun(this.scene, this)];
     this.weapon = weapons[Math.floor(Math.random() * weapons.length)];
@@ -57,6 +59,9 @@ export default class Player {
     this.updateFlashlight();
     this.drawHealthDisplay();
     this.weapon.update();
+
+    this.light.x = this.sprite.x;
+    this.light.y = this.sprite.y;
 
     // Active pointer down
     if (this.scene.input.activePointer.isDown) {
