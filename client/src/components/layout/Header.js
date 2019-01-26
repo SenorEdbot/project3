@@ -13,7 +13,7 @@ function Header(props) {
   const { classes } = props
   return (
     <header>
-      <h1>MidWaste Warriors</h1>
+      <h1>MidWaste</h1>
         <div className={classes.root}>
           <Link
             to="/"

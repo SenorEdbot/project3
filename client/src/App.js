@@ -1,5 +1,36 @@
 import React, { Component } from 'react';
 import './App.css';
+import { withStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+
+
+
+const styles = theme => ({
+  root: {
+
+  },
+  container: {
+
+  },
+  flex: {
+    marginLeft: "80%",
+    fontFamily: "VT323"
+  },
+  appbar: {
+    backgroundColor: "black",
+    color: "grey"
+  },
+  button: {
+    color: "grey",
+    fontFamily: "VT323"
+  },
+  
+
+
+})
 
 class App extends Component {
   goTo(route) {
@@ -24,43 +55,54 @@ class App extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
+    const {classes} = this.props;
 
     return (
-      <div>
-            <button onClick={this.goTo.bind(this, 'home')}>
+      <div className={classes.root}>
+        <div className={classes.container}>
+          <AppBar className={classes.appbar} position="static">
+            <Toolbar>
+            <Button className={classes.button}onClick={this.goTo.bind(this, 'home')}>
               Home
-            </button>
+            </Button>
             {
               !isAuthenticated() && (
-                  <button onClick={this.login.bind(this)}>
+                  <Button className={classes.button}onClick={this.login.bind(this)}>
                     Log In
-                  </button>
+                  </Button>
                 )
             }
             {
               isAuthenticated() && (
-                <button onClick={this.goTo.bind(this, 'profile')}>
+                <Button className={classes.button} onClick={this.goTo.bind(this, 'profile')}>
                   Profile
-                </button>
+                </Button>
               )
             }
+            
             {
               isAuthenticated() && (
-                  <button onClick={this.logout.bind(this)}>
+                  <Button className={classes.button} onClick={this.logout.bind(this)}>
                     Log Out
-                  </button>
+                  </Button>
                 )
             }
             {
               isAuthenticated() && (
-                <button onClick={this.goTo.bind(this, 'stats')}>
+                <Button className={classes.button} onClick={this.goTo.bind(this, 'stats')}>
                   Stats
-                </button>
+                </Button>
               )
             }
+            <Typography variant="title" color="inherit" className={classes.flex}>
+            MidWaste
+            </Typography>
+                  </Toolbar>
+              </AppBar>
+            </div>
       </div>
     );
   }
 }
 
-export default App;
+export default withStyles(styles)(App);

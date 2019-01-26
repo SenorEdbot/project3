@@ -37,7 +37,7 @@ module.exports = router;
 
 // TEMP DEV REFERENCE
 let testObj = {
-  name: "eddieTester",
+  name: "alexyoungcontact",
   maxTimeSurvived: 7,
   maxDifficulty: 8,
   maxEnemiesKilled: 14,
