@@ -14,6 +14,12 @@ export default class Tutorial {
     this.centerX = canvas.width / 2;
     this.centerY = canvas.height / 2;
 
+    this.style = {
+      fill: '#ccc',
+      fontFamily: 'Consolas',
+      lineSpacing: 4,
+    };
+
     this.goToNext();
   }
 
@@ -50,14 +56,8 @@ export default class Tutorial {
   }
 
   renderText1(x, y, text, format, values) {
-    const style = {
-      fill: '#ccc',
-      fontFamily: 'monospace',
-      lineSpacing: 4,
-    };
-
     this.text1 = this.scene.add
-      .text(x, y, text, style)
+      .text(x, y, text, this.style)
       .setScrollFactor(0, 0) // fixed position
       .setDepth(999) // always on top
 
@@ -65,14 +65,8 @@ export default class Tutorial {
   }
 
   renderText2(x, y, text, format, values) {
-    const style = {
-      fill: '#ccc',
-      fontFamily: 'monospace',
-      lineSpacing: 4,
-    };
-
     this.text2 = this.scene.add
-      .text(x, y, text, style)
+      .text(x, y, text, this.style)
       .setScrollFactor(0, 0) // fixed position
       .setDepth(999) // always on top
 
@@ -80,14 +74,8 @@ export default class Tutorial {
   }
 
   renderText3(x, y, text, format, values) {
-    const style = {
-      fill: '#ccc',
-      fontFamily: 'monospace',
-      lineSpacing: 4,
-    };
-
     this.text3 = this.scene.add
-      .text(x, y, text, style)
+      .text(x, y, text, this.style)
       .setScrollFactor(0, 0) // fixed position
       .setDepth(999) // always on top
 
