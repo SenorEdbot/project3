@@ -5,7 +5,7 @@ import Player from './player';
 import GameModes from './modes';
 import obstacles from './obstacles/obstacles.json';
 
-const isDev = true;
+const isDev = false;
 
 export default class Game extends Component {
   state = {

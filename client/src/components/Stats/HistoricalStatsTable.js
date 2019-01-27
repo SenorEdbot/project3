@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import GameHistory from './GameHistory'
+import GameHistory1 from './GameHistory1'
 
 
 const styles = theme => ({
@@ -79,7 +80,7 @@ function HistoricalTable(props) {
                 </TableBody>
             </Table>
         </Paper>
-        <GameHistory 
+        <GameHistory1 
         user={user} />
         </React.Fragment>
     );
