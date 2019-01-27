@@ -83,14 +83,6 @@ class App extends Component {
                 </Button>
               )
             }
-            
-            {
-              isAuthenticated() && (
-                  <Button className={classes.button} onClick={this.logout.bind(this)}>
-                    Log Out
-                  </Button>
-                )
-            }
             {
               isAuthenticated() && (
                 <Button className={classes.button} onClick={this.goTo.bind(this, 'stats')}>
@@ -98,9 +90,13 @@ class App extends Component {
                 </Button>
               )
             }
-            {/* <Button className={classes.button} onClick={this.goTo.bind(this, 'stats')}>
-              Stats
-            </Button> */}
+            {
+              isAuthenticated() && (
+                  <Button className={classes.button} onClick={this.logout.bind(this)}>
+                    Log Out
+                  </Button>
+                )
+            }
             <Typography variant="title" color="inherit" className={classes.flex}>
             MidWaste
             </Typography>
