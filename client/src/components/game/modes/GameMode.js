@@ -29,7 +29,7 @@ export default class GameMode {
     this.triggerKey = 'KeyE';
     this.triggerColor = '#00b220';
     this.triggerRange = 150;
-    this.triggerText = 'Press \'E\' to start';
+    this.triggerText = 'Press E to start';
     this.startDelay = 7000;
     this.canTrigger = false;
 
@@ -41,7 +41,8 @@ export default class GameMode {
     this.triggerCaption = this.scene.add
       .text(this.scene.cameras.main.centerX - 50, 16, '', triggerCaptionStyle)
       .setScrollFactor(0, 0)      // Fix the text to the screen
-      .setDepth(999);             // Keep text on top-most layer
+      .setDepth(999)              // Keep text on top-most layer
+      .setOrigin(0.5, 0)
 
     // Graphics
     this.graphics = this.scene.add.graphics();
@@ -59,26 +60,29 @@ export default class GameMode {
       // Tutorial steps
       if (e.code === 'KeyW' && this.tutorial.activeTutorial === 'move') this.tutorial.goToNext();
       if (e.code === 'ShiftLeft' && this.tutorial.activeTutorial === 'sprint') setTimeout(() => this.tutorial.goToNext(), 1000);
-      if (e.code === 'KeyR' && this.tutorial.activeTutorial === 'reload') this.tutorial.goToNext();
+      if (e.code === 'KeyR' && this.tutorial.activeTutorial === 'reload') {
+        this.tutorial.goToNext();
+        this.createGraphics();
+      };
       if (e.code === 'KeyE' && this.tutorial.activeTutorial === 'hud') {
         this.tutorial.goToNext();
         this.player.toggleFlashlight(true);
       };
       if (e.code === 'KeyE' && this.tutorial.activeTutorial === 'interact') {
         this.tutorial.goToNext();
-        this.tutorial.hasBeenCompleted = true;
+        this.setTutorialComplete();
       }
     });
 
     this.scene.input.on('pointerdown', e => {
       if (this.tutorial.activeTutorial === 'shoot') this.tutorial.goToNext();
-    })
+    });
 
     // Update game component state
     this.scene.component.setState({ difficulty: this.difficulty });
 
     // In-game text style
-    let captionStyle = {
+    this.captionStyle = {
       fill: '#777',
       fontFamily: 'monospace',
       lineSpacing: 4,
@@ -94,7 +98,7 @@ export default class GameMode {
 
     // In-game text: Stats
     this.statsText = this.scene.add
-    .text(16, 16, '', captionStyle)
+    .text(16, 16, '', this.captionStyle)
     .setScrollFactor(0, 0)
     .setDepth(999);
   }
@@ -111,6 +115,7 @@ export default class GameMode {
 
   start() {
     this.started = true;
+    this.graphics.clear();
 
     setTimeout(() => {
       for (let i = 0; i < this.difficulty * 100; i++) {
@@ -145,17 +150,22 @@ export default class GameMode {
         // Update the game component state
         this.scene.component.setState({ timeSurvived: this.timeSurvived });
       }
+    } else if (!this.started) {
+      // Check if player is in range of trigger
+      let distX = Math.abs(this.player.sprite.x - this.trigger.x);
+      let distY = Math.abs(this.player.sprite.y - this.trigger.y);
+      let range = this.triggerRange;
+      this.canTrigger = (distX < range && distY < range) ? true : false;
+
+      // Trigger text (show or hide based on player distance)
+      let text;
+      if (this.canTrigger && !this.started && this.tutorial.hasBeenCompleted) {
+        text = this.triggerText;
+      } else if (!this.canTrigger && !this.started && this.tutorial.hasBeenCompleted) {
+        text = 'Find the blue van'
+      }
+      this.triggerCaption.setText(text);
     }
-
-    // Check if player is in range of trigger
-    let distX = Math.abs(this.player.sprite.x - this.trigger.x);
-    let distY = Math.abs(this.player.sprite.y - this.trigger.y);
-    let range = this.triggerRange;
-    this.canTrigger = (distX < range && distY < range) ? true : false;
-
-    // Trigger text (show or hide based on player distance)
-    let text = (this.canTrigger && !this.started && this.tutorial.hasBeenCompleted) ? this.triggerText : '';
-    this.triggerCaption.setText(text);
 
     // Update the in-game text
     const stats = [
@@ -180,5 +190,10 @@ export default class GameMode {
     let enemy = new Zombie(this.scene);
     this.enemies.push(enemy)
     this.scene.zombies.add(enemy.sprite);
+  }
+
+  setTutorialComplete() {
+      this.tutorial.setComplete();
+      this.player.toggleFlashlight(true);
   }
 }

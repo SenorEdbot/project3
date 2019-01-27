@@ -14,7 +14,8 @@ export default class Game extends Component {
     health: 0,
     shotsFired: 0,
     accuracy: 0,
-    gameSaved: false
+    gameSaved: false,
+    tutorialCompleted: false
   }
 
   getUser = (user) => this.props.getUser(user);
@@ -99,9 +100,15 @@ export default class Game extends Component {
 
 
     // ! DEMO: Pick a random game mode
-    const modes = [new GameModes.Survival(this), new GameModes.Purge(this)];
-    this.gameMode = modes[Math.floor(Math.random() * modes.length)];
-
+    let pick = Math.floor(Math.random() * (1.9 - 0) + 0);
+    switch(pick) {
+      case 1:
+        this.gameMode = new GameModes.Purge(this);
+        break;
+      case 0:
+        this.gameMode = new GameModes.Survival(this);
+        break;
+    }
 
     // Obstacles
     const obs = this.obstacles;
@@ -171,9 +178,10 @@ export default class Game extends Component {
 
       userServices.getUserByUsername(this.component.state.username)
       .then(res => {
-        console.log(res.data)
-        this.component.setState({ playerData: res.data });
+        this.component.setState({ playerData: res.data, tutorialCompleted: res.data.tutorialCompleted }); // TODO: remove playerData (not in use?)
         this.component.getUser(res.data); // TODO: refactor
+
+        if (this.state.tutorialCompleted) this.gameMode.setTutorialComplete();
       })
       .catch(err => console.log(err));
     }
@@ -182,16 +190,17 @@ export default class Game extends Component {
   save() {
     if (!this.state.gameSaved) {
 
-      this.state.gameSaved = true;
+      this.setState({ gameSaved: true });
 
-      const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy } = this.state;
+      const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy, tutorialCompleted } = this.state;
       const statsObject = {
         name: username,
         maxTimeSurvived: timeSurvived,
         maxDifficulty: difficulty,
         maxEnemiesKilled: enemiesKilled,
         maxShotsFired: shotsFired,
-        maxAccuracy: accuracy
+        maxAccuracy: accuracy,
+        tutorialCompleted
       }
 
       userServices.saveUserStats(username, statsObject)
