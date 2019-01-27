@@ -10,14 +10,10 @@ import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
-
+   
   },
   container: {
 
-  },
-  flex: {
-    marginLeft: "80%",
-    fontFamily: "VT323"
   },
   appbar: {
     backgroundColor: "black",
@@ -25,8 +21,16 @@ const styles = theme => ({
   },
   button: {
     color: "grey",
-    fontFamily: "VT323"
+    fontFamily: "VT323",
+    "&:hover": {
+      color: "white"
+    }
+
   },
+  flex: {
+    marginLeft: "80%",
+    fontFamily: "VT323",
+  }
   
 
 
