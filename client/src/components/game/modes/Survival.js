@@ -9,12 +9,20 @@ export default class Survival extends GameMode {
     this.trigger = { x: 1443, y: 496 };
     this.triggerRange = 150;
     this.startDelay = 7000;
+    this.captionStyle = {
+      fill: 'orangered',
+      fontFamily: 'monospace',
+      lineSpacing: 4,
+    }
 
     // Custom props
     this.lightsOn = false;
   }
 
   customStart() {
+    this.triggerCaption.setText(`Survive as long as possible.`);
+    this.triggerCaption.setStyle(this.captionStyle);
+
     // Car lights
     this.rightTail = this.scene.lights.addLight(1392, 352, 150, 0xff0000, 1);
     this.leftTail = this.scene.lights.addLight(1482, 352, 150, 0xff0000, 1);

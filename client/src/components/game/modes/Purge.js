@@ -14,6 +14,11 @@ export default class Purge extends GameMode {
       'Mode:    %1\n' +
       'Kills:   %2/%3\n'
     );
+    this.captionStyle = {
+      fill: 'orangered',
+      fontFamily: 'monospace',
+      lineSpacing: 4,
+    }
 
     // Custom props
     this.lightsOn = false;
@@ -22,6 +27,9 @@ export default class Purge extends GameMode {
   }
 
   customStart() {
+    this.triggerCaption.setText(`Kill ${this.difficulty * 100} zombies.`);
+    this.triggerCaption.setStyle(this.captionStyle);
+
     // Car lights
     this.rightTail = this.scene.lights.addLight(1392, 352, 150, 0xff0000, 1);
     this.leftTail = this.scene.lights.addLight(1482, 352, 150, 0xff0000, 1);
@@ -58,17 +66,22 @@ export default class Purge extends GameMode {
         // Update the game component state
         this.scene.component.setState({ timeSurvived: this.timeSurvived });
       }
+    } else if (!this.started) {
+      // Check if player is in range of trigger
+      let distX = Math.abs(this.player.sprite.x - this.trigger.x);
+      let distY = Math.abs(this.player.sprite.y - this.trigger.y);
+      let range = this.triggerRange;
+      this.canTrigger = (distX < range && distY < range) ? true : false;
+
+      // Trigger text (show or hide based on player distance)
+      let text;
+      if (this.canTrigger && !this.started && this.tutorial.hasBeenCompleted) {
+        text = this.triggerText;
+      } else if (!this.canTrigger && !this.started && this.tutorial.hasBeenCompleted) {
+        text = 'Find the blue van'
+      }
+      this.triggerCaption.setText(text);
     }
-
-    // Check if player is in range of trigger
-    let distX = Math.abs(this.player.sprite.x - this.trigger.x);
-    let distY = Math.abs(this.player.sprite.y - this.trigger.y);
-    let range = this.triggerRange;
-    this.canTrigger = (distX < range && distY < range) ? true : false;
-
-    // Trigger text (show or hide based on player distance)
-    let text = (this.canTrigger && !this.started) ? this.triggerText : '';
-    this.triggerCaption.setText(text);
 
     // Update the in-game text
     const stats = [
