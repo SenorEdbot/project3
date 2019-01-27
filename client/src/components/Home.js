@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Game from './game';
 import { withStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card';
-import { Typography, Grid, GridList } from '../../node_modules/@material-ui/core';
+import { Typography, Grid } from '../../node_modules/@material-ui/core'; // Commented out GridList because it was unused.
 import CardMedia from '@material-ui/core/CardMedia';
 import Paper from '@material-ui/core/Paper';
 

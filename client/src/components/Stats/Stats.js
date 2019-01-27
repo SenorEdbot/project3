@@ -171,7 +171,7 @@ class Stats extends Component {
               <FriendTwoComp
                 user={this.state.secondUserObj} />
              </React.Fragment>
-           ) : ("No match")}
+           ) : ("")}
         </Grid>
       </div>
     </div>
