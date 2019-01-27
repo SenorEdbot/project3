@@ -85,6 +85,10 @@ export default class Auth {
   }
 
   getProfile(cb) {
+
+    // FIXME: "Error: accessToken parameter is not valid" workaround
+    if (this.accessToken === undefined) return this.renewSession();
+
     this.auth0.client.userInfo(this.accessToken, (err, profile) => {
       if (profile) {
         this.userProfile = profile;

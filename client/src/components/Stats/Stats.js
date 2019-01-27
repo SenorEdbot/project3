@@ -38,7 +38,7 @@ class Stats extends Component {
     totalSurv: 0
     // totalArray: []
   }
-  
+
   reducer = (accumulator, currentValue) => accumulator + currentValue;
 
   totalAcc = () => {
@@ -89,7 +89,7 @@ class Stats extends Component {
     const { userProfile, getProfile } = this.props.auth
     if (!userProfile) {
       getProfile((err, profile) => {
-        this.setState({ profile: userProfile })
+        this.setState({ profile })
       })
     } else {
       this.setState({ profile: userProfile })
@@ -101,11 +101,13 @@ class Stats extends Component {
       .then(allUsers => this.setState({ allUsers: allUsers.data }))
       .catch(err => console.log(err))
 
-      this.totalAcc()
-      this.totalDif()
-      this.totalKia()
-      this.totalShots()
-      this.totalSurv()
+      if (this.props.user) {
+        this.totalAcc()
+        this.totalDif()
+        this.totalKia()
+        this.totalShots()
+        this.totalSurv()
+      }
 
     // for (let i=0; i<5; i++) {
 
@@ -128,41 +130,51 @@ class Stats extends Component {
     //----------------------------------------------------------------------------
 
     return (
-    <div className={classes.root}>
-      <div className={classes.container}>
-        <Grid
-          container
-          spacing={16}
-          direction="row"
-          justify="center"
-          alignItems="center"
-        >
-          {/* <Grid item xs={12}>
-            <Paper className={classes.stats}>{this.state.profile.name}</Paper>
-          </Grid> */}
-          <UserStats
-            profile={profile}
-            user={user} />
-          <StatsBreakdown
-            profile={profile}
-            user={user}
-            totalAcc={totalAcc}
-            totalDif={totalDif}
-            totalKia={totalKia}
-            totalShots={totalShots}
-            totalSurv={totalSurv} />
-          <AddFriends
-            allUsers={allUsers} />
-          <FriendOneComp
-          profile={profile}
-          user={user} />
-          <FriendTwoComp 
-          profile={profile}
-          user={user}
-          />
-        </Grid>
+      <div className={classes.root}>
+        <div className={classes.container}>
+          {
+            !user && (
+              <div>
+                {alert('Error fetching user data. \nThis is a known issue and currently being worked on.')}
+              </div>
+            )
+          }
+          {
+            user && (
+              <Grid
+                container
+                spacing={16}
+                direction="row"
+                justify="center"
+                alignItems="center">
+              {/* <Grid item xs={12}>
+                <Paper className={classes.stats}>{this.state.profile.name}</Paper>
+              </Grid> */}
+              <UserStats
+                profile={profile}
+                user={user} />
+              <StatsBreakdown
+                profile={profile}
+                user={user}
+                totalAcc={totalAcc}
+                totalDif={totalDif}
+                totalKia={totalKia}
+                totalShots={totalShots}
+                totalSurv={totalSurv} />
+              <AddFriends
+                allUsers={allUsers} />
+              <FriendOneComp
+              profile={profile}
+              user={user} />
+              <FriendTwoComp
+              profile={profile}
+              user={user}
+              />
+            </Grid>
+            )
+          }
+        </div>
       </div>
-    </div>
     )
   }
 }
