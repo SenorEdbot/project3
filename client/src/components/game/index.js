@@ -52,7 +52,7 @@ export default class Game extends Component {
     this.game = new Phaser.Game({
       type: Phaser.AUTO,
       width: window.innerWidth,
-      height: 800,
+      height: window.innerHeight,
       parent: 'game-container',
       physics: {
         default: 'arcade',
