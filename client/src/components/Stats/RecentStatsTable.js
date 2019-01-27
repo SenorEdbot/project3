@@ -31,24 +31,34 @@ function SimpleTable(props) {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>Recent</TableCell>
-            <TableCell numeric>Recent Accuracy</TableCell>
-            <TableCell numeric>Recent Difficulty</TableCell>
-            <TableCell numeric>Recent Enemies Killed</TableCell>
-            <TableCell numeric>Recent Shots Fired</TableCell>
-            <TableCell numeric>Recent Accuracy</TableCell>
+            <TableCell></TableCell>
+            <TableCell numeric>Time Survived (Secs)</TableCell>
+            <TableCell numeric>Difficulty</TableCell>
+            <TableCell numeric>Enemies Killed</TableCell>
+            <TableCell numeric>Shots Fired</TableCell>
+            <TableCell numeric>Accuracy</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
             <TableCell component="th" scope="row">
-              {user.name}
+              Recent
             </TableCell>
             <TableCell numeric>{user.recentTimeSurvived}</TableCell>
             <TableCell numeric>{user.recentDifficulty}</TableCell>
             <TableCell numeric>{user.recentEnemiesKilled}</TableCell>
             <TableCell numeric>{user.recentShotsFired}</TableCell>
             <TableCell numeric>{user.recentAccuracy}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell component="th" scope="row">
+              Best
+            </TableCell>
+            <TableCell numeric>{user.maxTimeSurvived}</TableCell>
+            <TableCell numeric>{user.maxDifficulty}</TableCell>
+            <TableCell numeric>{user.maxEnemiesKilled}</TableCell>
+            <TableCell numeric>{user.maxShotsFired}</TableCell>
+            <TableCell numeric>{user.maxAccuracy}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -60,4 +70,4 @@ SimpleTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SimpleTable)
+export default withStyles(styles)(SimpleTable);

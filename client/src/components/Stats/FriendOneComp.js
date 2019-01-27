@@ -18,6 +18,7 @@ function FriendOneComp(props) {
   const { classes, user } = props
   return (
     <Grid item xs={6} sm container>
+      <Paper className={classes.friends}>Add Friend 1 Stats</Paper>
       <Grid item>
         <FriendOneStatsTable
           user={user}

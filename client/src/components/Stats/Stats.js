@@ -2,11 +2,7 @@ import React, { Component } from 'react'
 import userServices from '../../services/userServices'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import UserStats from './UserStats'
-import StatsBreakdown from './StatsBreakdown'
-import AddFriends from './AddFriends'
-import FriendOneComp from './FriendOneComp'
-import FriendTwoComp from './FriendTwoComp'
+import { UserStats, StatsBreakdown, AddFriends, FriendOneComp, FriendTwoComp } from '../../index'
 
 const styles = theme => ({
   root: {
@@ -34,8 +30,61 @@ const styles = theme => ({
 class Stats extends Component {
   state = {
     profile: {},
-    allUsers: []
+    allUsers: [],
+    totalAcc: 0,
+    totalDif: 0,
+    totalKia: 0,
+    totalShots: 0,
+    totalSurv: 0
+    // totalArray: []
   }
+  
+  reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+  totalAcc = () => {
+    let totalAccuracy = this.props.user.historyAccuracy.reduce(this.reducer)
+    this.setState({
+      totalAcc: totalAccuracy
+    })
+
+  }
+  totalDif = () => {
+    let totalDifficulty = this.props.user.historyDifficulty.reduce(this.reducer)
+    this.setState({
+      totalDif: totalDifficulty
+    })
+
+  }
+  totalKia = () => {
+    let totalEnemiesKilled = this.props.user.historyEnemiesKilled.reduce(this.reducer)
+    this.setState({
+      totalKia: totalEnemiesKilled
+    })
+
+  }
+  totalShots = () => {
+    let totalShotsFired = this.props.user.historyShotsFired.reduce(this.reducer)
+    this.setState({
+      totalShots: totalShotsFired
+    })
+
+  }
+  totalSurv = () => {
+    let totalTimeSurvived = this.props.user.historyTimeSurvived.reduce(this.reducer)
+    this.setState({
+      totalSurv: totalTimeSurvived
+    })
+
+  }
+  // wanting to pass in this.user.historyX
+  // totalX = (x) => {
+  //   let total = x.reduce(this.reducer)
+  //   this.setState({ totalArray: [...this.state.totalArray, total] })
+
+  // }
+
+
+
   componentWillMount() {
     const { userProfile, getProfile } = this.props.auth
     if (!userProfile) {
@@ -51,11 +100,26 @@ class Stats extends Component {
     userServices.getAllUsers()
       .then(allUsers => this.setState({ allUsers: allUsers.data }))
       .catch(err => console.log(err))
+
+      this.totalAcc()
+      this.totalDif()
+      this.totalKia()
+      this.totalShots()
+      this.totalSurv()
+
+    // for (let i=0; i<5; i++) {
+
+    //   this.totalX(this.props.user.historyAccuracy)
+    //   this.totalX(this.props.user.historyDifficulty)
+    //   this.totalX(this.props.user.historyEnemiesKilled)
+    //   this.totalX(this.props.user.historyShotsFired)
+    //   this.totalX(this.props.user.historyTimeSurvived)
+    // }
   }
 
   render() {
     const { classes, user } = this.props
-    const { profile, allUsers } = this.state
+    const { profile, allUsers, totalAcc, totalDif, totalKia, totalShots, totalSurv } = this.state
     //----------------------------------------------------------------------------
     // TODO: (remove later):
     // User stats retrieved from db is available inside 'user' or 'this.props.user'
@@ -81,7 +145,12 @@ class Stats extends Component {
             user={user} />
           <StatsBreakdown
             profile={profile}
-            user={user} />
+            user={user}
+            totalAcc={totalAcc}
+            totalDif={totalDif}
+            totalKia={totalKia}
+            totalShots={totalShots}
+            totalSurv={totalSurv} />
           <AddFriends
             allUsers={allUsers} />
           <FriendOneComp
@@ -98,4 +167,8 @@ class Stats extends Component {
   }
 }
 
+
+//UserStats: the player profile with their most recent game data as well
+//StatsBreakdown: History AND max for the player/user
+//AddFriends: dropdown for selecting a user to compare stats against. Dyanmically load the comparision components that showcase user1 vs selectedUser
 export default withStyles(styles)(Stats)
