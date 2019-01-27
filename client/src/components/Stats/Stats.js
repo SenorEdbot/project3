@@ -30,6 +30,7 @@ const styles = theme => ({
 class Stats extends Component {
   state = {
     profile: {},
+    user: {},
     allUsers: [],
     totalAcc: 0,
     totalDif: 0,
@@ -89,7 +90,7 @@ class Stats extends Component {
     const { userProfile, getProfile } = this.props.auth
     if (!userProfile) {
       getProfile((err, profile) => {
-        this.setState({ profile: userProfile })
+        this.setState({ profile: profile })
       })
     } else {
       this.setState({ profile: userProfile })
@@ -101,11 +102,11 @@ class Stats extends Component {
       .then(allUsers => this.setState({ allUsers: allUsers.data }))
       .catch(err => console.log(err))
 
-      this.totalAcc()
-      this.totalDif()
-      this.totalKia()
-      this.totalShots()
-      this.totalSurv()
+    this.totalAcc()
+    this.totalDif()
+    this.totalKia()
+    this.totalShots()
+    this.totalSurv()
 
     // for (let i=0; i<5; i++) {
 
@@ -119,7 +120,7 @@ class Stats extends Component {
 
   render() {
     const { classes, user } = this.props
-    const { profile, allUsers, totalAcc, totalDif, totalKia, totalShots, totalSurv } = this.state
+    const { profile, allUsers, totalAcc, totalDif, totalKia, totalShots, totalSurv} = this.state
     //----------------------------------------------------------------------------
     // TODO: (remove later):
     // User stats retrieved from db is available inside 'user' or 'this.props.user'

@@ -20,13 +20,11 @@ const styles = theme => ({
     margin: "0 auto",
     marginTop: "50px",
     backgroundColor: "black",
-    
   },
   text: {
     fontFamily: "VT323",
-    fontSize: "16px",
+    fontSize: "18px",
     color: "grey",
-    fontSize: "18px"
   },
   media: {
     height: "300px",
