@@ -32,6 +32,8 @@ class Stats extends Component {
     profile: {},
     user: {},
     allUsers: [],
+    userToCompare: '',
+    secondUserObj: {},
     totalAcc: 0,
     totalDif: 0,
     totalKia: 0,
@@ -83,9 +85,14 @@ class Stats extends Component {
   //   this.setState({ totalArray: [...this.state.totalArray, total] })
 
   // }
-
-
-
+  handleChange = e => {
+    userServices.getUserByUsername(e.target.value)
+      .then(dbUser => {
+        console.log('in saving 2nd user', dbUser.data)
+        this.setState({ secondUserObj: dbUser.data, userToCompare: e.target.value })
+      })
+      .catch(err => console.log(err))      
+  }
   componentWillMount() {
     const { userProfile, getProfile } = this.props.auth
     if (!userProfile) {
@@ -120,7 +127,7 @@ class Stats extends Component {
 
   render() {
     const { classes, user } = this.props
-    const { profile, allUsers, totalAcc, totalDif, totalKia, totalShots, totalSurv} = this.state
+    const { profile, allUsers, totalAcc, totalDif, totalKia, totalShots, totalSurv } = this.state
     //----------------------------------------------------------------------------
     // TODO: (remove later):
     // User stats retrieved from db is available inside 'user' or 'this.props.user'
@@ -153,14 +160,18 @@ class Stats extends Component {
             totalShots={totalShots}
             totalSurv={totalSurv} />
           <AddFriends
-            allUsers={allUsers} />
-          <FriendOneComp
-          profile={profile}
-          user={user} />
-          <FriendTwoComp 
-          profile={profile}
-          user={user}
-          />
+            allUsers={allUsers}
+            userToCompare={this.state.userToCompare}
+            handleChange={this.handleChange}
+           />
+           {this.state.secondUserObj.name ? (
+             <React.Fragment>
+              <FriendOneComp
+                user={user} />
+              <FriendTwoComp
+                user={this.state.secondUserObj} />
+             </React.Fragment>
+           ) : ("No match")}
         </Grid>
       </div>
     </div>

@@ -98,6 +98,9 @@ class App extends Component {
                 </Button>
               )
             }
+            {/* <Button className={classes.button} onClick={this.goTo.bind(this, 'stats')}>
+              Stats
+            </Button> */}
             <Typography variant="title" color="inherit" className={classes.flex}>
             MidWaste
             </Typography>
