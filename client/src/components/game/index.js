@@ -181,7 +181,7 @@ export default class Game extends Component {
         this.component.setState({ playerData: res.data, tutorialCompleted: res.data.tutorialCompleted }); // TODO: remove playerData (not in use?)
         this.component.getUser(res.data); // TODO: refactor
 
-        if (this.state.tutorialCompleted) this.gameMode.setTutorialComplete();
+        if (this.component.state.tutorialCompleted) this.gameMode.setTutorialComplete();
       })
       .catch(err => console.log(err));
     }
