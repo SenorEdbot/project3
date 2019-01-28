@@ -5,7 +5,7 @@ import Player from './player';
 import GameModes from './modes';
 import obstacles from './obstacles/obstacles.json';
 
-const isDev = true;
+const isDev = false;
 
 export default class Game extends Component {
   state = {
@@ -31,7 +31,7 @@ export default class Game extends Component {
       if (!userProfile) {
         getProfile((err, profile) => this.setState({ profile, username: profile.nickname }));
       } else {
-        this.setState({ profile: userProfile });
+        this.setState({ profile: userProfile, username: userProfile.nickname });
       }
     }
   }
@@ -185,7 +185,7 @@ export default class Game extends Component {
   save() {
     if (!this.state.gameSaved) {
 
-      this.state.gameSaved = true;
+      this.setState({ gameSaved: true })
 
       const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy } = this.state;
       const statsObject = {

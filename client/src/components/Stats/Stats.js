@@ -30,7 +30,10 @@ const styles = theme => ({
 class Stats extends Component {
   state = {
     profile: {},
+    user: {},
     allUsers: [],
+    userToCompare: '',
+    secondUserObj: {},
     totalAcc: 0,
     totalDif: 0,
     totalKia: 0,
@@ -82,14 +85,19 @@ class Stats extends Component {
   //   this.setState({ totalArray: [...this.state.totalArray, total] })
 
   // }
-
-
-
+  handleChange = e => {
+    userServices.getUserByUsername(e.target.value)
+      .then(dbUser => {
+        console.log('in saving 2nd user', dbUser.data)
+        this.setState({ secondUserObj: dbUser.data, userToCompare: e.target.value })
+      })
+      .catch(err => console.log(err))      
+  }
   componentWillMount() {
     const { userProfile, getProfile } = this.props.auth
     if (!userProfile) {
       getProfile((err, profile) => {
-        this.setState({ profile: userProfile })
+        this.setState({ profile: profile })
       })
     } else {
       this.setState({ profile: userProfile })
@@ -101,11 +109,11 @@ class Stats extends Component {
       .then(allUsers => this.setState({ allUsers: allUsers.data }))
       .catch(err => console.log(err))
 
-      this.totalAcc()
-      this.totalDif()
-      this.totalKia()
-      this.totalShots()
-      this.totalSurv()
+    this.totalAcc()
+    this.totalDif()
+    this.totalKia()
+    this.totalShots()
+    this.totalSurv()
 
     // for (let i=0; i<5; i++) {
 
@@ -152,14 +160,18 @@ class Stats extends Component {
             totalShots={totalShots}
             totalSurv={totalSurv} />
           <AddFriends
-            allUsers={allUsers} />
-          <FriendOneComp
-          profile={profile}
-          user={user} />
-          <FriendTwoComp 
-          profile={profile}
-          user={user}
-          />
+            allUsers={allUsers}
+            userToCompare={this.state.userToCompare}
+            handleChange={this.handleChange}
+           />
+           {this.state.secondUserObj.name ? (
+             <React.Fragment>
+              <FriendOneComp
+                user={user} />
+              <FriendTwoComp
+                user={this.state.secondUserObj} />
+             </React.Fragment>
+           ) : ("")}
         </Grid>
       </div>
     </div>
