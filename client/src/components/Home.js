@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Game from './game';
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import { Typography, Grid, GridList } from '../../node_modules/@material-ui/core';
+import { Typography, Grid } from '../../node_modules/@material-ui/core';
 import CardMedia from '@material-ui/core/CardMedia';
 import Paper from '@material-ui/core/Paper';
 
@@ -27,7 +27,6 @@ const styles = theme => ({
   },
   text: {
     fontFamily: "VT323",
-    fontSize: "16px",
     color: "grey",
     fontSize: "18px"
   },

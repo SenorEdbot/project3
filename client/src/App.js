@@ -79,7 +79,7 @@ class App extends Component {
             {
               isAuthenticated() && (
                 <Button className={classes.button} onClick={this.goTo.bind(this, 'profile')}>
-                  Profile
+                  Info
                 </Button>
               )
             }
