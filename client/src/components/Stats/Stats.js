@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import userServices from '../../services/userServices'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import { UserStats, AddFriends, FriendComp } from '../../index'
+import { UserStats, CompareFriend } from '../../index'
 
 const styles = theme => ({
   root: {
@@ -142,19 +142,21 @@ class Stats extends Component {
             totalShots={totalShots}
             totalSurv={totalSurv}
            />
-          <AddFriends
+          </Grid>
+          <Grid
+          container
+          spacing={16}
+          direction="row"
+          justify="center"
+          alignItems="center"
+          style={{marginTop: "20px"}}
+        >
+          <CompareFriend
+            user={user}
             allUsers={allUsers}
             userToCompare={this.state.userToCompare}
             handleChange={this.handleChange}
-           />
-           {this.state.secondUserObj.name ? (
-             <React.Fragment>
-              <FriendComp
-                user={user} />
-              <FriendComp
-                user={this.state.secondUserObj} />
-             </React.Fragment>
-           ) : ("")}
+            />
         </Grid>
       </div>
     </div>
