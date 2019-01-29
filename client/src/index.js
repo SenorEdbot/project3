@@ -2,12 +2,11 @@ import ReactDOM from 'react-dom';
 import { makeMainRoutes } from './routes';
 import * as serviceWorker from './serviceWorker';
 
-import UserStats from './components/Stats/UserStats'
-import StatsBreakdown from './components/Stats/StatsBreakdown'
-import AddFriends from './components/Stats/AddFriends'
-import FriendOneComp from './components/Stats/FriendOneComp'
-import FriendTwoComp from './components/Stats/FriendTwoComp'
-
+// import StatsBreakdown from './components/Stats/StatsBreakdown'
+import Stats from './components/Stats/Stats'
+import UserStats from './components/Stats/UserStats/UserStats'
+import CompareFriend from './components/Stats/CompareFriend/CompareFriend'
+import FriendComp from './components/Stats/CompareFriend/FriendComp'
 
 const routes = makeMainRoutes();
 
@@ -22,5 +21,5 @@ ReactDOM.render(
 serviceWorker.unregister();
 
 export {
-  UserStats, StatsBreakdown, AddFriends, FriendOneComp, FriendTwoComp
+  UserStats, CompareFriend, FriendComp, Stats
 }

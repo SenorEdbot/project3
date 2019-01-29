@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import userServices from '../../services/userServices'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import { UserStats, StatsBreakdown, AddFriends, FriendOneComp, FriendTwoComp } from '../../index'
+import { UserStats, CompareFriend } from '../../index'
 
 const styles = theme => ({
   root: {
@@ -79,12 +79,7 @@ class Stats extends Component {
     })
 
   }
-  // wanting to pass in this.user.historyX
-  // totalX = (x) => {
-  //   let total = x.reduce(this.reducer)
-  //   this.setState({ totalArray: [...this.state.totalArray, total] })
-
-  // }
+  
   handleChange = e => {
     userServices.getUserByUsername(e.target.value)
       .then(dbUser => {
@@ -116,15 +111,6 @@ class Stats extends Component {
         this.totalShots()
         this.totalSurv()
       }
-
-    // for (let i=0; i<5; i++) {
-
-    //   this.totalX(this.props.user.historyAccuracy)
-    //   this.totalX(this.props.user.historyDifficulty)
-    //   this.totalX(this.props.user.historyEnemiesKilled)
-    //   this.totalX(this.props.user.historyShotsFired)
-    //   this.totalX(this.props.user.historyTimeSurvived)
-    // }
   }
 
   render() {
@@ -147,33 +133,30 @@ class Stats extends Component {
           justify="center"
           alignItems="center"
         >
-          {/* <Grid item xs={12}>
-            <Paper className={classes.stats}>{this.state.profile.name}</Paper>
-          </Grid> */}
           <UserStats
-            profile={profile}
-            user={user} />
-          <StatsBreakdown
             profile={profile}
             user={user}
             totalAcc={totalAcc}
             totalDif={totalDif}
             totalKia={totalKia}
             totalShots={totalShots}
-            totalSurv={totalSurv} />
-          <AddFriends
+            totalSurv={totalSurv}
+           />
+          </Grid>
+          <Grid
+          container
+          spacing={16}
+          direction="row"
+          justify="center"
+          alignItems="center"
+          style={{marginTop: "20px"}}
+        >
+          <CompareFriend
+            user={user}
             allUsers={allUsers}
             userToCompare={this.state.userToCompare}
             handleChange={this.handleChange}
-           />
-           {this.state.secondUserObj.name ? (
-             <React.Fragment>
-              <FriendOneComp
-                user={user} />
-              <FriendTwoComp
-                user={this.state.secondUserObj} />
-             </React.Fragment>
-           ) : ("")}
+            />
         </Grid>
       </div>
     </div>

@@ -2,7 +2,8 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 // import Paper from '@material-ui/core/Paper'
-import FriendOneStatsTable from './FriendOneStatsTable';
+// import FriendStatsTable from './FriendStatsTable';
+import FriendStatsTable1 from './FriendStatsTable1';
 
 const styles = theme => ({
   root: {
@@ -14,16 +15,16 @@ const styles = theme => ({
   }
 })
 
-function FriendOneComp(props) {
+function FriendComp(props) {
   const { user } = props
   // Deleted classes out props because it was unused
   return (
-    <Grid item xs={6} sm container>
-      <FriendOneStatsTable
+    <Grid item xs={6}>
+      <FriendStatsTable1
         user={user}
       />
     </Grid>
   )
 }
 
-export default withStyles(styles)(FriendOneComp)
+export default withStyles(styles)(FriendComp)
