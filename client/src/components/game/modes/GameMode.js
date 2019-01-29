@@ -15,6 +15,8 @@ export default class GameMode {
     // GameMode
     this.name = 'Default'
     this.started = false
+    this.gameOver = false
+    this.gameWon = null
     this.canUpdate = false
     this.nextUpdate = 0
     this.timeSurvived = 0
@@ -62,6 +64,12 @@ export default class GameMode {
       if (e.code === 'KeyE' && this.tutorial.activeTutorial === 'interact') {
         this.tutorial.goToNext()
         this.setTutorialComplete()
+      }
+
+      // R to restart on player death
+      if (e.code === 'KeyR' && this.gameOver) {
+        console.log(this.scene)
+        this.scene.scene.restart()
       }
 
     })
@@ -172,6 +180,13 @@ export default class GameMode {
 
       }
 
+      // Check if the player is still alive
+      if (!this.player.isAlive) {
+
+        this.setGameOver();
+
+      }
+
     } else if (!this.started) {
 
       // Check if player is in range of trigger
@@ -233,11 +248,36 @@ export default class GameMode {
 
   setTutorialComplete() {
 
-      this.tutorial.setComplete()
-      this.player.toggleFlashlight(true)
-      this.graphics.clear()
+    this.tutorial.setComplete()
+    this.player.toggleFlashlight(true)
+    this.graphics.clear()
 
-      this.createGraphics()
+    this.createGraphics()
+
+  }
+
+  setGameOver() {
+
+    if (!this.gameOver) {
+
+      this.gameOver = true
+      this.gameWon = this.player.isAlive
+
+      if (this.gameWon) {
+
+        this.triggerCaption.setText('Objective complete. R to restart.')
+
+      } else {
+
+        this.triggerCaption.setText('You died. R to restart.')
+
+      }
+
+      this.scene.component.save();
+
+      console.log('setGameOverComplete')
+
+    }
 
   }
 

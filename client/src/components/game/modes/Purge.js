@@ -66,6 +66,14 @@ export default class Purge extends GameMode {
         // Update the game component state
         this.scene.component.setState({ timeSurvived: this.timeSurvived });
       }
+
+      // Check if the player is still alive
+      if (!this.player.isAlive) {
+
+        this.setGameOver();
+
+      }
+
     } else if (!this.started) {
       // Check if player is in range of trigger
       let distX = Math.abs(this.player.sprite.x - this.trigger.x);
@@ -94,11 +102,16 @@ export default class Purge extends GameMode {
 
     // Save game on all enemies killed
     if (this.enemiesLeft === 0) {
-      this.scene.component.save();
+
+      this.setGameOver()
+
     }
   }
 
   stopFlashing() {
+
     clearInterval(this.flashCarLights);
+
   }
+
 }
