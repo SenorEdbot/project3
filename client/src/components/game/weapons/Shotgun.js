@@ -49,6 +49,7 @@ export default class Shotgun extends Gun {
 
       // Effects
       camera.shake(250, this.cameraShakeIntensity)
+      this.audio.playGunshot('pistolFire', 0.5)
 
       if (callback) callback()
 
@@ -58,5 +59,11 @@ export default class Shotgun extends Gun {
       this.reload()
 
     }
+  }
+
+  onReload() {
+
+    this.audio.playReload('shotgunReload', 1)
+
   }
 }

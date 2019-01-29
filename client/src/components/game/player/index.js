@@ -111,7 +111,7 @@ export default class Player {
     .beginPath()
     .arc(this.sprite.x, this.sprite.y, 60, Phaser.Math.DegToRad(startAngle), Phaser.Math.DegToRad(endAngle + (cell * difference)), true)
     .strokePath()
-    .setDepth(-1);
+    .setDepth(999);
   }
 
   onShoot() {

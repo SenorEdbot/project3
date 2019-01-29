@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import AudioManager from '../audio/AudioManager'
 import Zombie from '../enemies/zombie'
 import Tutorial from '../tutorial'
 
@@ -11,6 +12,9 @@ export default class GameMode {
 
     // Player
     this.player = this.scene.player
+
+    this.audio = new AudioManager(this.scene)
+    this.audio.playAudio('spooky', true, 0.5)
 
     // GameMode
     this.name = 'Default'
@@ -68,8 +72,13 @@ export default class GameMode {
 
       // R to restart on player death
       if (e.code === 'KeyR' && this.gameOver) {
-        console.log(this.scene)
+
+        // console.log(this.scene.sound)
+        this.scene.sound.forEachActiveSound(sound => {
+          sound.destroy()
+        })
         this.scene.scene.restart()
+
       }
 
     })
@@ -132,6 +141,8 @@ export default class GameMode {
     this.started = true
     this.graphics.clear()
 
+    this.audio.playAudio('alarm', false, 0.33)
+
     setTimeout(() => {
 
       // Create n zombies based on difficulty
@@ -152,6 +163,8 @@ export default class GameMode {
 
       // Let the gamemode start updating
       this.canUpdate = true
+
+      this.audio.playAudio('theme', true, 1.5)
 
     }, this.startDelay)
 
@@ -274,9 +287,8 @@ export default class GameMode {
       }
 
       this.scene.component.save();
-
-      console.log('setGameOverComplete')
-
+      this.scene.lights.setAmbientColor(0x500000)
+      this.audio.playAudio('spooky', true, 0.5)
     }
 
   }

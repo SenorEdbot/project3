@@ -106,7 +106,16 @@ export default class Game extends Component {
     this.load.image('map', ['/assets/backgrounds/map02.jpg', '/assets/backgrounds/map02_n.png'])
 
     // Audio
-    // ...
+    this.load.audio('theme', '/assets/audio/midWasteTheme.wav')
+    this.load.audio('spooky', '/assets/audio/spookyStuff.wav')
+    this.load.audio('alarm', '/assets/audio/carAlarm.wav')
+    this.load.audio('pistolFire', '/assets/audio/pistolFire.wav')
+    this.load.audio('pistolReload', '/assets/audio/pistolReload.wav')
+    this.load.audio('shotgunFire', '/assets/audio/shotgunFire.wav')
+    this.load.audio('shotgunFire2', '/assets/audio/shotgunFire2.wav')
+    this.load.audio('shotgunReload', '/assets/audio/shotgunReload.wav')
+    this.load.audio('shotgunReload2', '/assets/audio/shotgunReload2.wav')
+
 
   }
 
@@ -165,7 +174,9 @@ export default class Game extends Component {
     this.lights.addLight(1638, 1582, 200, 0xFFA233)
     this.lights
       .enable()
-      .setAmbientColor(0x010909)
+      // .setAmbientColor(0x010909)
+      .setAmbientColor(0x200000)
+
 
     // On-screen text: style
     let captionStyle = {
