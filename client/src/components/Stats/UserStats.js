@@ -54,7 +54,7 @@ function UserStats(props) {
               <Typography gutterBottom variant="subtitle1">
                 {profile.name}
               </Typography>
-              <Typography gutterBottom>{user.name}</Typography>
+              <Typography gutterBottom>{user.profile}</Typography>
             </Grid>
           </Grid>
         </Grid>

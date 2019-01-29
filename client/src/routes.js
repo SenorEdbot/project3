@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Router } from 'react-router-dom';
-import Header from './components/Header';
+import App from './App';
 import Home from './components/Home';
 import Stats from './components/Stats/Stats';
 import Profile from './components/Profile/Profile';
@@ -27,9 +27,9 @@ export const makeMainRoutes = () => {
   return (
       <Router history={history}>
         <div>
-          <Route path="/" render={(props) => <Header auth={auth} {...props} />} />
+          <Route path="/" render={(props) => <App auth={auth} {...props} />} />
           <Route path="/home" render={(props) => <Home auth={auth} getUser={getUser} {...props} />} />
-          <Route path="/stats" render={(props) => <Stats auth={auth} getUser={getUser} user={currentUser} {...props} />} />
+          <Route path="/stats" render={(props) => <Stats auth={auth} user={currentUser} {...props} />} />
           <Route path="/profile" render={(props) => (
             !auth.isAuthenticated() ? (
               <Redirect to="/home"/>

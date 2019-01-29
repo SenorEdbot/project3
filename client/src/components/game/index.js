@@ -233,7 +233,7 @@ export default class Game extends Component {
 
     if (!this.state.gameSaved) {
 
-      this.setState({ gameSaved: true })
+      this.state.gameSaved = true;
 
       const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy, tutorialCompleted } = this.state
 

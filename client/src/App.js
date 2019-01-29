@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
-import '../App.css';
+import './App.css';
 import { withStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
+
+
 const styles = theme => ({
+  root: {
+   
+  },
+  container: {
+
+  },
   appbar: {
     backgroundColor: "black",
     color: "grey"
@@ -17,14 +25,18 @@ const styles = theme => ({
     "&:hover": {
       color: "white"
     }
+
   },
   flex: {
     marginLeft: "80%",
     fontFamily: "VT323",
   }
+  
+
+
 })
 
-class Header extends Component {
+class App extends Component {
   goTo(route) {
     this.props.history.replace(`/${route}`)
   }
@@ -67,7 +79,7 @@ class Header extends Component {
             {
               isAuthenticated() && (
                 <Button className={classes.button} onClick={this.goTo.bind(this, 'profile')}>
-                  Profile
+                  Info
                 </Button>
               )
             }
@@ -96,4 +108,4 @@ class Header extends Component {
   }
 }
 
-export default withStyles(styles)(Header);
+export default withStyles(styles)(App);

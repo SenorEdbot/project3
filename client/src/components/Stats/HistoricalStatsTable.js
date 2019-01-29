@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -7,7 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import GameHistory1 from './GameHistory1'
+import GameHistory from './GameHistory'
+
 
 const styles = theme => ({
     root: {
@@ -20,8 +21,14 @@ const styles = theme => ({
     },
 });
 
+
 function HistoricalTable(props) {
+
+
     const { classes, user, totalAcc, totalDif, totalKia, totalShots, totalSurv } = props;
+
+
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     return (
         <React.Fragment>
@@ -57,6 +64,7 @@ function HistoricalTable(props) {
                         <TableCell numeric>{(totalKia / user.historyEnemiesKilled.length).toFixed(0)}</TableCell>
                         <TableCell numeric>{(totalShots / user.historyShotsFired.length).toFixed(0)}</TableCell>
                         <TableCell numeric>{(totalSurv / user.historyTimeSurvived.length).toFixed(0)}</TableCell>
+
                     </TableRow>
                     <TableRow>
                         <TableCell component="th" scope="row">
@@ -71,7 +79,7 @@ function HistoricalTable(props) {
                 </TableBody>
             </Table>
         </Paper>
-        <GameHistory1 
+        <GameHistory 
         user={user} />
         </React.Fragment>
     );
