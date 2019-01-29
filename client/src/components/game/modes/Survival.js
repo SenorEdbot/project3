@@ -13,6 +13,7 @@ export default class Survival extends GameMode {
       fill: 'orangered',
       fontFamily: 'monospace',
       lineSpacing: 4,
+      align: 'center'
     }
 
     // Custom props

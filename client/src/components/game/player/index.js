@@ -43,7 +43,8 @@ export default class Player {
 
     // ! DEMO: Pick a random weapon
     const weapons = [new Weapon.Gun(this.scene, this), new Weapon.Shotgun(this.scene, this)];
-    this.weapon = weapons[Math.floor(Math.random() * weapons.length)];
+    // this.weapon = weapons[Math.floor(Math.random() * weapons.length)];
+    this.weapon = weapons[1];
 
     this.kills = 0;
     this.shotsFired = 0;

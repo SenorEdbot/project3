@@ -17,7 +17,7 @@ export default class Purge extends GameMode {
     this.captionStyle = {
       fill: 'orangered',
       fontFamily: 'monospace',
-      lineSpacing: 4,
+      lineSpacing: 4
     }
 
     // Custom props
