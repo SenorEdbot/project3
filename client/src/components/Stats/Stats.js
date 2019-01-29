@@ -30,7 +30,10 @@ const styles = theme => ({
 class Stats extends Component {
   state = {
     profile: {},
+    user: {},
     allUsers: [],
+    userToCompare: '',
+    secondUserObj: {},
     totalAcc: 0,
     totalDif: 0,
     totalKia: 0,
@@ -82,14 +85,19 @@ class Stats extends Component {
   //   this.setState({ totalArray: [...this.state.totalArray, total] })
 
   // }
-
-
-
+  handleChange = e => {
+    userServices.getUserByUsername(e.target.value)
+      .then(dbUser => {
+        console.log('in saving 2nd user', dbUser.data)
+        this.setState({ secondUserObj: dbUser.data, userToCompare: e.target.value })
+      })
+      .catch(err => console.log(err))      
+  }
   componentWillMount() {
     const { userProfile, getProfile } = this.props.auth
     if (!userProfile) {
       getProfile((err, profile) => {
-        this.setState({ profile })
+        this.setState({ profile: profile })
       })
     } else {
       this.setState({ profile: userProfile })
@@ -130,50 +138,43 @@ class Stats extends Component {
     //----------------------------------------------------------------------------
 
     return (
-      <div className={classes.root}>
-        <div className={classes.container}>
-          {
-            !user && (
-              <div>
-                {alert('Error fetching user data. \nThis is a known issue and currently being worked on.')}
-              </div>
-            )
-          }
-          {
-            user && (
-              <Grid
-                container
-                spacing={16}
-                direction="row"
-                justify="center"
-                alignItems="center">
-              {/* <Grid item xs={12}>
-                <Paper className={classes.stats}>{this.state.profile.name}</Paper>
-              </Grid> */}
-              <UserStats
-                profile={profile}
-                user={user} />
-              <StatsBreakdown
-                profile={profile}
-                user={user}
-                totalAcc={totalAcc}
-                totalDif={totalDif}
-                totalKia={totalKia}
-                totalShots={totalShots}
-                totalSurv={totalSurv} />
-              <AddFriends
-                allUsers={allUsers} />
+    <div className={classes.root}>
+      <div className={classes.container}>
+        <Grid
+          container
+          spacing={16}
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
+          {/* <Grid item xs={12}>
+            <Paper className={classes.stats}>{this.state.profile.name}</Paper>
+          </Grid> */}
+          <UserStats
+            profile={profile}
+            user={user} />
+          <StatsBreakdown
+            profile={profile}
+            user={user}
+            totalAcc={totalAcc}
+            totalDif={totalDif}
+            totalKia={totalKia}
+            totalShots={totalShots}
+            totalSurv={totalSurv} />
+          <AddFriends
+            allUsers={allUsers}
+            userToCompare={this.state.userToCompare}
+            handleChange={this.handleChange}
+           />
+           {this.state.secondUserObj.name ? (
+             <React.Fragment>
               <FriendOneComp
-              profile={profile}
-              user={user} />
+                user={user} />
               <FriendTwoComp
-              profile={profile}
-              user={user}
-              />
-            </Grid>
-            )
-          }
-        </div>
+                user={this.state.secondUserObj} />
+             </React.Fragment>
+           ) : ("")}
+        </Grid>
       </div>
     )
   }

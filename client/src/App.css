@@ -1,5 +1,7 @@
 body {
   background-color: #131313;
+  margin: 0;
+  padding: 0;
 }
 #appPage {
   margin-top: 50px;

@@ -29,23 +29,51 @@ function GameHistory(props) {
         <TableHead>
             <TableRow>
                 <TableCell>Game History</TableCell>
-                <TableCell numeric>Accuracy (Avg %)</TableCell>
-                <TableCell numeric>Difficulty (Avg) </TableCell>
-                <TableCell numeric>Enemies Killed</TableCell>
-                <TableCell numeric>Shots Fired</TableCell>
-                <TableCell numeric>Time Survived (Secs)</TableCell>
+                {user.historyAccuracy.map((el, index) => (
+                    <TableCell>{index + 1}</TableCell>
+                ))}
             </TableRow>
         </TableHead>
         <TableBody>
             <TableRow>
                 <TableCell component="th" scope="row">
-                    Totals
+                    Accuracy
                 </TableCell>
-                <TableCell numeric>{0}</TableCell>
-                <TableCell numeric>{1}</TableCell>
-                <TableCell numeric>{2}</TableCell>
-                <TableCell numeric>{3}</TableCell>
-                <TableCell numeric>{4}</TableCell>
+                {user.historyAccuracy.map(el => (
+                    <TableCell>{el}</TableCell>
+                ))}
+            </TableRow>
+            <TableRow>
+                <TableCell component="th" scope="row">
+                    Difficulty
+                </TableCell>
+                {user.historyDifficulty.map(el => (
+                    <TableCell>{el}</TableCell>
+                ))}
+            </TableRow>
+            <TableRow>
+                <TableCell component="th" scope="row">
+                    Enemies Killed
+                </TableCell>
+                {user.historyEnemiesKilled.map(el => (
+                    <TableCell>{el}</TableCell>
+                ))}
+            </TableRow>
+            <TableRow>
+                <TableCell component="th" scope="row">
+                    Shots Fired
+                </TableCell>
+                {user.historyShotsFired.map(el => (
+                    <TableCell>{el}</TableCell>
+                ))}
+            </TableRow>
+            <TableRow>
+                <TableCell component="th" scope="row">
+                    Time Survived
+                </TableCell>
+                {user.historyTimeSurvived.map(el => (
+                    <TableCell>{el}</TableCell>
+                ))}
             </TableRow>
         </TableBody>
     </Table>

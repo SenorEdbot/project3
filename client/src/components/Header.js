@@ -1,38 +1,30 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../App.css';
 import { withStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-
-
 const styles = theme => ({
-  root: {
-
-  },
-  container: {
-
-  },
-  flex: {
-    marginLeft: "80%",
-    fontFamily: "VT323"
-  },
   appbar: {
     backgroundColor: "black",
     color: "grey"
   },
   button: {
     color: "grey",
-    fontFamily: "VT323"
+    fontFamily: "VT323",
+    "&:hover": {
+      color: "white"
+    }
   },
-  
-
-
+  flex: {
+    marginLeft: "80%",
+    fontFamily: "VT323",
+  }
 })
 
-class App extends Component {
+class Header extends Component {
   goTo(route) {
     this.props.history.replace(`/${route}`)
   }
@@ -79,20 +71,19 @@ class App extends Component {
                 </Button>
               )
             }
-            
-            {
-              isAuthenticated() && (
-                  <Button className={classes.button} onClick={this.logout.bind(this)}>
-                    Log Out
-                  </Button>
-                )
-            }
             {
               isAuthenticated() && (
                 <Button className={classes.button} onClick={this.goTo.bind(this, 'stats')}>
                   Stats
                 </Button>
               )
+            }
+            {
+              isAuthenticated() && (
+                  <Button className={classes.button} onClick={this.logout.bind(this)}>
+                    Log Out
+                  </Button>
+                )
             }
             <Typography variant="title" color="inherit" className={classes.flex}>
             MidWaste
@@ -105,4 +96,4 @@ class App extends Component {
   }
 }
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(Header);
