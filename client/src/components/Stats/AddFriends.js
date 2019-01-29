@@ -8,7 +8,6 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
-// import userServices from '../../services/userServices'
 
 const styles = theme => ({
   root: {
@@ -22,20 +21,6 @@ const styles = theme => ({
 })
 
 class AddFriends extends Component {
-  // state = {
-  //   userToCompare: '',
-  //   secondUserObj: {}
-  // }
-
-  // handleChange = e => {
-  //   userServices.getUserByUsername(e.target.value)
-  //     .then(dbUser => {
-  //       console.log('in saving 2nd user', dbUser.data)
-  //       this.setState({ secondUserObj: dbUser.data, userToCompare: e.target.value })
-  //     })
-  //     .catch(err => console.log(err))      
-  // }
-
   render() {
   const { classes, allUsers } = this.props
   return (

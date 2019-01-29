@@ -19,7 +19,7 @@ const styles = theme => ({
   },
 });
 
-function FriendOneTable(props) {
+function FriendStatsTable(props) {
   const { classes, user } = props;
 
   return (
@@ -52,8 +52,8 @@ function FriendOneTable(props) {
   );
 }
 
-FriendOneTable.propTypes = {
+FriendStatsTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(FriendOneTable);
+export default withStyles(styles)(FriendStatsTable);
