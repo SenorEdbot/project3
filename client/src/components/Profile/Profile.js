@@ -52,7 +52,7 @@ class Profile extends Component {
       </div>
           <Typography className={classes.text}>
           You have found yourself in the *MidWaste*, a post apocalyptic world scattered with zombies, previously known as "Kansas". <br/>
-          Your main objective is *SURVIVAL*. Connect with other survivors and work together to improve the conditions of your immedaite area.<br/>
+          Your main objective is *SURVIVAL*. Connect with other survivors and work together to improve the conditions of your immediate area.<br/>
           Gather supplies, powerups and other items to improve the liklihood you and your team see tomorrow. 
           </Typography>
       </Card>
