@@ -128,9 +128,15 @@ export default class GameMode {
 
       // Create n zombies based on difficulty
       for (let i = 0; i < this.difficulty * 100; i++) {
+
         let enemy = new Zombie(this.scene)
+
+        // Allow gameMode customizable enemies
+        if (this.customEnemyStart) enemy = this.customEnemyStart(enemy)
+
         this.enemies.push(enemy)
         this.scene.zombies.add(enemy.sprite)
+
       }
 
       // Collision: Zombies & Obstacles

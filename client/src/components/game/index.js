@@ -138,7 +138,7 @@ export default class Game extends Component {
       case 1:
         this.gameMode = new GameModes.Purge(this)
         break
-      case 0:
+      default:
         this.gameMode = new GameModes.Survival(this)
         break
     }
