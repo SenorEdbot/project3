@@ -1,58 +1,71 @@
-import React, { Component } from 'react';
-import Phaser from 'phaser';
+import React, { Component } from 'react'
+import Phaser from 'phaser'
+import GameModes from './modes'
+import Obstacles from './obstacles/obstacles.json'
+import Player from './player'
 import userServices from '../../services/userServices'
-import Player from './player';
-import GameModes from './modes';
-import obstacles from './obstacles/obstacles.json';
 
-const isDev = false;
+// Store the game object globally so we have access to window.resize events.
+let game
 
 export default class Game extends Component {
+
   state = {
-    username: '',
-    timeSurvived: 0,
-    difficulty: 0,
-    enemiesKilled: 0,
     health: 0,
-    shotsFired: 0,
     accuracy: 0,
-    gameSaved: false
+    username: '',
+    difficulty: 0,
+    shotsFired: 0,
+    timeSurvived: 0,
+    enemiesKilled: 0,
+    gameSaved: false,
+    tutorialCompleted: false
   }
 
-  getUser = (user) => this.props.getUser(user);
+  // Pass data (player stats) up to parent components.
+  getUser = (user) => this.props.getUser(user)
 
   componentWillMount() {
-    if (!isDev) {
-      // Get user nickname from Auth0
-      const { userProfile, getProfile } = this.props.auth;
+    // Get user nickname from Auth0
 
-      this.setState({ profile: {} });
+    const { userProfile, getProfile } = this.props.auth
 
-      if (!userProfile) {
-        getProfile((err, profile) => this.setState({ profile, username: profile.nickname }));
-      } else {
-        this.setState({ profile: userProfile, username: userProfile.nickname });
-      }
+    if (!userProfile) {
+
+      // If a user profile does not exist, fetch it from the logged in user.
+      getProfile((err, profile) => {
+
+        this.setState({ username: profile.nickname })
+
+      })
+
+    } else {
+
+      this.setState({ username: userProfile.nickname })
+
     }
+
   }
 
   componentWillUnmount() {
+
     /*
-      Note: there's still a delay when a new Phaser Game
+      Note: There's still a delay when a new Phaser Game
       is created but this temporarily fixes issues with
       players being unable to move when this remounts.
     */
 
     // Destroy the existing Phaser Game.
-    if (this.game) this.game.destroy(true, false);
+    if (game) game.destroy(true, false)
+
   }
 
   componentDidMount() {
-    // Initialize the game
-    this.game = new Phaser.Game({
+
+    const gameConfig = {
       type: Phaser.AUTO,
       width: window.innerWidth,
-      height: window.innerHeight,
+      height: window.innerHeight - 200,
       parent: 'game-container',
       physics: {
         default: 'arcade',
@@ -64,142 +77,202 @@ export default class Game extends Component {
         preload: this.preload,
         create: this.create,
         update: this.update,
+        resize: this.resize,
         component: this
       }
-    });
+    }
+
+    // Initialize the Phaser Game object
+    game = new Phaser.Game(gameConfig)
+
   }
 
   render() {
+
     return (
+
       <div id="game-container"></div>
-    );
+
+    )
+
   }
 
   preload() {
-    this.load.image('map', ['/assets/backgrounds/map02.jpg', '/assets/backgrounds/map02_n.png']);
-    this.load.image('player', ['/assets/sprites/playerPistol.gif', '/assets/sprites/playerPistol_n.png']);
-    this.load.image('zombie', ['/assets/sprites/zombie.gif', '/assets/sprites/playerPistol_n.png']);
-    this.load.image('bullet', ['/assets/sprites/bullet.png', '/assets/sprites/playerPistol_n.png']);
+
+    // Sprites
+    this.load.image('player', ['/assets/sprites/playerPistol.gif', '/assets/sprites/playerPistol_n.png'])
+    this.load.image('zombie', ['/assets/sprites/zombie.gif', '/assets/sprites/playerPistol_n.png'])
+    this.load.image('bullet', ['/assets/sprites/bullet.png', '/assets/sprites/playerPistol_n.png'])
+    this.load.image('map', ['/assets/backgrounds/map02.jpg', '/assets/backgrounds/map02_n.png'])
+
+    // Audio
+    // ...
+
   }
 
   create() {
-    // React component (parent)
-    this.component = this.game.config.sceneConfig.component;
+
+    /**************************************************************************
+      IMPORTANT:
+      The order of declarations here is critical to the functionality of game.
+    **************************************************************************/
+
+    // Make this React component accessible from inside the game.
+    this.component = game.config.sceneConfig.component
+
+    this.obstacles = this.physics.add.staticGroup()
+    this.zombies = this.physics.add.group()
+    this.player = new Player(this, this.component.state.username)
+    this.userLoaded = false
 
     // Map
     this.map = this.add
-      .image(1336, 1210, 'map')
-      .setDepth(-2)
-      .setScale(2, 2)
-      .setPipeline('Light2D');
-
-
-    // Game variables
-    this.obstacles = this.physics.add.staticGroup();
-    this.zombies = this.physics.add.group();
-    this.player = new Player(this, this.component.state.username);
-    this.userLoaded = false;
-
+    .image(1336, 1210, 'map')
+    .setDepth(-2)
+    .setScale(2, 2)
+    .setPipeline('Light2D')
 
     // ! DEMO: Pick a random game mode
-    const modes = [new GameModes.Survival(this), new GameModes.Purge(this)];
-    this.gameMode = modes[Math.floor(Math.random() * modes.length)];
-
+    let pick = Math.floor(Math.random() * (2 - 0) + 0) // 2 = the number of game modes available
+    switch (pick) {
+      case 1:
+        this.gameMode = new GameModes.Purge(this)
+        break
+      default:
+        this.gameMode = new GameModes.Survival(this)
+        break
+    }
 
     // Obstacles
-    const obs = this.obstacles;
-    obstacles.forEach(ob => {
-      let obstacle = obs.create(ob.x, ob.y).setVisible(false);
-      obstacle.body.setSize(ob.w, ob.h);
-    });
-
+    Obstacles.forEach(ob => {
+      const obstacle = this.obstacles.create(ob.x, ob.y).setVisible(false)
+      obstacle.body.setSize(ob.w, ob.h)
+    })
 
     // Phsyics
-    this.physics.world.setBounds(0, 0, 1336 * 2, 1210 * 2);
-    this.physics.add.collider(this.obstacles, this.player.sprite);
-    this.physics.add.collider(this.zombies, this.player.sprite, () => this.player.damage());
-    this.physics.add.collider(this.zombies);
-
+    this.physics.world.setBounds(0, 0, 1336 * 2, 1210 * 2) // x, y, width (mapW), height (mapH)
+    this.physics.add.collider(this.obstacles, this.player.sprite)
+    this.physics.add.collider(this.zombies, this.player.sprite, () => this.player.damage())
+    this.physics.add.collider(this.zombies)
 
     // Camera
     this.cameras.main
       .startFollow(this.player.sprite)
       .setLerp(0.08, 0.08)
-      .setBounds(0, 0, 1336 * 2, 1210 * 2);
-
+      .setBounds(0, 0, 1336 * 2, 1210 * 2)
 
     // Lighting
-    this.lights.addLight(1638, 1582, 200, 0xFFA233);
+    this.lights.addLight(1638, 1582, 200, 0xFFA233)
     this.lights
       .enable()
-      .setAmbientColor(0x010909);
+      .setAmbientColor(0x010909)
 
-
-    // In-game text style
+    // On-screen text: style
     let captionStyle = {
       fill: '#777',
       fontFamily: 'monospace',
-      lineSpacing: 4,
-      alignText: 'center'
-    };
+      lineSpacing: 4
+    }
 
     this.usernameTextFormat = (
       '%1'
-    );
+    )
 
-    // In-game text: Username
     this.usernameText = this.add
-      .text(this.cameras.main.centerX + 50, this.cameras.main.centerY - 50, '', captionStyle)
+      .text(window.innerWidth / 2, game.config.height / 2 - 325, '', captionStyle)
       .setScrollFactor(0, 0)
       .setDepth(999)
-      .setText(Phaser.Utils.String.Format(this.usernameTextFormat, [
-        this.component.state.username
-      ]));
+      .setOrigin(0.5, 0)
+      .setText(Phaser.Utils.String.Format(this.usernameTextFormat, [this.component.state.username]))
+
+    this.events.on('resize', this.component.resize, this)
+
   }
 
   update() {
-    this.gameMode.update();
 
-    this.player.update();
+    // Update scene children
+    this.gameMode.update()
+    this.player.update()
 
-    // Update username if not set on create.
+    // Update username if not set on create
     if (!this.usernameText.text) {
-      this.usernameText.setText(Phaser.Utils.String.Format(this.usernameTextFormat, [
-        this.component.state.username
-      ]));
+
+      this.usernameText.setText(Phaser.Utils.String.Format(this.usernameTextFormat, [this.component.state.username]))
+
     }
 
+    // Grab user stats on successfully loaded
     if (this.component.state.username && !this.userLoaded) {
-      this.userLoaded = true;
+
+      this.userLoaded = true
 
       userServices.getUserByUsername(this.component.state.username)
       .then(res => {
-        console.log(res.data)
-        this.component.setState({ playerData: res.data });
-        this.component.getUser(res.data); // TODO: refactor
+        this.component.setState({ playerData: res.data, tutorialCompleted: res.data.tutorialCompleted }) // TODO: remove playerData (not in use?)
+        this.component.getUser(res.data)
+
+        if (this.component.state.tutorialCompleted) this.gameMode.setTutorialComplete()
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
+
     }
+
+  }
+
+  resize(width, height) {
+
+    if (width === undefined) { width = this.sys.game.config.width }
+    if (height === undefined) { height = this.sys.game.config.height }
+
+    this.cameras.resize(width, height)
+
   }
 
   save() {
+
     if (!this.state.gameSaved) {
 
       this.setState({ gameSaved: true })
 
-      const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy } = this.state;
+      const { username, timeSurvived, difficulty, enemiesKilled, shotsFired, accuracy, tutorialCompleted } = this.state
+
       const statsObject = {
         name: username,
         maxTimeSurvived: timeSurvived,
         maxDifficulty: difficulty,
         maxEnemiesKilled: enemiesKilled,
         maxShotsFired: shotsFired,
-        maxAccuracy: accuracy
+        maxAccuracy: accuracy,
+        tutorialCompleted
       }
 
+      // API request to save player stats
       userServices.saveUserStats(username, statsObject)
       .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
     }
+
   }
+
 }
+
+// On window resize
+window.addEventListener('resize', () => {
+
+  if (!game) return;
+
+  const scene = game.scene.scenes[0];
+  const w = window.innerWidth / 2;
+  const h = game.config.height / 2 - 325;
+
+  game.resize(window.innerWidth, window.innerHeight - 200)
+
+  // Set username text position
+  scene.usernameText.setPosition(w, h)
+
+  // Update gameMode text position
+  scene.gameMode.setCaptionPosition(w, 16)
+  scene.player.weaponHud.setHudPosition(w * 2 - 30, game.config.height - 30) // 30 is the offset used in hud/WeaponHud.js
+
+}, false)

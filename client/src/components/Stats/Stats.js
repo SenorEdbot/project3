@@ -41,7 +41,7 @@ class Stats extends Component {
     totalSurv: 0
     // totalArray: []
   }
-  
+
   reducer = (accumulator, currentValue) => accumulator + currentValue;
 
   totalAcc = () => {
@@ -91,7 +91,7 @@ class Stats extends Component {
         console.log('in saving 2nd user', dbUser.data)
         this.setState({ secondUserObj: dbUser.data, userToCompare: e.target.value })
       })
-      .catch(err => console.log(err))      
+      .catch(err => console.log(err))
   }
   componentWillMount() {
     const { userProfile, getProfile } = this.props.auth
@@ -109,11 +109,13 @@ class Stats extends Component {
       .then(allUsers => this.setState({ allUsers: allUsers.data }))
       .catch(err => console.log(err))
 
-    this.totalAcc()
-    this.totalDif()
-    this.totalKia()
-    this.totalShots()
-    this.totalSurv()
+      if (this.props.user) {
+        this.totalAcc()
+        this.totalDif()
+        this.totalKia()
+        this.totalShots()
+        this.totalSurv()
+      }
 
     // for (let i=0; i<5; i++) {
 
