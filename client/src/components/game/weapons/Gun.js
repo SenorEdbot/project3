@@ -14,14 +14,14 @@ export default class Gun {
     this.name = 'MG';
 
     // Fire rate
-    this.fireRate = 150; // lower = faster firing
+    this.fireRate = 100; // lower = faster firing
     this.nextFire = 0;
     this.velocity = 2500;
 
     // Reload
     this.magSize = 30;
     this.clip = this.magSize;
-    this.reloadTime = 750;
+    this.reloadTime = 1000;
     this.isReloading = false;
     this.reloadInterval = null;
 

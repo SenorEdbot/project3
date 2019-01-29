@@ -9,7 +9,6 @@ export default class Tutorial {
     this.activeTutorial = null;
     this.tutorialsOrder = ['move', 'sprint', 'hud', 'shoot', 'reload', 'interact'];
     this.hasBeenCompleted = false;
-    this.canRun = true;
 
     const canvas = this.scene.sys.game.canvas;
     this.centerX = canvas.width / 2;
@@ -25,9 +24,9 @@ export default class Tutorial {
   }
 
   goToNext() {
-    this.clearText();
-
     if (this.hasBeenCompleted) return;
+
+    this.clearText();
 
     switch (this.tutorialsOrder[0]) {
       case 'move':
@@ -169,11 +168,5 @@ export default class Tutorial {
     );
 
     this.renderText1(x, y, '', format, []);
-  }
-
-  setComplete() {
-    this.clearText();
-    this.hasBeenCompleted = true;
-    this.scene.component.setState({tutorialCompleted: this.hasBeenCompleted});
   }
 }

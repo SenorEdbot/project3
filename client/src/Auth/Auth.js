@@ -7,7 +7,6 @@ export default class Auth {
   idToken;
   expiresAt;
   userProfile;
-  tokenRenewalTimeout;
 
   auth0 = new auth0.WebAuth({
     domain: AUTH_CONFIG.domain,
@@ -26,9 +25,6 @@ export default class Auth {
     this.getIdToken = this.getIdToken.bind(this);
     this.renewSession = this.renewSession.bind(this);
     this.getProfile = this.getProfile.bind(this);
-
-    // Schedule token renewal on refresh
-    this.scheduleRenewal();
   }
 
   login() {
@@ -64,7 +60,6 @@ export default class Auth {
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
-    this.scheduleRenewal();
 
     // navigate to the home route
     history.replace('/home');
@@ -85,10 +80,6 @@ export default class Auth {
   }
 
   getProfile(cb) {
-
-    // FIXME: "Error: accessToken parameter is not valid" workaround
-    if (this.accessToken === undefined) return this.renewSession();
-
     this.auth0.client.userInfo(this.accessToken, (err, profile) => {
       if (profile) {
         this.userProfile = profile;
@@ -111,9 +102,6 @@ export default class Auth {
 
     // navigate to the home route
     history.replace('/home');
-
-    // Clear token renewal
-    clearTimeout(this.tokenRenewalTimeout);
   }
 
   isAuthenticated() {
@@ -121,19 +109,5 @@ export default class Auth {
     // access token's expiry time
     let expiresAt = this.expiresAt;
     return new Date().getTime() < expiresAt;
-  }
-
-  scheduleRenewal() {
-    let expiresAt = this.expiresAt;
-    const timeout = expiresAt - Date.now();
-    if(timeout > 0) {
-      this.tokenRenewalTimeout = setTimeout(() => {
-        this.renewSession();
-      }, timeout);
-    }
-  }
-
-  getExpiryDate() {
-    return JSON.stringify(new Date(this.expiresAt));
   }
 }
