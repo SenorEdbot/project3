@@ -1,7 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
+// import Paper from '@material-ui/core/Paper'
 import FriendTwoStatsTable from './FriendTwoStatsTable'
 
 const styles = theme => ({
@@ -15,15 +15,13 @@ const styles = theme => ({
 })
 
 function FriendTwoComp(props) {
-  const { classes, user } = props
+  const { user } = props
+  // Deleted classes out props because it was unused
   return (
     <Grid item xs={6}>
-      <Paper className={classes.friends}>Add Friend 2 Stats</Paper>
-      <Grid item>
-        <FriendTwoStatsTable
-          user={user}
-        />
-      </Grid>
+      <FriendTwoStatsTable
+        user={user}
+      />
     </Grid>
   )
 }

@@ -30,7 +30,10 @@ const styles = theme => ({
 class Stats extends Component {
   state = {
     profile: {},
+    user: {},
     allUsers: [],
+    userToCompare: '',
+    secondUserObj: {},
     totalAcc: 0,
     totalDif: 0,
     totalKia: 0,
@@ -94,7 +97,7 @@ class Stats extends Component {
     const { userProfile, getProfile } = this.props.auth
     if (!userProfile) {
       getProfile((err, profile) => {
-        this.setState({ profile: userProfile })
+        this.setState({ profile: profile })
       })
     } else {
       this.setState({ profile: userProfile })
@@ -159,14 +162,18 @@ class Stats extends Component {
             totalShots={totalShots}
             totalSurv={totalSurv} />
           <AddFriends
-            allUsers={allUsers} />
-          <FriendOneComp
-          profile={profile}
-          user={user} />
-          <FriendTwoComp 
-          profile={profile}
-          user={user}
-          />
+            allUsers={allUsers}
+            userToCompare={this.state.userToCompare}
+            handleChange={this.handleChange}
+           />
+           {this.state.secondUserObj.name ? (
+             <React.Fragment>
+              <FriendOneComp
+                user={user} />
+              <FriendTwoComp
+                user={this.state.secondUserObj} />
+             </React.Fragment>
+           ) : ("")}
         </Grid>
       </div>
     </div>
