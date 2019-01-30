@@ -27,7 +27,9 @@ const styles = theme => ({
   },
   paper: {
     padding: theme.spacing.unit * 2,
-    margin: 'auto'
+    margin: 'auto',
+    backgroundColor: "black",
+    marginTop: "30px"
   },
   image: {
     width: 128,
@@ -38,6 +40,19 @@ const styles = theme => ({
     display: 'block',
     maxWidth: '100%',
     maxHeight: '100%',
+  },
+  name: {
+    color: "white",
+    fontSize: "20px",
+    fontFamily: "VT323"
+  },
+  tab: {
+    color: "grey",
+    fontFamily: "VT323",
+    fontSize: "22px"
+  },
+  choice: {
+    color: "#fe3e3e"
   }
 })
 
@@ -64,22 +79,23 @@ class UserStats extends Component {
             </Grid>
             <Grid item xs container direction="column" spacing={16}>
               <Grid item xs>
-                <Typography gutterBottom variant="subtitle1">
+                <Typography className={classes.name} gutterBottom variant="subtitle1">
                   {profile.name}
                 </Typography>
-                <Typography gutterBottom>Username: {user.name}</Typography>
+                <Typography className={classes.name} gutterBottom>Username: {user.name}</Typography>
               </Grid>
               <Grid item xs>
                 <Tabs
                   value={this.state.value}
                   onChange={this.handleChange}
-                  indicatorColor="primary"
-                  textColor="primary"
+                  // indicatorColor={classes.choice}
+                  // textColor={classes.choice}
                   centered
+                  className={classes.choice}
                 >
-                  <Tab label="Recent & Best" />
-                  <Tab label="Career" />
-                  <Tab label="History" />
+                  <Tab className={classes.tab} label="Recent & Best" />
+                  <Tab className={classes.tab} label="Career" />
+                  <Tab className={classes.tab} label="History" />
                 </Tabs>
               </Grid>
             </Grid>
