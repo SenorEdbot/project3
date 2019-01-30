@@ -1,27 +1,29 @@
 import Phaser from 'phaser';
 import BulletGroup from './Bullet';
+import AudioManager from '../audio/AudioManager'
 
 export default class Gun {
   constructor(scene, owner) {
 
     // Phaser scene
     this.scene = scene;
+    this.audio = new AudioManager(this.scene)
 
     // Weapon owner (player)
     this.owner = owner;
     this.ownerSprite = owner.sprite;
 
-    this.weaponName = 'master';
+    this.name = 'MG';
 
     // Fire rate
-    this.fireRate = 100; // lower = faster firing
+    this.fireRate = 150; // lower = faster firing
     this.nextFire = 0;
     this.velocity = 2500;
 
     // Reload
     this.magSize = 30;
     this.clip = this.magSize;
-    this.reloadTime = 1000;
+    this.reloadTime = 750;
     this.isReloading = false;
     this.reloadInterval = null;
 
@@ -68,6 +70,7 @@ export default class Gun {
 
       // Effects
       camera.shake(100, this.cameraShakeIntensity);
+      this.audio.playGunshot('pistolFire', 0.5)
 
       if (callback) callback();
 
@@ -81,12 +84,14 @@ export default class Gun {
   reload() {
     if (!this.isReloading) {
       this.startReloading();
+      if(this.onReload) this.onReload()
       setTimeout(() => this.stopReloading(), this.reloadTime);
     }
   }
 
   startReloading() {
     this.isReloading = true;
+    this.audio.playReload('pistolReload', 0.5)
 
     let tick = 0;
     let intervalLen = 10; // lower = smoother anim
@@ -117,6 +122,12 @@ export default class Gun {
     this.owner.onReload(false);
   }
 
+  onReload() {
+
+    this.audio.playReload('pistolReload', 1)
+
+  }
+
   resetNextFire() {
     // This lets players ignore fire-rate and spam the fire button.
     this.nextFire = this.scene.time.now;
@@ -136,7 +147,7 @@ export default class Gun {
     .beginPath()
     .arc(this.owner.sprite.x, this.owner.sprite.y, 60, Phaser.Math.DegToRad(startAngle - (cell * difference)), Phaser.Math.DegToRad(endAngle), true)
     .strokePath()
-    .setDepth(-1);
+    .setDepth(999);
   }
 
   update() {

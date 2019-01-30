@@ -1,5 +1,4 @@
 import GameMode from './GameMode';
-import Zombie from '../enemies/zombie';
 
 export default class Purge extends GameMode {
   constructor(scene) {
@@ -15,35 +14,21 @@ export default class Purge extends GameMode {
       'Mode:    %1\n' +
       'Kills:   %2/%3\n'
     );
+    this.captionStyle = {
+      fill: 'orangered',
+      fontFamily: 'monospace',
+      lineSpacing: 4
+    }
 
     // Custom props
     this.lightsOn = false;
     this.enemiesLeft = this.difficulty * 100;
-
-    super.createGraphics();
+    super.customStart = this.customStart;
   }
 
-  start() {
-    this.started = true;
-    this.graphics.clear();
-
-    setTimeout(() => {
-      for (let i = 0; i < this.difficulty * 100; i++) {
-        let enemy = new Zombie(this.scene);
-
-        // Custom enemy adjustment
-        enemy.speed *= 3;
-
-        this.enemies.push(enemy)
-        this.scene.zombies.add(enemy.sprite);
-      }
-
-      // Collision: Zombies & Obstacles
-      this.scene.physics.add.collider(this.scene.zombies, this.scene.obstacles);
-
-      // Let the gamemode start updating
-      this.canUpdate = true;
-    }, this.startDelay);
+  customStart() {
+    this.triggerCaption.setText(`Kill ${this.difficulty * 100} zombies.`);
+    this.triggerCaption.setStyle(this.captionStyle);
 
     // Car lights
     this.rightTail = this.scene.lights.addLight(1392, 352, 150, 0xff0000, 1);
@@ -81,17 +66,30 @@ export default class Purge extends GameMode {
         // Update the game component state
         this.scene.component.setState({ timeSurvived: this.timeSurvived });
       }
+
+      // Check if the player is still alive
+      if (!this.player.isAlive) {
+
+        this.setGameOver();
+
+      }
+
+    } else if (!this.started) {
+      // Check if player is in range of trigger
+      let distX = Math.abs(this.player.sprite.x - this.trigger.x);
+      let distY = Math.abs(this.player.sprite.y - this.trigger.y);
+      let range = this.triggerRange;
+      this.canTrigger = (distX < range && distY < range) ? true : false;
+
+      // Trigger text (show or hide based on player distance)
+      let text;
+      if (this.canTrigger && !this.started && this.tutorial.hasBeenCompleted) {
+        text = this.triggerText;
+      } else if (!this.canTrigger && !this.started && this.tutorial.hasBeenCompleted) {
+        text = 'Find the blue van'
+      }
+      this.triggerCaption.setText(text);
     }
-
-    // Check if player is in range of trigger
-    let distX = Math.abs(this.player.sprite.x - this.trigger.x);
-    let distY = Math.abs(this.player.sprite.y - this.trigger.y);
-    let range = this.triggerRange;
-    this.canTrigger = (distX < range && distY < range) ? true : false;
-
-    // Trigger text (show or hide based on player distance)
-    let text = (this.canTrigger && !this.started) ? this.triggerText : '';
-    this.triggerCaption.setText(text);
 
     // Update the in-game text
     const stats = [
@@ -104,11 +102,16 @@ export default class Purge extends GameMode {
 
     // Save game on all enemies killed
     if (this.enemiesLeft === 0) {
-      this.scene.component.save();
+
+      this.setGameOver()
+
     }
   }
 
   stopFlashing() {
+
     clearInterval(this.flashCarLights);
+
   }
+
 }

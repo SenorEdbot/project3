@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
-    "start": "node ./bin/www",
+    "start": "cd client && yarn start",
     "server": "nodemon ./bin/www",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/SenorEdbot/project3#readme",
   "dependencies": {
-    "concurrently": "^1.0.0",
+    "concurrently": "^4.1.0",
     "cookie-parser": "^1.4.3",
     "debug": "^4.1.1",
     "easystarjs": "^0.4.3",
