@@ -16,7 +16,18 @@ const styles = theme => ({
   },
   table: {
     minWidth: 700,
+    backgroundColor: "black"
   },
+  title: {
+    color: "white",
+    fontFamily: "VT323",
+    fontSize: "20px"
+  },
+  body: {
+    color: "grey",
+    fontSize: "18px",
+    fontFamily: "VT323"
+  }
 });
 
 function SimpleTable(props) {
@@ -26,35 +37,35 @@ function SimpleTable(props) {
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
-          <TableRow>
+          <TableRow className={classes.title}>
             <TableCell></TableCell>
-            <TableCell numeric>Time Survived (Secs)</TableCell>
-            <TableCell numeric>Difficulty</TableCell>
-            <TableCell numeric>Enemies Killed</TableCell>
-            <TableCell numeric>Shots Fired</TableCell>
-            <TableCell numeric>Accuracy</TableCell>
+            <TableCell className={classes.title}numeric>Time Survived (Secs)</TableCell>
+            <TableCell className={classes.title}numeric>Difficulty</TableCell>
+            <TableCell className={classes.title}numeric>Enemies Killed</TableCell>
+            <TableCell className={classes.title}numeric>Shots Fired</TableCell>
+            <TableCell className={classes.title}numeric>Accuracy</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell component="th" scope="row">
+            <TableCell className={classes.title}component="th" scope="row">
               Recent
             </TableCell>
-            <TableCell numeric>{user.recentTimeSurvived}</TableCell>
-            <TableCell numeric>{user.recentDifficulty}</TableCell>
-            <TableCell numeric>{user.recentEnemiesKilled}</TableCell>
-            <TableCell numeric>{user.recentShotsFired}</TableCell>
-            <TableCell numeric>{user.recentAccuracy}</TableCell>
+            <TableCell className={classes.body}numeric>{user.recentTimeSurvived}</TableCell>
+            <TableCell className={classes.body}numeric>{user.recentDifficulty}</TableCell>
+            <TableCell className={classes.body}numeric>{user.recentEnemiesKilled}</TableCell>
+            <TableCell className={classes.body}numeric>{user.recentShotsFired}</TableCell>
+            <TableCell className={classes.body}numeric>{user.recentAccuracy}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell component="th" scope="row">
+            <TableCell className={classes.title}component="th" scope="row">
               Best
             </TableCell>
-            <TableCell numeric>{user.maxTimeSurvived}</TableCell>
-            <TableCell numeric>{user.maxDifficulty}</TableCell>
-            <TableCell numeric>{user.maxEnemiesKilled}</TableCell>
-            <TableCell numeric>{user.maxShotsFired}</TableCell>
-            <TableCell numeric>{user.maxAccuracy}</TableCell>
+            <TableCell className={classes.body}numeric>{user.maxTimeSurvived}</TableCell>
+            <TableCell className={classes.body}numeric>{user.maxDifficulty}</TableCell>
+            <TableCell className={classes.body}numeric>{user.maxEnemiesKilled}</TableCell>
+            <TableCell className={classes.body}numeric>{user.maxShotsFired}</TableCell>
+            <TableCell className={classes.body}numeric>{user.maxAccuracy}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

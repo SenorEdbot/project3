@@ -16,7 +16,18 @@ const styles = theme => ({
     },
     table: {
         minWidth: 700,
+        backgroundColor: "black"
     },
+    title: {
+        color: "white",
+        fontFamily: "VT323",
+        fontSize: "20px",  
+    },
+    body: {
+        color: "grey",
+        fontSize: "18px",
+        fontFamily: "VT323"
+      }
 });
 
 function HistoricalTable(props) {
@@ -27,44 +38,44 @@ function HistoricalTable(props) {
         <Table className={classes.table}>
             <TableHead>
                 <TableRow>
-                    <TableCell>Career</TableCell>
-                    <TableCell numeric>Accuracy (Avg %)</TableCell>
-                    <TableCell numeric>Difficulty (Avg) </TableCell>
-                    <TableCell numeric>Enemies Killed</TableCell>
-                    <TableCell numeric>Shots Fired</TableCell>
-                    <TableCell numeric>Time Survived (Secs)</TableCell>
+                    <TableCell className={classes.title}>Career</TableCell>
+                    <TableCell className={classes.title}numeric>Accuracy (Avg %)</TableCell>
+                    <TableCell className={classes.title}numeric>Difficulty (Avg) </TableCell>
+                    <TableCell className={classes.title}numeric>Enemies Killed</TableCell>
+                    <TableCell className={classes.title}numeric>Shots Fired</TableCell>
+                    <TableCell className={classes.title}numeric>Time Survived (Secs)</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 <TableRow>
-                    <TableCell component="th" scope="row">
+                    <TableCell className={classes.title}component="th" scope="row">
                         Totals
                     </TableCell>
-                    <TableCell numeric>{totalAcc / user.historyAccuracy.length}</TableCell>
-                    <TableCell numeric>{(totalDif / user.historyDifficulty.length).toFixed(2)}</TableCell>
-                    <TableCell numeric>{totalKia}</TableCell>
-                    <TableCell numeric>{totalShots}</TableCell>
-                    <TableCell numeric>{totalSurv}</TableCell>
+                    <TableCell className={classes.body}numeric>{totalAcc / user.historyAccuracy.length}</TableCell>
+                    <TableCell className={classes.body}numeric>{(totalDif / user.historyDifficulty.length).toFixed(2)}</TableCell>
+                    <TableCell className={classes.body}numeric>{totalKia}</TableCell>
+                    <TableCell className={classes.body}numeric>{totalShots}</TableCell>
+                    <TableCell className={classes.body}numeric>{totalSurv}</TableCell>
                 </TableRow>
                 <TableRow>
-                    <TableCell component="th" scope="row">
+                    <TableCell className={classes.title}component="th" scope="row">
                         Averages
                     </TableCell>
-                    <TableCell numeric>{(totalAcc / user.historyAccuracy.length).toFixed(2)}</TableCell>
-                    <TableCell numeric>{(totalDif / user.historyDifficulty.length).toFixed(2)}</TableCell>
-                    <TableCell numeric>{(totalKia / user.historyEnemiesKilled.length).toFixed(0)}</TableCell>
-                    <TableCell numeric>{(totalShots / user.historyShotsFired.length).toFixed(0)}</TableCell>
-                    <TableCell numeric>{(totalSurv / user.historyTimeSurvived.length).toFixed(0)}</TableCell>
+                    <TableCell className={classes.body}numeric>{(totalAcc / user.historyAccuracy.length).toFixed(2)}</TableCell>
+                    <TableCell className={classes.body}numeric>{(totalDif / user.historyDifficulty.length).toFixed(2)}</TableCell>
+                    <TableCell className={classes.body}numeric>{(totalKia / user.historyEnemiesKilled.length).toFixed(0)}</TableCell>
+                    <TableCell className={classes.body}numeric>{(totalShots / user.historyShotsFired.length).toFixed(0)}</TableCell>
+                    <TableCell className={classes.body}numeric>{(totalSurv / user.historyTimeSurvived.length).toFixed(0)}</TableCell>
                 </TableRow>
                 <TableRow>
-                    <TableCell component="th" scope="row">
+                    <TableCell className={classes.title}component="th" scope="row">
                         Best
                     </TableCell>
-                    <TableCell numeric>{user.maxTimeSurvived}</TableCell>
-                    <TableCell numeric>{user.maxDifficulty}</TableCell>
-                    <TableCell numeric>{user.maxEnemiesKilled}</TableCell>
-                    <TableCell numeric>{user.maxShotsFired}</TableCell>
-                    <TableCell numeric>{user.maxAccuracy}</TableCell>
+                    <TableCell className={classes.body}numeric>{user.maxTimeSurvived}</TableCell>
+                    <TableCell className={classes.body}numeric>{user.maxDifficulty}</TableCell>
+                    <TableCell className={classes.body}numeric>{user.maxEnemiesKilled}</TableCell>
+                    <TableCell className={classes.body}numeric>{user.maxShotsFired}</TableCell>
+                    <TableCell className={classes.body}numeric>{user.maxAccuracy}</TableCell>
                 </TableRow>
             </TableBody>
         </Table>
