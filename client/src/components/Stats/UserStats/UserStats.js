@@ -53,6 +53,9 @@ const styles = theme => ({
   },
   choice: {
     color: "#fe3e3e"
+  },
+  table: {
+    backgroundColor: "#424242",
   }
 })
 

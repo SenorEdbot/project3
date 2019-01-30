@@ -12,7 +12,7 @@ const styles = theme => ({
     marginTop: "10vh"
   },
   container: {
-    background: "#424242",
+    background: "black",//"#424242",
     margin: "0 auto",
     width: "80%"
   },
