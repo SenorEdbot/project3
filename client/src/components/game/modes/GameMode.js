@@ -77,8 +77,8 @@ export default class GameMode {
         this.scene.sound.forEachActiveSound(sound => {
           sound.destroy()
         })
-        this.scene.scene.restart()
 
+        this.scene.component.createGame()
       }
 
     })

@@ -68,6 +68,14 @@ export default class Game extends Component {
 
   componentDidMount() {
 
+    this.createGame()
+
+  }
+
+  createGame() {
+
+    if (game) game.destroy(true, false)
+
     const gameConfig = {
       type: Phaser.AUTO,
       width: window.innerWidth,
