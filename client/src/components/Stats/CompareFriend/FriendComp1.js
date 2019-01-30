@@ -19,7 +19,7 @@ function FriendComp(props) {
   const { user } = props
   // Deleted classes out props because it was unused
   return (
-    <Grid item xs={6}>
+    <Grid item xs={4}>
       <FriendStatsTable2
         user={user}
       />

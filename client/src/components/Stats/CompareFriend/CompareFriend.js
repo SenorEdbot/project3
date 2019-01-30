@@ -66,7 +66,7 @@ class AddFriends extends Component {
             <Grid item xs={12}>
               {this.state.secondUserObj.name ? (
               <React.Fragment>
-                <Grid container direction="row">
+                <Grid container direction="row" justify="center" alignItems="center">
                   <FriendComp
                     user={user} />
                   <FriendComp1
