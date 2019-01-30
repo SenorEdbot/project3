@@ -9,6 +9,7 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FriendComp from './FriendComp'
+import FriendComp1 from './FriendComp1'
 import userServices from '../../../services/userServices'
 
 const styles = theme => ({
@@ -68,7 +69,7 @@ class AddFriends extends Component {
                 <Grid container direction="row">
                   <FriendComp
                     user={user} />
-                  <FriendComp
+                  <FriendComp1
                     user={this.state.secondUserObj} />
                 </Grid>
               </React.Fragment>
