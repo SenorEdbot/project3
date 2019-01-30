@@ -126,7 +126,10 @@ export default class Player {
   // Custom incrementer for special weapons (correct accuracy)
   increaseShotsFired(count) {
 
+    const accuracy = Math.floor((this.kills / this.shotsFired) * 100) || 0;
+
     this.shotsFired += count
+    this.scene.component.setState({ shotsFired: this.shotsFired, accuracy });
 
   }
 
