@@ -7,6 +7,7 @@ import userServices from '../../services/userServices'
 
 // Store the game object globally so we have access to window.resize events.
 let game
+let canResize = true
 
 export default class Game extends Component {
 
@@ -45,6 +46,9 @@ export default class Game extends Component {
 
     }
 
+    // Allow resizing of game
+    canResize = true
+
   }
 
   componentWillUnmount() {
@@ -58,6 +62,8 @@ export default class Game extends Component {
     // Destroy the existing Phaser Game.
     if (game) game.destroy(true, false)
 
+    // Disable resizing of game
+    canResize = false
   }
 
   componentDidMount() {
@@ -271,19 +277,20 @@ export default class Game extends Component {
 // On window resize
 window.addEventListener('resize', () => {
 
-  if (!game) return;
+  if (canResize) {
 
-  const scene = game.scene.scenes[0];
-  const w = window.innerWidth / 2;
-  const h = game.config.height / 2 - 325;
+    const scene = game.scene.scenes[0]
+    const w = window.innerWidth / 2
+    const h = game.config.height / 2 - 325
 
-  game.resize(window.innerWidth, window.innerHeight - 90)
+    game.resize(window.innerWidth, window.innerHeight - 90)
 
-  // Set username text position
-  scene.usernameText.setPosition(w, h)
+    // Set username text position
+    scene.usernameText.setPosition(w, h)
 
-  // Update gameMode text position
-  scene.gameMode.setCaptionPosition(w, 16)
-  scene.player.weaponHud.setHudPosition(w * 2 - 30, game.config.height - 30) // 30 is the offset used in hud/WeaponHud.js
+    // Update gameMode text position
+    scene.gameMode.setCaptionPosition(w, 16)
+    scene.player.weaponHud.setHudPosition(w * 2 - 30, game.config.height - 30) // 30 is the offset used in hud/WeaponHud.js
 
+  }
 }, false)
