@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import AudioManager from '../audio/AudioManager'
+import CorpseManager from '../enemies/CorpseManager'
 import Zombie from '../enemies/zombie'
 import Tutorial from '../tutorial'
 
@@ -30,6 +31,7 @@ export default class GameMode {
 
     // Enemies
     this.enemies = []
+    this.corpses = new CorpseManager(this.scene)
 
     // Game start trigger
     this.trigger = { x: 0, y: 0 }
@@ -123,6 +125,12 @@ export default class GameMode {
       .setScrollFactor(0, 0)      // Fix the text to the screen
       .setDepth(999)              // Keep text on top-most layer
       .setOrigin(0.5)
+
+  }
+
+  addCorpse(x, y) {
+
+    this.corpses.addCorpse(x, y)
 
   }
 
