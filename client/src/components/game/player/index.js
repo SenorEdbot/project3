@@ -123,6 +123,13 @@ export default class Player {
     this.updateHud();
   }
 
+  // Custom incrementer for special weapons (correct accuracy)
+  increaseShotsFired(count) {
+
+    this.shotsFired += count
+
+  }
+
   onReload(isReloading) {
     this.sprite.setMaxVelocity((isReloading) ? 50 : 999);
 

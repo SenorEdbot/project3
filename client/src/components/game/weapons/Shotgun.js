@@ -43,6 +43,9 @@ export default class Shotgun extends Gun {
 
       }
 
+      // Increase player's shotsFired by this shot count for correct accuracy
+      this.owner.increaseShotsFired(this.shotCount - 1)
+
       this.nextFire = this.scene.time.now + this.fireRate // Limit fire-rate
       this.clip--
       this.graphics.clear()

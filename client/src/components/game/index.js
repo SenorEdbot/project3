@@ -65,7 +65,7 @@ export default class Game extends Component {
     const gameConfig = {
       type: Phaser.AUTO,
       width: window.innerWidth,
-      height: window.innerHeight - 200,
+      height: window.innerHeight - 90,
       parent: 'game-container',
       physics: {
         default: 'arcade',
@@ -277,7 +277,7 @@ window.addEventListener('resize', () => {
   const w = window.innerWidth / 2;
   const h = game.config.height / 2 - 325;
 
-  game.resize(window.innerWidth, window.innerHeight - 200)
+  game.resize(window.innerWidth, window.innerHeight - 90)
 
   // Set username text position
   scene.usernameText.setPosition(w, h)
