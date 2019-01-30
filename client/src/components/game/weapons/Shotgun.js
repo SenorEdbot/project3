@@ -43,12 +43,16 @@ export default class Shotgun extends Gun {
 
       }
 
+      // Increase player's shotsFired by this shot count for correct accuracy
+      this.owner.increaseShotsFired(this.shotCount - 1)
+
       this.nextFire = this.scene.time.now + this.fireRate // Limit fire-rate
       this.clip--
       this.graphics.clear()
 
       // Effects
       camera.shake(250, this.cameraShakeIntensity)
+      this.audio.playGunshot('pistolFire', 0.5)
 
       if (callback) callback()
 
@@ -58,5 +62,11 @@ export default class Shotgun extends Gun {
       this.reload()
 
     }
+  }
+
+  onReload() {
+
+    this.audio.playReload('shotgunReload', 1)
+
   }
 }
