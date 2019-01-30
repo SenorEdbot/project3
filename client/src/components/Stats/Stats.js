@@ -26,6 +26,7 @@ const styles = theme => ({
     width: 60,
     height: 60,
   }
+  
 })
 class Stats extends Component {
   state = {
@@ -133,7 +134,7 @@ class Stats extends Component {
           justify="center"
           alignItems="center"
         >
-          <UserStats
+          <UserStats className={classes.table}
             profile={profile}
             user={user}
             totalAcc={totalAcc}
