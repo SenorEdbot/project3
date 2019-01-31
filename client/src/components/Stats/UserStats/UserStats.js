@@ -68,7 +68,7 @@ class UserStats extends Component {
     this.setState({ value });
   }
   render (){
-    const { classes, profile, user, totalAcc, totalDif, totalKia, totalShots, totalSurv } = this.props
+    const { classes, profile, user } = this.props
     const { value } = this.state
     console.log({ user }, { profile })
     return(
@@ -106,7 +106,7 @@ class UserStats extends Component {
         </Grid>
         <Grid item>
           {value === 0 && <RecentStatsTable user={user} />}
-          {value === 1 && <HistoricalStatsTable user={user} totalAcc={totalAcc} totalDif={totalDif} totalKia={totalKia} totalShots={totalShots} totalSurv={totalSurv} />}
+          {value === 1 && <HistoricalStatsTable user={user} />}
           {value === 2 && <GameHistory1 user={user} />}
         </Grid>
       </Paper>
