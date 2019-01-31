@@ -5,16 +5,18 @@ export default class Shotgun extends Gun {
     super(scene, owner)
 
     this.name = 'Shotgun'
-    this.fireRate = 500
+    this.fireRate = 1000
     this.magSize = 8
     this.clip = 8
-    this.reloadTime = 1250
+    this.shellReloadTime = 500
+    this.reloadTime = (this.magSize - this.clip) * this.shellReloadTime
     this.velocity = 1000
     this.cameraShakeIntensity = .004
+    this.reloadSound = 'shotgunReload'
+    this.fireSound = 'shotgunFire2'
 
-    // This weapon's custom attributes
-    this.shotCount = 5
-    this.spread = 50 // 2 = tight, 5 = wide
+    this.shotCount = 10
+    this.spread = 75 // 2 = tight, 5 = wide
   }
 
   fire(callback) {
@@ -52,7 +54,7 @@ export default class Shotgun extends Gun {
 
       // Effects
       camera.shake(250, this.cameraShakeIntensity)
-      this.audio.playGunshot('pistolFire', 0.5)
+      this.audio.playGunshot(this.fireSound, 0.5)
 
       if (callback) callback()
 
@@ -65,8 +67,7 @@ export default class Shotgun extends Gun {
   }
 
   onReload() {
-
-    this.audio.playReload('shotgunReload', 1)
-
+    this.reloadTime = (this.magSize - this.clip) * this.shellReloadTime
+    this.audio.playReload(this.reloadSound, 1, (this.magSize - this.clip), this.shellReloadTime)
   }
 }
