@@ -29,6 +29,14 @@ body: {
   table: {
     backgroundColor: "black",
     padding: "10px"
+  },
+  name: {
+    color: "white",
+    fontFamily: "VT323",
+    fontSize: "22px"
+  },
+  otherName: {
+    backgroundColor: "black"
   }
   // table: {
   //   minWidth: 700,
@@ -40,23 +48,17 @@ function FriendStatsTable(props) {
 
   return (
     <Paper className={classes.root}>
-    <Toolbar>
-        <Typography variant="h6" id="tableTitle">
+    <Toolbar className={classes.otherName}>
+        <Typography className={classes.name} variant="h6" id="tableTitle">
           {user.name}
         </Typography>
       </Toolbar>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-<<<<<<< HEAD
-            <TableCell className={classes.title}>{user.name}</TableCell>
-            <TableCell className={classes.body}>Recent</TableCell>
-            <TableCell className={classes.body}>Best</TableCell>
-=======
-            <TableCell>Category</TableCell>
-            <TableCell>Recent</TableCell>
-            <TableCell>Best</TableCell>
->>>>>>> a7af9ace197c9cded251c140ea4599b4cb11f194
+            <TableCell></TableCell>
+            <TableCell className={classes.title}>Recent</TableCell>
+            <TableCell className={classes.title}>Best</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

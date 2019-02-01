@@ -13,7 +13,23 @@ const styles = theme => ({
     width: '70%',
     marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
+    backgroundColor: "black"
   },
+  title: {
+    color: "white",
+    fontFamily: "VT323",
+    fontSize: "20px",  
+},
+body: {
+    color: "grey",
+    fontSize: "18px",
+    fontFamily: "VT323"
+  },
+  table: {
+    backgroundColor: "black",
+    padding: "10px"
+  },
+ 
   // table: {
   //   minWidth: 700,
   // },
@@ -26,13 +42,13 @@ function FriendStatsTable(props) {
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
-          <TableRow>
-            <TableCell>Recent</TableCell>
-            <TableCell numeric>Recent Accuracy</TableCell>
-            <TableCell numeric>Recent Difficulty</TableCell>
-            <TableCell numeric>Recent Enemies Killed</TableCell>
-            <TableCell numeric>Recent Shots Fired</TableCell>
-            <TableCell numeric>Recent Accuracy</TableCell>
+          <TableRow className={classes.title}>
+            <TableCell className={classes.title}>Recent</TableCell>
+            <TableCell className={classes.title} numeric>Recent Accuracy</TableCell>
+            <TableCell className={classes.title} numeric>Recent Difficulty</TableCell>
+            <TableCell className={classes.title} numeric>Recent Enemies Killed</TableCell>
+            <TableCell className={classes.title} numeric>Recent Shots Fired</TableCell>
+            <TableCell className={classes.title} numeric>Recent Accuracy</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -40,11 +56,11 @@ function FriendStatsTable(props) {
             <TableCell component="th" scope="row">
               {user.name}
             </TableCell>
-            <TableCell numeric>{user.recentTimeSurvived}</TableCell>
-            <TableCell numeric>{user.recentDifficulty}</TableCell>
-            <TableCell numeric>{user.recentEnemiesKilled}</TableCell>
-            <TableCell numeric>{user.recentShotsFired}</TableCell>
-            <TableCell numeric>{user.recentAccuracy}</TableCell>
+            <TableCell className={classes.body} numeric>{user.recentTimeSurvived}</TableCell>
+            <TableCell className={classes.body} numeric>{user.recentDifficulty}</TableCell>
+            <TableCell className={classes.body} numeric>{user.recentEnemiesKilled}</TableCell>
+            <TableCell className={classes.body} numeric>{user.recentShotsFired}</TableCell>
+            <TableCell className={classes.body} numeric>{user.recentAccuracy}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

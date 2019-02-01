@@ -12,11 +12,13 @@ const styles = theme => ({
   friends: {
     color: "red",//"#222281",
     padding: theme.spacing.unit * 2
-  }
+  },
+ 
 })
 
 function FriendComp(props) {
   const { user } = props
+  const { classes } = props; 
   // Deleted classes out props because it was unused
   return (
     <Grid item xs={6}>

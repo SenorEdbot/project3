@@ -98,10 +98,10 @@ class AddFriends extends Component {
             <Grid item xs={12}>
               {this.state.secondUserObj.name ? (
               <React.Fragment>
-                <Grid container direction="row" justify="center" alignItems="center">
-                  <FriendComp
+                <Grid className={classes.extra} container direction="row" justify="center" alignItems="center">
+                  <FriendComp className={classes.extra}
                     user={user} />
-                  <FriendComp1
+                  <FriendComp1 className={classes.extra}
                     user={this.state.secondUserObj} />
                 </Grid>
               </React.Fragment>

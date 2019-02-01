@@ -3,6 +3,7 @@ import userServices from '../../services/userServices'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import { UserStats, CompareFriend } from '../../index'
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
@@ -14,7 +15,7 @@ const styles = theme => ({
   container: {
     background: "black",//"#424242",
     margin: "0 auto",
-    width: "80%"
+    width: "85%"
   },
   stats: {
     color: "#440202",
@@ -25,7 +26,13 @@ const styles = theme => ({
     margin: 10,
     width: 60,
     height: 60,
+  },
+  title: {
+    fontFamily: "VT323",
+    color: "white",
+    fontSize: "22px"
   }
+
   
 })
 class Stats extends Component {
@@ -78,7 +85,7 @@ class Stats extends Component {
     return (
     <div className={classes.root}>
       <div className={classes.container}>
-      {user && !user.maxAccuracy ? <h2>Please play the game to generate stats </h2> : (
+      {user && !user.maxAccuracy ? <Typography className={classes.title}>Please play the game to generate stats </Typography> : (
         <React.Fragment>
           <Grid
             container
