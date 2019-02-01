@@ -40,14 +40,20 @@ const styles = theme => ({
   },
   menu: {
     color: "white",
-    backgroundColor: "black",
+    backgroundColor: "#717171",
     fontFamily: "VT323",
     fontSize: "20px"
   },
   friend: {
-    color:"red",
+    color:"black",
     textAlign: "center",
-    backgroundColor: "black",
+    backgroundColor: "white",
+    fontFamily: "VT323",
+    fontSize: "20px",
+    "&:hover": {
+      color: "white",
+      backgroundColor: "black"
+    }
   },
   user: {
     color: "white",
@@ -56,7 +62,7 @@ const styles = theme => ({
   },
   input: {
     color:"red",
-  }
+  },
 })
 
 class AddFriends extends Component {
@@ -87,7 +93,7 @@ class AddFriends extends Component {
                   value={this.state.userToCompare}
                   onChange={this.handleChange}
                   input={<Input className={classes.input}name="userToCompare" id="compare-user" />}
-                >
+                > 
                   {allUsers.map(user => (
                     <MenuItem className={classes.friend} name="userToCompare" value={user.name} key={user._id}>{user.name}</MenuItem>
                   ))}

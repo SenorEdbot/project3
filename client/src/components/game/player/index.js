@@ -50,6 +50,7 @@ export default class Player {
     this.accuracy = 0;    // #kills/#shotsFired
 
     this.healthDisplay = this.scene.add.graphics();
+    this.healthDisplayBackground = this.scene.add.graphics();
 
     this.hudFormat = (
       '%1: %2/%3'
@@ -104,6 +105,14 @@ export default class Player {
     let difference = this.maxHealth - this.health;          // Number of cells to remove
 
     let color = (this.health / this.maxHealth >= 0.33) ? 0x00b220 : 0xf23c13;
+
+    this.healthDisplayBackground.clear();
+    this.healthDisplayBackground
+    .lineStyle(4, 0x332e2e, 1)
+    .beginPath()
+    .arc(this.sprite.x, this.sprite.y, 60, Phaser.Math.DegToRad(startAngle), Phaser.Math.DegToRad(endAngle), true)
+    .strokePath()
+    .setDepth(998);
 
     this.healthDisplay.clear();
     this.healthDisplay
@@ -223,6 +232,7 @@ export default class Player {
 
       // Remove graphics
       this.healthDisplay.clear();
+      this.healthDisplayBackground.clear();
       this.weapon.kill(); // Clears ammo display
     }
   }

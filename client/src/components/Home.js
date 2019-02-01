@@ -90,7 +90,7 @@ export class Home extends Component {
                 </Typography>
                 <Typography className={classes.text} component="p">
                   {bull} Quick Pre-game tutorial displaying HUD and move/shoot controls. <br/>
-                  {bull} Randomly Selected Weapons, Pistol OR Shotgun. <br />
+                  {bull} Randomly Selected Weapons, Machinegun OR Shotgun. <br />
                   {bull} Randomly Selected Difficulty: <br/>
                   1 = 100 Zombies, 2 = 200 Zombies, ETC... <br/>
                   {bull} Randomly Assigned Game Mode: <br/>
