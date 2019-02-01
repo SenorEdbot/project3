@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/SenorEdbot/project3#readme",
   "dependencies": {
+    "chart.js": "^2.7.3",
     "concurrently": "^4.1.0",
     "cookie-parser": "^1.4.3",
     "debug": "^4.1.1",
@@ -30,6 +31,7 @@
     "http-errors": "^1.7.1",
     "if-env": "^1.0.4",
     "mongoose": "^5.4.3",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "react-chartkick": "^0.3.0"
   }
 }

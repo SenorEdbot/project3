@@ -70,9 +70,6 @@ function GameHistory(props) {
             </TableBody>
         </Table>
     </Paper>
-    <Paper className={classes.paper}>
-        <Graph user={user} />
-    </Paper>
     </React.Fragment>
   )
 }
