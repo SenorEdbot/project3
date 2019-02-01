@@ -205,7 +205,7 @@ export default class Game extends Component {
     )
 
     this.usernameText = this.add
-      .text(window.innerWidth / 2, game.config.height / 2 - 325, '', captionStyle)
+      .text(window.innerWidth / 2, 40, '', captionStyle)
       .setScrollFactor(0, 0)
       .setDepth(999)
       .setOrigin(0.5, 0)
