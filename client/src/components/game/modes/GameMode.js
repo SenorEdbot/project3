@@ -3,6 +3,7 @@ import AudioManager from '../audio/AudioManager'
 import CorpseManager from '../enemies/CorpseManager'
 import Zombie from '../enemies/zombie'
 import Tutorial from '../tutorial'
+import Hud from '../hud/index'
 
 export default class GameMode {
   constructor(scene) {
@@ -44,6 +45,13 @@ export default class GameMode {
 
     // Graphics
     this.graphics = this.scene.add.graphics()
+
+    this.fpsHud = new Hud(this.scene)
+    this.fpsHudFormat = (
+      'FPS: %1'
+      )
+    this.fpsHud.render(this.fpsHudFormat, [this.scene.game.loop.actualFps])
+    this.fpsHud.setHudPosition(80, this.scene.sys.game.canvas.height - 30)
 
     // Tutorial
     this.tutorial = new Tutorial(this.scene)
@@ -188,6 +196,8 @@ export default class GameMode {
   }
 
   update() {
+
+    this.fpsHud.update(this.fpsHudFormat, [Math.floor(this.scene.game.loop.actualFps)])
 
     if (this.started && this.canUpdate) {
 

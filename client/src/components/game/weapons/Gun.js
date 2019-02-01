@@ -30,6 +30,7 @@ export default class Gun {
     this.bulletScale = 0.5
     this.bullets = new BulletGroup(scene, this.owner)
     this.graphics = this.scene.add.graphics()
+    this.ammoDisplayBackground = this.scene.add.graphics()
     this.ammoDisplay = this.scene.add.graphics()
     this.cameraShakeIntensity = 0.002
   }
@@ -132,6 +133,14 @@ export default class Gun {
 
     let color = (this.clip / this.magSize >= 0.33) ? 0x00b220 : 0xf23c13
 
+    this.ammoDisplayBackground.clear()
+    this.ammoDisplayBackground
+    .lineStyle(4, 0x332e2e, 1)
+    .beginPath()
+    .arc(this.owner.sprite.x, this.owner.sprite.y, 60, Phaser.Math.DegToRad(startAngle), Phaser.Math.DegToRad(endAngle), true)
+    .strokePath()
+    .setDepth(999)
+
     this.ammoDisplay.clear()
     this.ammoDisplay
     .lineStyle(4, color, 1)
@@ -147,5 +156,6 @@ export default class Gun {
 
   kill() {
     this.ammoDisplay.clear()
+    this.ammoDisplayBackground.clear()
   }
 }
