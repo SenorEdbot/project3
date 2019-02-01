@@ -97,20 +97,20 @@ class UserStats extends Component {
                   centered
                   className={classes.choice}
                 >
-                  <Tab className={classes.tab} label="Recent & Best" />
+                  <Tab className={classes.tab} label="Graphs" />
+                  <Tab className={classes.tab} label="Previous" />
                   <Tab className={classes.tab} label="Career" />
                   <Tab className={classes.tab} label="History" />
-                  <Tab className={classes.tab} label="Graphs" />
                 </Tabs>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
         <Grid item>
-          {value === 0 && <RecentStatsTable user={user} />}
-          {value === 1 && <HistoricalStatsTable user={user} />}
-          {value === 2 && <GameHistory1 user={user} />}
-          {value === 3 && <Graph user={user} />}
+          {value === 0 && <Graph user={user} />}
+          {value === 1 && <RecentStatsTable user={user} />}
+          {value === 2 && <HistoricalStatsTable user={user} />}
+          {value === 3 && <GameHistory1 user={user} />}
         </Grid>
       </Paper>
     )

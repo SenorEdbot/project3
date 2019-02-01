@@ -11,6 +11,7 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FriendComp from './FriendComp'
 import FriendComp1 from './FriendComp1'
 import userServices from '../../../services/userServices'
+// import '../../../App.css'
 
 const styles = theme => ({
   root: {

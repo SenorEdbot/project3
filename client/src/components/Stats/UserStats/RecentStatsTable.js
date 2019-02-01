@@ -49,7 +49,7 @@ function SimpleTable(props) {
         <TableBody>
           <TableRow>
             <TableCell className={classes.title}component="th" scope="row">
-              Recent
+              Previous
             </TableCell>
             <TableCell className={classes.body}numeric>{user.recentTimeSurvived}</TableCell>
             <TableCell className={classes.body}numeric>{user.recentDifficulty}</TableCell>
