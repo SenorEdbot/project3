@@ -1,7 +1,7 @@
-import Gun from './Gun';
+import MG from './MG';
 import Shotgun from './Shotgun';
 
 export default {
-  Gun,
+  MG,
   Shotgun
 }

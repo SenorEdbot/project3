@@ -7,6 +7,7 @@ import userServices from '../../services/userServices'
 
 // Store the game object globally so we have access to window.resize events.
 let game
+let canResize = true
 
 export default class Game extends Component {
 
@@ -45,6 +46,9 @@ export default class Game extends Component {
 
     }
 
+    // Allow resizing of game
+    canResize = true
+
   }
 
   componentWillUnmount() {
@@ -58,14 +62,24 @@ export default class Game extends Component {
     // Destroy the existing Phaser Game.
     if (game) game.destroy(true, false)
 
+    // Disable resizing of game
+    canResize = false
   }
 
   componentDidMount() {
 
+    this.createGame()
+
+  }
+
+  createGame() {
+
+    if (game) game.destroy(true, false)
+
     const gameConfig = {
       type: Phaser.AUTO,
       width: window.innerWidth,
-      height: window.innerHeight - 200,
+      height: window.innerHeight - 90,
       parent: 'game-container',
       physics: {
         default: 'arcade',
@@ -103,10 +117,20 @@ export default class Game extends Component {
     this.load.image('player', ['/assets/sprites/playerPistol.gif', '/assets/sprites/playerPistol_n.png'])
     this.load.image('zombie', ['/assets/sprites/zombie.gif', '/assets/sprites/playerPistol_n.png'])
     this.load.image('bullet', ['/assets/sprites/bullet.png', '/assets/sprites/playerPistol_n.png'])
+    this.load.image('corpse', ['/assets/sprites/corpse.png', '/assets/sprites/corpse_n.png'])
     this.load.image('map', ['/assets/backgrounds/map02.jpg', '/assets/backgrounds/map02_n.png'])
 
     // Audio
-    // ...
+    this.load.audio('theme', '/assets/audio/midWasteTheme.wav')
+    this.load.audio('spooky', '/assets/audio/spookyStuff.wav')
+    this.load.audio('alarm', '/assets/audio/carAlarm.wav')
+    this.load.audio('pistolFire', '/assets/audio/pistolFire.wav')
+    this.load.audio('pistolReload', '/assets/audio/pistolReload.wav')
+    this.load.audio('shotgunFire', '/assets/audio/shotgunFire.wav')
+    this.load.audio('shotgunFire2', '/assets/audio/shotgunFire2.wav')
+    this.load.audio('shotgunReload', '/assets/audio/shotgunReload.wav')
+    this.load.audio('shotgunReload2', '/assets/audio/shotgunReload2.wav')
+
 
   }
 
@@ -165,7 +189,9 @@ export default class Game extends Component {
     this.lights.addLight(1638, 1582, 200, 0xFFA233)
     this.lights
       .enable()
-      .setAmbientColor(0x010909)
+      // .setAmbientColor(0x010909)
+      .setAmbientColor(0x200000)
+
 
     // On-screen text: style
     let captionStyle = {
@@ -260,19 +286,20 @@ export default class Game extends Component {
 // On window resize
 window.addEventListener('resize', () => {
 
-  if (!game) return;
+  if (canResize) {
 
-  const scene = game.scene.scenes[0];
-  const w = window.innerWidth / 2;
-  const h = game.config.height / 2 - 325;
+    const scene = game.scene.scenes[0]
+    const w = window.innerWidth / 2
+    const h = game.config.height / 2 - 325
 
-  game.resize(window.innerWidth, window.innerHeight - 200)
+    game.resize(window.innerWidth, window.innerHeight - 90)
 
-  // Set username text position
-  scene.usernameText.setPosition(w, h)
+    // Set username text position
+    scene.usernameText.setPosition(w, h)
 
-  // Update gameMode text position
-  scene.gameMode.setCaptionPosition(w, 16)
-  scene.player.weaponHud.setHudPosition(w * 2 - 30, game.config.height - 30) // 30 is the offset used in hud/WeaponHud.js
+    // Update gameMode text position
+    scene.gameMode.setCaptionPosition(w, 16)
+    scene.player.weaponHud.setHudPosition(w * 2 - 30, game.config.height - 30) // 30 is the offset used in hud/WeaponHud.js
 
+  }
 }, false)

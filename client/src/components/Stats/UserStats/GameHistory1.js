@@ -18,8 +18,20 @@ const styles = theme => ({
         overflowX: 'auto',
     },
     table: {
-        minWidth: 700,
+        minWidth: 700, 
+        backgroundColor: "black"
     },
+    title: {
+        color: "white",
+        fontFamily: "VT323",
+        fontSize: "20px",  
+    },
+    body: {
+        color: "grey",
+        fontSize: "18px",
+        fontFamily: "VT323"
+      }
+   
 });
 
 function GameHistory(props) {
@@ -30,23 +42,23 @@ function GameHistory(props) {
         <Table className={classes.table}>
             <TableHead>
                 <TableRow>
-                    <TableCell>Game History</TableCell>
-                    <TableCell>Accuracyy</TableCell>
-                    <TableCell>Difficulty</TableCell>
-                    <TableCell>Enemies Killed</TableCell>
-                    <TableCell>Shots Fired</TableCell>                
-                    <TableCell>Time Survived</TableCell>                
+                    <TableCell className={classes.title}>Game History</TableCell>
+                    <TableCell className={classes.title}>Accuracy</TableCell>
+                    <TableCell className={classes.title}>Difficulty</TableCell>
+                    <TableCell className={classes.title}>Enemies Killed</TableCell>
+                    <TableCell className={classes.title}>Shots Fired</TableCell>                
+                    <TableCell className={classes.title}>Time Survived</TableCell>                
                 </TableRow>
             </TableHead>
             <TableBody>
                 {user.historyAccuracy.map((el, index) => (
                     <TableRow>
-                        <TableCell>{index+1}</TableCell>
-                        <TableCell>{user.historyAccuracy[index]}</TableCell>
-                        <TableCell>{user.historyDifficulty[index]}</TableCell>
-                        <TableCell>{user.historyEnemiesKilled[index]}</TableCell>
-                        <TableCell>{user.historyShotsFired[index]}</TableCell>
-                        <TableCell>{user.historyTimeSurvived[index]}</TableCell>
+                        <TableCell className={classes.body}>{index+1}</TableCell>
+                        <TableCell className={classes.body}>{user.historyAccuracy[index]}</TableCell>
+                        <TableCell className={classes.body}>{user.historyDifficulty[index]}</TableCell>
+                        <TableCell className={classes.body}>{user.historyEnemiesKilled[index]}</TableCell>
+                        <TableCell className={classes.body}>{user.historyShotsFired[index]}</TableCell>
+                        <TableCell className={classes.body}>{user.historyTimeSurvived[index]}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>

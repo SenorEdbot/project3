@@ -1,4 +1,6 @@
 import Phaser from 'phaser'
+import AudioManager from '../audio/AudioManager'
+import CorpseManager from '../enemies/CorpseManager'
 import Zombie from '../enemies/zombie'
 import Tutorial from '../tutorial'
 
@@ -11,6 +13,9 @@ export default class GameMode {
 
     // Player
     this.player = this.scene.player
+
+    this.audio = new AudioManager(this.scene)
+    this.audio.playAudio('spooky', true, 0.5)
 
     // GameMode
     this.name = 'Default'
@@ -26,6 +31,7 @@ export default class GameMode {
 
     // Enemies
     this.enemies = []
+    this.corpses = new CorpseManager(this.scene)
 
     // Game start trigger
     this.trigger = { x: 0, y: 0 }
@@ -68,8 +74,13 @@ export default class GameMode {
 
       // R to restart on player death
       if (e.code === 'KeyR' && this.gameOver) {
-        console.log(this.scene)
-        this.scene.scene.restart()
+
+        // console.log(this.scene.sound)
+        this.scene.sound.forEachActiveSound(sound => {
+          sound.destroy()
+        })
+
+        this.scene.component.createGame()
       }
 
     })
@@ -117,6 +128,12 @@ export default class GameMode {
 
   }
 
+  addCorpse(x, y) {
+
+    this.corpses.addCorpse(x, y)
+
+  }
+
   createGraphics() {
     this.graphics
       .lineStyle(4, 0x00b220, 1)  // thickness, color, alpha
@@ -131,6 +148,8 @@ export default class GameMode {
 
     this.started = true
     this.graphics.clear()
+
+    this.audio.playAudio('alarm', false, 0.33)
 
     setTimeout(() => {
 
@@ -152,6 +171,8 @@ export default class GameMode {
 
       // Let the gamemode start updating
       this.canUpdate = true
+
+      this.audio.playAudio('theme', true, 1.5)
 
     }, this.startDelay)
 
@@ -274,9 +295,8 @@ export default class GameMode {
       }
 
       this.scene.component.save();
-
-      console.log('setGameOverComplete')
-
+      this.scene.lights.setAmbientColor(0x500000)
+      this.audio.playAudio('spooky', true, 0.5)
     }
 
   }
