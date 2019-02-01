@@ -7,6 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Graph from './Graph'
 
 
 
@@ -25,6 +26,12 @@ const styles = theme => ({
         fontFamily: "VT323",
         fontSize: "20px",  
     },
+    paper: {
+        padding: theme.spacing.unit * 2,
+        margin: 'auto',
+        backgroundColor: "black",
+        marginTop: "30px"
+      },
     body: {
         color: "grey",
         fontSize: "18px",
@@ -36,6 +43,7 @@ const styles = theme => ({
 function GameHistory(props) {
     const { classes, user } = props; 
   return (
+    <React.Fragment>
     <Paper className={classes.root}>
         <Table className={classes.table}>
             <TableHead>
@@ -62,6 +70,10 @@ function GameHistory(props) {
             </TableBody>
         </Table>
     </Paper>
+    <Paper className={classes.paper}>
+        <Graph user={user} />
+    </Paper>
+    </React.Fragment>
   )
 }
 
