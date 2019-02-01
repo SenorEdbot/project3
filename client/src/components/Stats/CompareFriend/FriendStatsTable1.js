@@ -7,6 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
@@ -38,12 +40,23 @@ function FriendStatsTable(props) {
 
   return (
     <Paper className={classes.root}>
+    <Toolbar>
+        <Typography variant="h6" id="tableTitle">
+          {user.name}
+        </Typography>
+      </Toolbar>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
+<<<<<<< HEAD
             <TableCell className={classes.title}>{user.name}</TableCell>
             <TableCell className={classes.body}>Recent</TableCell>
             <TableCell className={classes.body}>Best</TableCell>
+=======
+            <TableCell>Category</TableCell>
+            <TableCell>Recent</TableCell>
+            <TableCell>Best</TableCell>
+>>>>>>> a7af9ace197c9cded251c140ea4599b4cb11f194
           </TableRow>
         </TableHead>
         <TableBody>

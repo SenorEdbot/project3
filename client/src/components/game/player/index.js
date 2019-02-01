@@ -39,10 +39,10 @@ export default class Player {
      farBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 250).setIntensity(.5)
     }
 
-    this.light = this.scene.lights.addLight(this.sprite.x, this.sprite.y, 100).setIntensity(.5);
+    this.light = this.scene.lights.addLight(this.sprite.x, this.sprite.y, 120).setIntensity(1);
 
     // ! DEMO: Pick a random weapon
-    const weapons = [new Weapon.Gun(this.scene, this), new Weapon.Shotgun(this.scene, this)];
+    const weapons = [new Weapon.MG(this.scene, this), new Weapon.Shotgun(this.scene, this)];
     this.weapon = weapons[Math.floor(Math.random() * weapons.length)];
 
     this.kills = 0;
@@ -80,7 +80,7 @@ export default class Player {
     if (this.scene.input.activePointer.isDown) {
       this.weapon.fire(() => this.onShoot());
     } else {
-      this.weapon.resetNextFire();
+      // this.weapon.resetNextFire();
     }
 
     // Reload
@@ -121,12 +121,16 @@ export default class Player {
     this.scene.component.setState({ shotsFired: this.shotsFired, accuracy });
 
     this.updateHud();
+
   }
 
   // Custom incrementer for special weapons (correct accuracy)
   increaseShotsFired(count) {
 
+    const accuracy = Math.floor((this.kills / this.shotsFired) * 100) || 0;
+
     this.shotsFired += count
+    this.scene.component.setState({ shotsFired: this.shotsFired, accuracy });
 
   }
 
