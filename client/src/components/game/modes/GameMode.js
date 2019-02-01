@@ -75,7 +75,13 @@ export default class GameMode {
       // R to restart on player death
       if (e.code === 'KeyR' && this.gameOver) {
 
-        // console.log(this.scene.sound)
+        // ! ----------------------------------------------------
+        // ! Critical: setting player.isAlive to false prevents
+        // ! other components from using their update functions.
+        // ! Removing this breaks the game.
+        this.player.isAlive = false
+        // ! ----------------------------------------------------
+
         this.scene.sound.forEachActiveSound(sound => {
           sound.destroy()
         })
