@@ -39,10 +39,10 @@ export default class Player {
      farBeam: this.scene.lights.addLight(this.sprite.x, this.sprite.y, 250).setIntensity(.5)
     }
 
-    this.light = this.scene.lights.addLight(this.sprite.x, this.sprite.y, 100).setIntensity(.5);
+    this.light = this.scene.lights.addLight(this.sprite.x, this.sprite.y, 120).setIntensity(1);
 
     // ! DEMO: Pick a random weapon
-    const weapons = [new Weapon.Gun(this.scene, this), new Weapon.Shotgun(this.scene, this)];
+    const weapons = [new Weapon.MG(this.scene, this), new Weapon.Shotgun(this.scene, this)];
     this.weapon = weapons[Math.floor(Math.random() * weapons.length)];
 
     this.kills = 0;
@@ -50,6 +50,7 @@ export default class Player {
     this.accuracy = 0;    // #kills/#shotsFired
 
     this.healthDisplay = this.scene.add.graphics();
+    this.healthDisplayBackground = this.scene.add.graphics();
 
     this.hudFormat = (
       '%1: %2/%3'
@@ -80,7 +81,7 @@ export default class Player {
     if (this.scene.input.activePointer.isDown) {
       this.weapon.fire(() => this.onShoot());
     } else {
-      this.weapon.resetNextFire();
+      // this.weapon.resetNextFire();
     }
 
     // Reload
@@ -105,6 +106,14 @@ export default class Player {
 
     let color = (this.health / this.maxHealth >= 0.33) ? 0x00b220 : 0xf23c13;
 
+    this.healthDisplayBackground.clear();
+    this.healthDisplayBackground
+    .lineStyle(4, 0x332e2e, 1)
+    .beginPath()
+    .arc(this.sprite.x, this.sprite.y, 60, Phaser.Math.DegToRad(startAngle), Phaser.Math.DegToRad(endAngle), true)
+    .strokePath()
+    .setDepth(998);
+
     this.healthDisplay.clear();
     this.healthDisplay
     .lineStyle(4, color, 1)
@@ -121,12 +130,16 @@ export default class Player {
     this.scene.component.setState({ shotsFired: this.shotsFired, accuracy });
 
     this.updateHud();
+
   }
 
   // Custom incrementer for special weapons (correct accuracy)
   increaseShotsFired(count) {
 
+    const accuracy = Math.floor((this.kills / this.shotsFired) * 100) || 0;
+
     this.shotsFired += count
+    this.scene.component.setState({ shotsFired: this.shotsFired, accuracy });
 
   }
 
@@ -219,6 +232,7 @@ export default class Player {
 
       // Remove graphics
       this.healthDisplay.clear();
+      this.healthDisplayBackground.clear();
       this.weapon.kill(); // Clears ammo display
     }
   }

@@ -3,6 +3,7 @@ import userServices from '../../services/userServices'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import { UserStats, CompareFriend } from '../../index'
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
@@ -12,9 +13,9 @@ const styles = theme => ({
     marginTop: "10vh"
   },
   container: {
-    background: "#424242",
+    background: "black",//"#424242",
     margin: "0 auto",
-    width: "80%"
+    width: "85%"
   },
   stats: {
     color: "#440202",
@@ -25,7 +26,13 @@ const styles = theme => ({
     margin: 10,
     width: 60,
     height: 60,
+  },
+  title: {
+    fontFamily: "VT323",
+    color: "white",
+    fontSize: "22px"
   }
+
   
 })
 class Stats extends Component {
@@ -34,51 +41,8 @@ class Stats extends Component {
     user: {},
     allUsers: [],
     userToCompare: '',
-    secondUserObj: {},
-    totalAcc: 0,
-    totalDif: 0,
-    totalKia: 0,
-    totalShots: 0,
-    totalSurv: 0
+    secondUserObj: {}
     // totalArray: []
-  }
-
-  reducer = (accumulator, currentValue) => accumulator + currentValue;
-
-  totalAcc = () => {
-    let totalAccuracy = this.props.user.historyAccuracy.reduce(this.reducer)
-    this.setState({
-      totalAcc: totalAccuracy
-    })
-
-  }
-  totalDif = () => {
-    let totalDifficulty = this.props.user.historyDifficulty.reduce(this.reducer)
-    this.setState({
-      totalDif: totalDifficulty
-    })
-
-  }
-  totalKia = () => {
-    let totalEnemiesKilled = this.props.user.historyEnemiesKilled.reduce(this.reducer)
-    this.setState({
-      totalKia: totalEnemiesKilled
-    })
-
-  }
-  totalShots = () => {
-    let totalShotsFired = this.props.user.historyShotsFired.reduce(this.reducer)
-    this.setState({
-      totalShots: totalShotsFired
-    })
-
-  }
-  totalSurv = () => {
-    let totalTimeSurvived = this.props.user.historyTimeSurvived.reduce(this.reducer)
-    this.setState({
-      totalSurv: totalTimeSurvived
-    })
-
   }
   
   handleChange = e => {
@@ -93,10 +57,18 @@ class Stats extends Component {
     const { userProfile, getProfile } = this.props.auth
     if (!userProfile) {
       getProfile((err, profile) => {
-        this.setState({ profile: profile })
+        userServices.getUserByUsername(profile.nickname)
+          .then(user => this.setState({
+            user: user.data,
+            profile
+          }))
       })
     } else {
-      this.setState({ profile: userProfile })
+      userServices.getUserByUsername(userProfile.nickname)
+          .then(user => this.setState({
+            user: user.data,
+            profile: userProfile
+          }))
     }
   }
 
@@ -104,61 +76,46 @@ class Stats extends Component {
     userServices.getAllUsers()
       .then(allUsers => this.setState({ allUsers: allUsers.data }))
       .catch(err => console.log(err))
-
-      if (this.props.user) {
-        this.totalAcc()
-        this.totalDif()
-        this.totalKia()
-        this.totalShots()
-        this.totalSurv()
-      }
   }
 
   render() {
-    const { classes, user } = this.props
-    const { profile, allUsers, totalAcc, totalDif, totalKia, totalShots, totalSurv } = this.state
-    //----------------------------------------------------------------------------
-    // TODO: (remove later):
-    // User stats retrieved from db is available inside 'user' or 'this.props.user'
-    console.log({ user })
-    console.log(this.state.allUsers)
-    //----------------------------------------------------------------------------
-
+    const { classes } = this.props
+    const { profile, allUsers, user } = this.state
+    console.log({user},  {profile} )
     return (
     <div className={classes.root}>
       <div className={classes.container}>
-        <Grid
-          container
-          spacing={16}
-          direction="row"
-          justify="center"
-          alignItems="center"
-        >
-          <UserStats className={classes.table}
-            profile={profile}
-            user={user}
-            totalAcc={totalAcc}
-            totalDif={totalDif}
-            totalKia={totalKia}
-            totalShots={totalShots}
-            totalSurv={totalSurv}
-           />
-          </Grid>
+      {user && !user.maxAccuracy ? <Typography className={classes.title}>Please play the game to generate stats </Typography> : (
+        <React.Fragment>
           <Grid
-          container
-          spacing={16}
-          direction="row"
-          justify="center"
-          alignItems="center"
-          style={{marginTop: "20px"}}
-        >
-          <CompareFriend
-            user={user}
-            allUsers={allUsers}
-            userToCompare={this.state.userToCompare}
-            handleChange={this.handleChange}
+            container
+            spacing={16}
+            direction="row"
+            justify="center"
+            alignItems="center"
+          >
+            <UserStats className={classes.table}
+              profile={profile}
+              user={user}
             />
-        </Grid>
+            </Grid>
+            <Grid
+            container
+            spacing={16}
+            direction="row"
+            justify="center"
+            alignItems="center"
+            style={{marginTop: "20px"}}
+          >
+            <CompareFriend
+              user={user}
+              allUsers={allUsers}
+              userToCompare={this.state.userToCompare}
+              handleChange={this.handleChange}
+              />
+          </Grid>
+        </React.Fragment>
+      )}
       </div>
     </div>
     )

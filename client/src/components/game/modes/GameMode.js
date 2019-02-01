@@ -1,7 +1,9 @@
 import Phaser from 'phaser'
 import AudioManager from '../audio/AudioManager'
+import CorpseManager from '../enemies/CorpseManager'
 import Zombie from '../enemies/zombie'
 import Tutorial from '../tutorial'
+import Hud from '../hud/index'
 
 export default class GameMode {
   constructor(scene) {
@@ -30,6 +32,7 @@ export default class GameMode {
 
     // Enemies
     this.enemies = []
+    this.corpses = new CorpseManager(this.scene)
 
     // Game start trigger
     this.trigger = { x: 0, y: 0 }
@@ -42,6 +45,13 @@ export default class GameMode {
 
     // Graphics
     this.graphics = this.scene.add.graphics()
+
+    this.fpsHud = new Hud(this.scene)
+    this.fpsHudFormat = (
+      'FPS: %1'
+      )
+    this.fpsHud.render(this.fpsHudFormat, [this.scene.game.loop.actualFps])
+    this.fpsHud.setHudPosition(80, this.scene.sys.game.canvas.height - 30)
 
     // Tutorial
     this.tutorial = new Tutorial(this.scene)
@@ -73,12 +83,18 @@ export default class GameMode {
       // R to restart on player death
       if (e.code === 'KeyR' && this.gameOver) {
 
-        // console.log(this.scene.sound)
+        // ! ----------------------------------------------------
+        // ! Critical: setting player.isAlive to false prevents
+        // ! other components from using their update functions.
+        // ! Removing this breaks the game.
+        this.player.isAlive = false
+        // ! ----------------------------------------------------
+
         this.scene.sound.forEachActiveSound(sound => {
           sound.destroy()
         })
-        this.scene.scene.restart()
 
+        this.scene.component.createGame()
       }
 
     })
@@ -123,6 +139,12 @@ export default class GameMode {
       .setScrollFactor(0, 0)      // Fix the text to the screen
       .setDepth(999)              // Keep text on top-most layer
       .setOrigin(0.5)
+
+  }
+
+  addCorpse(x, y) {
+
+    this.corpses.addCorpse(x, y)
 
   }
 
@@ -174,6 +196,8 @@ export default class GameMode {
   }
 
   update() {
+
+    this.fpsHud.update(this.fpsHudFormat, [Math.floor(this.scene.game.loop.actualFps)])
 
     if (this.started && this.canUpdate) {
 

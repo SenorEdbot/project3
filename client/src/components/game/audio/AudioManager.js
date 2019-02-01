@@ -9,7 +9,7 @@ export default class AudioManager {
 
   playAudio(key, loop, volume) {
 
-    if(this.audio) this.audio.destroy()
+    if (this.audio) this.audio.destroy()
 
     this.audio = this.scene.sound.add(key, { loop, volume })
     this.audio.play();
@@ -18,20 +18,35 @@ export default class AudioManager {
 
   playGunshot(key, volume) {
 
-    if(this.gunshot) this.gunshot.destroy()
+    if (this.gunshot) this.gunshot.destroy()
 
     this.gunshot = this.scene.sound.add(key, { volume })
     this.gunshot.play()
 
   }
 
-  playReload(key, volume) {
+  playReload(key, volume, count, interval) {
 
-    if(this.reload) this.reload.destroy()
+    if (this.reload) this.reload.destroy()
 
     this.reload = this.scene.sound.add(key, { volume })
-    this.reload.play()
 
+    if (count && interval) {
+
+      let _count = 0;
+      let reloadInterval = setInterval(() => {
+        this.reload.stop()
+        this.reload.play()
+        _count++
+
+        if (_count === count) clearInterval(reloadInterval)
+      }, interval)
+
+    } else {
+
+      this.reload = this.scene.sound.add(key, { volume })
+      this.reload.play()
+
+    }
   }
-
 }

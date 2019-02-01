@@ -16,6 +16,28 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
   },
+  title: {
+    color: "white",
+    fontFamily: "VT323",
+    fontSize: "20px",  
+},
+body: {
+    color: "grey",
+    fontSize: "18px",
+    fontFamily: "VT323"
+  },
+  table: {
+    backgroundColor: "black",
+    padding: "10px"
+  },
+  name: {
+    color: "white",
+    fontFamily: "VT323",
+    fontSize: "22px"
+  },
+  otherName: {
+    backgroundColor: "black"
+  }
   // table: {
   //   minWidth: 700,
   // },
@@ -26,44 +48,44 @@ function FriendStatsTable(props) {
 
   return (
     <Paper className={classes.root}>
-    <Toolbar>
-        <Typography variant="h6" id="tableTitle">
+    <Toolbar className={classes.otherName}>
+        <Typography className={classes.name} variant="h6" id="tableTitle" align="right">
           {user.name}
         </Typography>
       </Toolbar>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>Category</TableCell>
-            <TableCell>Recent</TableCell>
-            <TableCell>Best</TableCell>
+            <TableCell></TableCell>
+            <TableCell className={classes.title} align="center">Recent</TableCell>
+            <TableCell className={classes.title} align="center">Best</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell>Accuracy</TableCell>
-            <TableCell>{user.recentAccuracy}</TableCell>
-            <TableCell>{user.maxAccuracy}</TableCell>
+            <TableCell className={classes.title} align="left">EnemiesKilled</TableCell>
+            <TableCell className={classes.body} align="center">{user.recentEnemiesKilled}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxEnemiesKilled}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Difficulty</TableCell>
-            <TableCell>{user.recentDifficulty}</TableCell>
-            <TableCell>{user.maxDifficulty}</TableCell>
+            <TableCell className={classes.title} align="left">ShotsFired</TableCell>
+            <TableCell className={classes.body} align="center">{user.recentShotsFired}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxShotsFired}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>EnemiesKilled</TableCell>
-            <TableCell>{user.recentEnemiesKilled}</TableCell>
-            <TableCell>{user.maxEnemiesKilled}</TableCell>
+            <TableCell className={classes.title} align="left">Accuracy</TableCell>
+            <TableCell className={classes.body} align="center">{(user.recentAccuracy).toFixed(1)}%</TableCell>
+            <TableCell className={classes.body} align="center">{(user.maxAccuracy).toFixed(1)}%</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>ShotsFired</TableCell>
-            <TableCell>{user.recentShotsFired}</TableCell>
-            <TableCell>{user.maxShotsFired}</TableCell>
+            <TableCell className={classes.title} align="left">TimeSurvived</TableCell>
+            <TableCell className={classes.body} align="center">{user.recentTimeSurvived}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxTimeSurvived}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>TimeSurvived</TableCell>
-            <TableCell>{user.recentTimeSurvived}</TableCell>
-            <TableCell>{user.maxTimeSurvived}</TableCell>
+            <TableCell className={classes.title} align="left">Difficulty</TableCell>
+            <TableCell className={classes.body} align="center"> {user.recentDifficulty}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxDifficulty}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

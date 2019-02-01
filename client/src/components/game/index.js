@@ -68,6 +68,14 @@ export default class Game extends Component {
 
   componentDidMount() {
 
+    this.createGame()
+
+  }
+
+  createGame() {
+
+    if (game) game.destroy(true, false)
+
     const gameConfig = {
       type: Phaser.AUTO,
       width: window.innerWidth,
@@ -109,6 +117,7 @@ export default class Game extends Component {
     this.load.image('player', ['/assets/sprites/playerPistol.gif', '/assets/sprites/playerPistol_n.png'])
     this.load.image('zombie', ['/assets/sprites/zombie.gif', '/assets/sprites/playerPistol_n.png'])
     this.load.image('bullet', ['/assets/sprites/bullet.png', '/assets/sprites/playerPistol_n.png'])
+    this.load.image('corpse', ['/assets/sprites/corpse.png', '/assets/sprites/corpse_n.png'])
     this.load.image('map', ['/assets/backgrounds/map02.jpg', '/assets/backgrounds/map02_n.png'])
 
     // Audio
@@ -196,7 +205,7 @@ export default class Game extends Component {
     )
 
     this.usernameText = this.add
-      .text(window.innerWidth / 2, game.config.height / 2 - 325, '', captionStyle)
+      .text(window.innerWidth / 2, 40, '', captionStyle)
       .setScrollFactor(0, 0)
       .setDepth(999)
       .setOrigin(0.5, 0)

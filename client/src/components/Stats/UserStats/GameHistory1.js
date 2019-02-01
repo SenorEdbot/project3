@@ -7,6 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Graph from './Graph'
 
 
 
@@ -18,39 +19,58 @@ const styles = theme => ({
     },
     table: {
         minWidth: 700, 
+        backgroundColor: "black"
     },
+    title: {
+        color: "white",
+        fontFamily: "VT323",
+        fontSize: "20px",  
+    },
+    paper: {
+        padding: theme.spacing.unit * 2,
+        margin: 'auto',
+        backgroundColor: "black",
+        marginTop: "30px"
+      },
+    body: {
+        color: "grey",
+        fontSize: "18px",
+        fontFamily: "VT323"
+      }
    
 });
 
 function GameHistory(props) {
     const { classes, user } = props; 
   return (
+    <React.Fragment>
     <Paper className={classes.root}>
         <Table className={classes.table}>
             <TableHead>
                 <TableRow>
-                    <TableCell>Game History</TableCell>
-                    <TableCell>Accuracyy</TableCell>
-                    <TableCell>Difficulty</TableCell>
-                    <TableCell>Enemies Killed</TableCell>
-                    <TableCell>Shots Fired</TableCell>                
-                    <TableCell>Time Survived</TableCell>                
+                    <TableCell className={classes.title}>Game History</TableCell>
+                    <TableCell className={classes.title}>Enemies Killed</TableCell>
+                    <TableCell className={classes.title}>Shots Fired</TableCell>                
+                    <TableCell className={classes.title}>Accuracy</TableCell>
+                    <TableCell className={classes.title}>Time Survived</TableCell>                
+                    <TableCell className={classes.title}>Difficulty</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {user.historyAccuracy.map((el, index) => (
                     <TableRow>
-                        <TableCell>{index+1}</TableCell>
-                        <TableCell>{user.historyAccuracy[index]}</TableCell>
-                        <TableCell>{user.historyDifficulty[index]}</TableCell>
-                        <TableCell>{user.historyEnemiesKilled[index]}</TableCell>
-                        <TableCell>{user.historyShotsFired[index]}</TableCell>
-                        <TableCell>{user.historyTimeSurvived[index]}</TableCell>
+                        <TableCell className={classes.body}>{index+1}</TableCell>
+                        <TableCell className={classes.body} align="center">{user.historyEnemiesKilled[index]}</TableCell>
+                        <TableCell className={classes.body} align="center">{user.historyShotsFired[index]}</TableCell>
+                        <TableCell className={classes.body} align="center">{(user.historyAccuracy[index]).toFixed(1)}%</TableCell>
+                        <TableCell className={classes.body} align="center">{user.historyTimeSurvived[index]}</TableCell>
+                        <TableCell className={classes.body} align="center">{user.historyDifficulty[index]}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>
         </Table>
     </Paper>
+    </React.Fragment>
   )
 }
 

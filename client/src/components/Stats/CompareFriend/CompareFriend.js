@@ -11,6 +11,7 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FriendComp from './FriendComp'
 import FriendComp1 from './FriendComp1'
 import userServices from '../../../services/userServices'
+// import '../../../App.css'
 
 const styles = theme => ({
   root: {
@@ -19,12 +20,49 @@ const styles = theme => ({
   },
   formControl: {
     minWidth: 600,
-    margin: '0 auto'
+    margin: '0 auto',
+    color: "white",
+    fontSize: "20px",
+    fontFamily: "VT323",
+    backgroundColor: "black",
+  
   },
   paper: {
     padding: theme.spacing.unit * 2,
-    margin: 'auto'
-  }
+    margin: 'auto',
+    backgroundColor: "black",
+  },
+ 
+  extra: {
+    color: "grey",
+    fontFamily: "VT323",
+    fontSize: "16px"
+  },
+  menu: {
+    color: "white",
+    backgroundColor: "#717171",
+    fontFamily: "VT323",
+    fontSize: "20px"
+  },
+  friend: {
+    color:"black",
+    textAlign: "center",
+    backgroundColor: "white",
+    fontFamily: "VT323",
+    fontSize: "20px",
+    "&:hover": {
+      color: "white",
+      backgroundColor: "black"
+    }
+  },
+  user: {
+    color: "white",
+    fontFamily: "VT323",
+    fontSize: "18px",
+  },
+  input: {
+    color:"red",
+  },
 })
 
 class AddFriends extends Component {
@@ -49,27 +87,28 @@ class AddFriends extends Component {
           <Grid item xs={12}>
             <form className={classes.root} autoComplete="off">
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="compare-user">Username</InputLabel>
+                <InputLabel className={classes.user} htmlFor="compare-user">Username</InputLabel>
                 <Select
+                  className={classes.menu}
                   value={this.state.userToCompare}
                   onChange={this.handleChange}
-                  input={<Input name="userToCompare" id="compare-user" />}
-                >
+                  input={<Input className={classes.input}name="userToCompare" id="compare-user" />}
+                > 
                   {allUsers.map(user => (
-                    <MenuItem name="userToCompare" value={user.name} key={user._id}>{user.name}</MenuItem>
+                    <MenuItem className={classes.friend} name="userToCompare" value={user.name} key={user._id}>{user.name}</MenuItem>
                   ))}
                 </Select>
-                <FormHelperText>Select a Username to compare against!</FormHelperText>
+                <FormHelperText className={classes.extra}>Select a Username to compare against!</FormHelperText>
               </FormControl>
             </form>
             </Grid>
             <Grid item xs={12}>
               {this.state.secondUserObj.name ? (
               <React.Fragment>
-                <Grid container direction="row" justify="center" alignItems="center">
-                  <FriendComp
+                <Grid className={classes.extra} container direction="row" justify="center" alignItems="center">
+                  <FriendComp className={classes.extra}
                     user={user} />
-                  <FriendComp1
+                  <FriendComp1 className={classes.extra}
                     user={this.state.secondUserObj} />
                 </Grid>
               </React.Fragment>
