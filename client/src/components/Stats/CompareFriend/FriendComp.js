@@ -10,7 +10,7 @@ const styles = theme => ({
     flexGrow: "1"
   },
   friends: {
-    color: "#222281",
+    color: "red",//"#222281",
     padding: theme.spacing.unit * 2
   }
 })
