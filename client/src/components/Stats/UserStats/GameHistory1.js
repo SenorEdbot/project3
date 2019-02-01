@@ -26,6 +26,12 @@ const styles = theme => ({
         fontFamily: "VT323",
         fontSize: "20px",  
     },
+    paper: {
+        padding: theme.spacing.unit * 2,
+        margin: 'auto',
+        backgroundColor: "black",
+        marginTop: "30px"
+      },
     body: {
         color: "grey",
         fontSize: "18px",
@@ -64,7 +70,7 @@ function GameHistory(props) {
             </TableBody>
         </Table>
     </Paper>
-    <Paper className={classes.root}>
+    <Paper className={classes.paper}>
         <Graph user={user} />
     </Paper>
     </React.Fragment>
