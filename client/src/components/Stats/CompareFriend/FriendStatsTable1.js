@@ -49,7 +49,7 @@ function FriendStatsTable(props) {
   return (
     <Paper className={classes.root}>
     <Toolbar className={classes.otherName}>
-        <Typography className={classes.name} variant="h6" id="tableTitle">
+        <Typography className={classes.name} variant="h6" id="tableTitle" align="right">
           {user.name}
         </Typography>
       </Toolbar>
@@ -57,35 +57,35 @@ function FriendStatsTable(props) {
         <TableHead>
           <TableRow>
             <TableCell></TableCell>
-            <TableCell className={classes.title}>Recent</TableCell>
-            <TableCell className={classes.title}>Best</TableCell>
+            <TableCell className={classes.title} align="center">Recent</TableCell>
+            <TableCell className={classes.title} align="center">Best</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell className={classes.title}>Accuracy</TableCell>
-            <TableCell className={classes.body}>{user.recentAccuracy}</TableCell>
-            <TableCell className={classes.body}>{user.maxAccuracy}</TableCell>
+            <TableCell className={classes.title} align="left">EnemiesKilled</TableCell>
+            <TableCell className={classes.body} align="center">{user.recentEnemiesKilled}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxEnemiesKilled}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={classes.title}>Difficulty</TableCell>
-            <TableCell className={classes.body}> {user.recentDifficulty}</TableCell>
-            <TableCell className={classes.body}>{user.maxDifficulty}</TableCell>
+            <TableCell className={classes.title} align="left">ShotsFired</TableCell>
+            <TableCell className={classes.body} align="center">{user.recentShotsFired}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxShotsFired}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={classes.title}>EnemiesKilled</TableCell>
-            <TableCell className={classes.body}>{user.recentEnemiesKilled}</TableCell>
-            <TableCell className={classes.body}>{user.maxEnemiesKilled}</TableCell>
+            <TableCell className={classes.title} align="left">Accuracy</TableCell>
+            <TableCell className={classes.body} align="center">{(user.recentAccuracy).toFixed(1)}%</TableCell>
+            <TableCell className={classes.body} align="center">{(user.maxAccuracy).toFixed(1)}%</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={classes.title}>ShotsFired</TableCell>
-            <TableCell className={classes.body}>{user.recentShotsFired}</TableCell>
-            <TableCell className={classes.body}>{user.maxShotsFired}</TableCell>
+            <TableCell className={classes.title} align="left">TimeSurvived</TableCell>
+            <TableCell className={classes.body} align="center">{user.recentTimeSurvived}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxTimeSurvived}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={classes.title}>TimeSurvived</TableCell>
-            <TableCell className={classes.body}>{user.recentTimeSurvived}</TableCell>
-            <TableCell className={classes.body}>{user.maxTimeSurvived}</TableCell>
+            <TableCell className={classes.title} align="left">Difficulty</TableCell>
+            <TableCell className={classes.body} align="center"> {user.recentDifficulty}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxDifficulty}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

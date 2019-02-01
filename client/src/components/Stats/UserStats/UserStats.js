@@ -10,6 +10,7 @@ import Tab from '@material-ui/core/Tab'
 import RecentStatsTable from './RecentStatsTable'
 import HistoricalStatsTable from './HistoricalStatsTable'
 import GameHistory1 from './GameHistory1'
+import Graph from './Graph'
 
 const styles = theme => ({
   root: {
@@ -96,7 +97,8 @@ class UserStats extends Component {
                   centered
                   className={classes.choice}
                 >
-                  <Tab className={classes.tab} label="Recent & Best" />
+                  <Tab className={classes.tab} label="Graphs" />
+                  <Tab className={classes.tab} label="Previous" />
                   <Tab className={classes.tab} label="Career" />
                   <Tab className={classes.tab} label="History" />
                 </Tabs>
@@ -105,9 +107,10 @@ class UserStats extends Component {
           </Grid>
         </Grid>
         <Grid item>
-          {value === 0 && <RecentStatsTable user={user} />}
-          {value === 1 && <HistoricalStatsTable user={user} />}
-          {value === 2 && <GameHistory1 user={user} />}
+          {value === 0 && <Graph user={user} />}
+          {value === 1 && <RecentStatsTable user={user} />}
+          {value === 2 && <HistoricalStatsTable user={user} />}
+          {value === 3 && <GameHistory1 user={user} />}
         </Grid>
       </Paper>
     )

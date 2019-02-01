@@ -52,30 +52,30 @@ function FriendStatsTable(props) {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell className={classes.title} >Recent</TableCell>
-            <TableCell className={classes.title} >Best</TableCell>
+            <TableCell className={classes.title} align="center">Recent</TableCell>
+            <TableCell className={classes.title} align="center">Best</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell className={classes.body} >{user.recentAccuracy}</TableCell>
-            <TableCell className={classes.body} >{user.maxAccuracy}</TableCell>
+            <TableCell className={classes.body} align="center">{user.recentEnemiesKilled}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxEnemiesKilled}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={classes.body} >{user.recentDifficulty}</TableCell>
-            <TableCell className={classes.body} >{user.maxDifficulty}</TableCell>
+            <TableCell className={classes.body} align="center">{user.recentShotsFired}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxShotsFired}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={classes.body} >{user.recentEnemiesKilled}</TableCell>
-            <TableCell className={classes.body} >{user.maxEnemiesKilled}</TableCell>
+            <TableCell className={classes.body} align="center">{(user.recentAccuracy).toFixed(1)}%</TableCell>
+            <TableCell className={classes.body} align="center">{(user.maxAccuracy).toFixed(1)}%</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={classes.body} >{user.recentShotsFired}</TableCell>
-            <TableCell className={classes.body} >{user.maxShotsFired}</TableCell>
+            <TableCell className={classes.body} align="center">{user.recentTimeSurvived}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxTimeSurvived}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className={classes.body} >{user.recentTimeSurvived}</TableCell>
-            <TableCell className={classes.body} >{user.maxTimeSurvived}</TableCell>
+            <TableCell className={classes.body} align="center">{user.recentDifficulty}</TableCell>
+            <TableCell className={classes.body} align="center">{user.maxDifficulty}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
