@@ -49,29 +49,26 @@ function GameHistory(props) {
             <TableHead>
                 <TableRow>
                     <TableCell className={classes.title}>Game History</TableCell>
-                    <TableCell className={classes.title}>Accuracy</TableCell>
-                    <TableCell className={classes.title}>Difficulty</TableCell>
                     <TableCell className={classes.title}>Enemies Killed</TableCell>
                     <TableCell className={classes.title}>Shots Fired</TableCell>                
+                    <TableCell className={classes.title}>Accuracy</TableCell>
                     <TableCell className={classes.title}>Time Survived</TableCell>                
+                    <TableCell className={classes.title}>Difficulty</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {user.historyAccuracy.map((el, index) => (
                     <TableRow>
                         <TableCell className={classes.body}>{index+1}</TableCell>
-                        <TableCell className={classes.body}>{user.historyAccuracy[index]}</TableCell>
-                        <TableCell className={classes.body}>{user.historyDifficulty[index]}</TableCell>
-                        <TableCell className={classes.body}>{user.historyEnemiesKilled[index]}</TableCell>
-                        <TableCell className={classes.body}>{user.historyShotsFired[index]}</TableCell>
-                        <TableCell className={classes.body}>{user.historyTimeSurvived[index]}</TableCell>
+                        <TableCell className={classes.body} align="center">{user.historyEnemiesKilled[index]}</TableCell>
+                        <TableCell className={classes.body} align="center">{user.historyShotsFired[index]}</TableCell>
+                        <TableCell className={classes.body} align="center">{(user.historyAccuracy[index]).toFixed(1)}%</TableCell>
+                        <TableCell className={classes.body} align="center">{user.historyTimeSurvived[index]}</TableCell>
+                        <TableCell className={classes.body} align="center">{user.historyDifficulty[index]}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>
         </Table>
-    </Paper>
-    <Paper className={classes.paper}>
-        <Graph user={user} />
     </Paper>
     </React.Fragment>
   )
