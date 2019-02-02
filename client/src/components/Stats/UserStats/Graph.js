@@ -1,7 +1,7 @@
 import ReactChartkick, { LineChart } from 'react-chartkick'
+import Chart from 'chart.js'
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import Chart from 'chart.js'
 
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'

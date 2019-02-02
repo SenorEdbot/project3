@@ -13,7 +13,7 @@ const styles = theme => ({
     marginTop: "10vh"
   },
   container: {
-    background: "black",//"#424242",
+    background: "black",
     margin: "0 auto",
     width: "85%"
   },
@@ -76,6 +76,12 @@ class Stats extends Component {
     userServices.getAllUsers()
       .then(allUsers => this.setState({ allUsers: allUsers.data }))
       .catch(err => console.log(err))
+  }
+
+  componentWillUnmount() {
+    this.setState({
+      user: {}
+    })
   }
 
   render() {

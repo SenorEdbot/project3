@@ -7,9 +7,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Graph from './Graph'
-
-
 
 const styles = theme => ({
     root: {
