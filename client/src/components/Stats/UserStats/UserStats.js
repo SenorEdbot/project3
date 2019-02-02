@@ -63,7 +63,55 @@ const styles = theme => ({
 class UserStats extends Component {
   state = {
     value: 0,
-  };
+    totalAcc: 0,
+		totalDif: 0,
+		totalKia: 0,
+		totalShots: 0,
+		totalSurv: 0
+	}
+
+	reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+	totalAcc = () => {
+		let totalAccuracy = this.props.user.historyAccuracy.reduce(this.reducer)
+		this.setState({
+			totalAcc: totalAccuracy
+		})
+	}
+	totalDif = () => {
+		let totalDifficulty = this.props.user.historyDifficulty.reduce(this.reducer)
+		this.setState({
+			totalDif: totalDifficulty
+		})
+	}
+	totalKia = () => {
+		let totalEnemiesKilled = this.props.user.historyEnemiesKilled.reduce(this.reducer)
+		this.setState({
+			totalKia: totalEnemiesKilled
+		})
+	}
+	totalShots = () => {
+		let totalShotsFired = this.props.user.historyShotsFired.reduce(this.reducer)
+		this.setState({
+			totalShots: totalShotsFired
+		})
+	}
+	totalSurv = () => {
+		let totalTimeSurvived = this.props.user.historyTimeSurvived.reduce(this.reducer)
+		this.setState({
+			totalSurv: totalTimeSurvived
+		})
+	}
+
+	componentDidMount() {
+		if (this.props.user && this.props.user.maxAccuracy) {
+			this.totalAcc()
+			this.totalDif()
+			this.totalKia()
+			this.totalShots()
+			this.totalSurv()
+		}
+	}
 
   handleChange = (event, value) => {
     this.setState({ value });
@@ -108,8 +156,8 @@ class UserStats extends Component {
         </Grid>
         <Grid item>
           {value === 0 && <Graph user={user} />}
-          {value === 1 && <RecentStatsTable user={user} />}
-          {value === 2 && <HistoricalStatsTable user={user} />}
+          {value === 1 && <RecentStatsTable user={user} totalAcc={this.state.totalAcc} totalDif={this.state.totalDif} totalKia={this.state.totalKia} totalShots={this.state.totalShots} totalSurv={this.state.totalSurv} />}
+          {value === 2 && <HistoricalStatsTable user={user} totalAcc={this.state.totalAcc} totalDif={this.state.totalDif} totalKia={this.state.totalKia} totalShots={this.state.totalShots} totalSurv={this.state.totalSurv} />}
           {value === 3 && <GameHistory1 user={user} />}
         </Grid>
       </Paper>

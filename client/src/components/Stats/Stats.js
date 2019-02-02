@@ -78,6 +78,12 @@ class Stats extends Component {
       .catch(err => console.log(err))
   }
 
+  componentWillUnmount() {
+    this.setState({
+      user: {}
+    })
+  }
+
   render() {
     const { classes } = this.props
     const { profile, allUsers, user } = this.state
