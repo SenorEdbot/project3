@@ -18,7 +18,6 @@ const styles = theme => ({
 
 function FriendComp(props) {
   const { user } = props
-  const { classes } = props; 
   // Deleted classes out props because it was unused
   return (
     <Grid item xs={6}>

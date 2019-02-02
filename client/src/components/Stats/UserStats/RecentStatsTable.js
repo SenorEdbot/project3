@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import ColumnChart from './ColumnChart'
 
 const styles = theme => ({
   root: {
@@ -27,13 +28,20 @@ const styles = theme => ({
     color: "grey",
     fontSize: "18px",
     fontFamily: "VT323"
+  }, 
+  paper: {
+    padding: theme.spacing.unit * 2,
+    margin: 'auto',
+    backgroundColor: "black",
+    marginTop: "30px"
   }
 });
 
 function SimpleTable(props) {
   const { classes, user } = props;
-
+  console.log(props)
   return (
+    <React.Fragment>
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
@@ -70,6 +78,12 @@ function SimpleTable(props) {
         </TableBody>
       </Table>
     </Paper>
+    <Paper className={classes.paper}>
+      <ColumnChart
+      user={user} totalAcc={props.totalAcc} totalDif={props.totalDif} totalKia={props.totalKia} totalShots={props.totalShots} totalSurv={props.totalSurv}
+       />
+    </Paper>
+    </React.Fragment>
   );
 }
 
