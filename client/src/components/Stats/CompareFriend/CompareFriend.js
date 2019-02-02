@@ -42,8 +42,14 @@ const styles = theme => ({
     color: "white",
     backgroundColor: "#717171",
     fontFamily: "VT323",
-    fontSize: "20px"
-  },
+    fontSize: "20px",
+    '&:before': {
+      borderColor: 'red'
+    },
+    '&:after': {
+        borderColor: 'red'
+    }
+},
   friend: {
     color:"black",
     textAlign: "center",
@@ -59,6 +65,12 @@ const styles = theme => ({
     color: "white",
     fontFamily: "VT323",
     fontSize: "18px",
+    '&:before': {
+      color: "white"
+    },
+    '&:after': {
+        color: "red"
+    }
   },
   input: {
     color:"red",
@@ -87,12 +99,15 @@ class AddFriends extends Component {
           <Grid item xs={12}>
             <form className={classes.root} autoComplete="off">
               <FormControl className={classes.formControl}>
-                <InputLabel className={classes.user} htmlFor="compare-user">Username</InputLabel>
+                {/* <InputLabel className={classes.user} htmlFor="compare-user">Username</InputLabel> */}
                 <Select
                   className={classes.menu}
                   value={this.state.userToCompare}
                   onChange={this.handleChange}
-                  input={<Input className={classes.input}name="userToCompare" id="compare-user" />}
+                  input={<Input className={classes.input} name="userToCompare" id="compare-user" />}
+                  InputProps={{
+                    className: classes.input,
+                }}
                 > 
                   {allUsers.map(user => (
                     <MenuItem className={classes.friend} name="userToCompare" value={user.name} key={user._id}>{user.name}</MenuItem>
